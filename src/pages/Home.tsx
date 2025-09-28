@@ -22,18 +22,13 @@ const Home: React.FC = () => {
 
           {/* Main Brand Headline */}
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
-            <span className="text-neutral-900">Transform Your</span>
-            <span className="block bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mt-2">
-              Communication Excellence
-            </span>
+            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">Rretoriq</span>
+            <span className="block text-neutral-900 mt-2">Transform Your Communication Excellence</span>
           </h1>
 
           {/* Brand Slogan */}
           <div className="mb-8">
-            <p className="text-2xl sm:text-3xl font-bold text-neutral-800 mb-2">
-              रेतोरिक़ • Rretoriq
-            </p>
-            <p className="text-lg sm:text-xl text-blue-700 font-semibold italic">
+            <p className="text-xl sm:text-2xl text-blue-700 font-bold italic tracking-wide">
               "Where Words Meet Wisdom, Skills Meet Success"
             </p>
           </div>
