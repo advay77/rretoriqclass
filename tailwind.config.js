@@ -50,6 +50,13 @@ export default {
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],
       },
+      borderRadius: {
+        '4xl': '2rem',
+        '5xl': '2.5rem',
+      },
+      borderWidth: {
+        '3': '3px',
+      },
     },
   },
   plugins: [],
