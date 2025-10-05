@@ -4,7 +4,6 @@ import {
   X, 
   Star, 
   Crown, 
-  Users, 
   Clock,
   MessageSquare,
   BarChart3,
@@ -18,46 +17,23 @@ const PlanUpgrade: React.FC = () => {
 
   const plans = [
     {
-      id: 'free',
-      name: 'Free',
-      icon: <Users className="w-6 h-6" />,
-      price: { monthly: 0, yearly: 0 },
-      description: 'Perfect for trying out Rretoriq',
-      features: [
-        '3 practice sessions per day',
-        'Basic AI feedback',
-        'IELTS Speaking practice',
-        'Progress tracking',
-        'Community support'
-      ],
-      limitations: [
-        'Limited question bank',
-        'No interview practice',
-        'Basic reports only',
-        'No priority support'
-      ],
-      buttonText: 'Current Plan',
-      buttonVariant: 'secondary',
-      popular: false
-    },
-    {
       id: 'premium',
       name: 'Premium',
       icon: <Star className="w-6 h-6" />,
       price: { monthly: 29, yearly: 290 },
-      description: 'Most popular choice for serious learners',
+      description: 'Perfect for individual professionals and students',
       features: [
-        'Unlimited practice sessions',
-        'Advanced AI feedback with scoring',
-        'All practice types (IELTS + Interview)',
-        'Detailed analytics & reports',
+        'Unlimited mock interviews',
+        'Advanced AI feedback with detailed scoring',
+        'Professional communication skills training',
+        'Grammar & vocabulary enhancement',
+        'Detailed performance analytics',
         'Priority email support',
-        'Custom study plans',
-        'Mobile app access',
-        'Offline practice materials'
+        'Custom learning paths',
+        'Mobile app access'
       ],
       limitations: [],
-      buttonText: 'Upgrade to Premium',
+      buttonText: 'Get Premium',
       buttonVariant: 'primary',
       popular: true,
       savings: billingCycle === 'yearly' ? '17% savings' : null
@@ -91,42 +67,42 @@ const PlanUpgrade: React.FC = () => {
   const features = [
     {
       icon: <MessageSquare className="w-5 h-5" />,
-      title: 'AI-Powered Practice',
-      description: 'Get instant feedback on pronunciation, fluency, and content quality'
+      title: 'AI-Powered Mock Interviews',
+      description: 'Practice with realistic scenarios and get instant feedback on communication skills'
     },
     {
       icon: <BarChart3 className="w-5 h-5" />,
-      title: 'Progress Analytics',
-      description: 'Track your improvement with detailed performance insights'
+      title: 'Communication Analytics',
+      description: 'Track your progress in grammar, vocabulary, and professional speaking'
     },
     {
       icon: <Clock className="w-5 h-5" />,
-      title: 'Flexible Scheduling',
-      description: 'Practice anytime, anywhere with our mobile and web apps'
+      title: 'Flexible Learning',
+      description: 'Practice professional communication anytime, anywhere with our platform'
     },
     {
       icon: <Award className="w-5 h-5" />,
-      title: 'Proven Results',
-      description: '95% of users see improvement within the first month'
+      title: 'Career Success',
+      description: '89% of users improve their interview performance and career prospects'
     }
   ];
 
   const testimonials = [
     {
       name: 'Sarah Johnson',
-      role: 'IELTS Test Taker',
+      role: 'MBA Graduate',
       rating: 5,
-      comment: 'Improved my speaking score from 6.5 to 8.0 in just 2 months!'
+      comment: 'The communication training helped me ace my consulting interviews and improved my presentation skills dramatically!'
     },
     {
       name: 'Raj Patel',
       role: 'Software Engineer',
-      comment: 'The interview practice helped me land my dream job at Google.'
+      comment: 'The mock interviews and professional communication practice helped me land my dream job at Google.'
     },
     {
       name: 'Maria Garcia',
-      role: 'University Student',
-      comment: 'Premium features made all the difference in my preparation.'
+      role: 'Medical Student',
+      comment: 'Premium features made all the difference in preparing for my residency interviews and patient communication.'
     }
   ];
 
@@ -153,7 +129,7 @@ const PlanUpgrade: React.FC = () => {
             Choose Your Plan
           </h1>
           <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto px-4">
-            Unlock your full potential with our comprehensive AI-powered communication training platform.
+            Master professional communication skills with our AI-powered training platform designed for career success.
           </p>
         </div>
 
@@ -263,7 +239,7 @@ const PlanUpgrade: React.FC = () => {
         {/* Features Overview */}
         <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-8 mb-6 sm:mb-8">
           <h2 className="text-xl sm:text-2xl font-medium text-gray-900 text-center mb-6 sm:mb-8 px-4">
-            Why Upgrade to Premium?
+            Why Choose Professional Communication Training?
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {features.map((feature, index) => (

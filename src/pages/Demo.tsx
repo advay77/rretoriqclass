@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { 
   Play, 
@@ -11,24 +11,199 @@ import {
   BarChart3,
   CheckCircle,
   Lock,
-  Sparkles
+  Sparkles,
+  Square,
+  Loader2,
+  Clock,
+  Volume2,
+  MicOff
 } from 'lucide-react'
 import SEO, { seoData } from '../components/SEO'
+import { speechToTextService } from '../services/speechToTextService'
+import { openAIAnalysisService } from '../services/openAIAnalysisService'
+import type { AnswerAnalysis, InterviewQuestion } from '../services/openAIAnalysisService'
+
+interface DemoState {
+  isRecording: boolean
+  isPaused: boolean
+  duration: number
+  transcript: string
+  isAnalyzing: boolean
+  analysis: AnswerAnalysis | null
+  audioBlob: Blob | null
+  isTranscribing: boolean
+  error: string | null
+}
 
 const Demo: React.FC = () => {
-  const [activeDemo, setActiveDemo] = useState<'ielts' | 'interview'>('ielts')
+  const [activeDemo, setActiveDemo] = useState<'communication' | 'interview' | null>(null)
+  const [demoState, setDemoState] = useState<DemoState>({
+    isRecording: false,
+    isPaused: false,
+    duration: 0,
+    transcript: '',
+    isAnalyzing: false,
+    analysis: null,
+    audioBlob: null,
+    isTranscribing: false,
+    error: null
+  })
 
-  const ieltsQuestions = [
-    "Describe a place you visited that was particularly interesting.",
-    "Some people prefer to work alone, while others prefer to work in teams. What do you think?",
-    "What are the advantages and disadvantages of online learning compared to traditional classroom learning?"
-  ]
+  const mediaRecorderRef = React.useRef<MediaRecorder | null>(null)
+  const audioChunksRef = React.useRef<Blob[]>([])
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null)
 
-  const interviewQuestions = [
-    "Tell me about yourself and your background.",
-    "Why are you interested in this position?",
-    "Describe a challenging situation you faced and how you resolved it."
-  ]
+  const communicationQuestion: InterviewQuestion = {
+    id: 'comm-demo-1',
+    question: "Present your ideas on improving team collaboration in a remote work environment.",
+    type: 'behavioral',
+    difficulty: 'medium',
+    skills: ['Communication', 'Leadership', 'Problem-solving', 'Teamwork'],
+    expectedDuration: 120,
+    category: 'Professional Communication'
+  }
+
+  const interviewQuestion: InterviewQuestion = {
+    id: 'interview-demo-1',
+    question: "Tell me about yourself and your background.",
+    type: 'behavioral', 
+    difficulty: 'easy',
+    skills: ['Self-presentation', 'Communication', 'Career narrative'],
+    expectedDuration: 90,
+    category: 'Interview Practice'
+  }
+
+  // Recording functions
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          sampleRate: 44100,
+        } 
+      })
+
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'audio/webm;codecs=opus'
+      })
+      
+      mediaRecorderRef.current = mediaRecorder
+      audioChunksRef.current = []
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data)
+        }
+      }
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+        setDemoState(prev => ({ ...prev, audioBlob, isTranscribing: true }))
+        
+        // Start transcription
+        const transcriptionResult = await speechToTextService.transcribeAudio(audioBlob)
+        
+        if (transcriptionResult.success) {
+          setDemoState(prev => ({ 
+            ...prev, 
+            transcript: transcriptionResult.transcript,
+            isTranscribing: false,
+            isAnalyzing: true 
+          }))
+          
+          // Start AI analysis
+          const question = activeDemo === 'communication' ? communicationQuestion : interviewQuestion
+          const analysisResult = await openAIAnalysisService.analyzeAnswer({
+            transcript: transcriptionResult.transcript,
+            question,
+            audioDuration: demoState.duration,
+            transcriptionConfidence: transcriptionResult.confidence
+          })
+          
+          setDemoState(prev => ({ 
+            ...prev, 
+            analysis: analysisResult,
+            isAnalyzing: false 
+          }))
+        } else {
+          setDemoState(prev => ({ 
+            ...prev, 
+            error: transcriptionResult.error || 'Transcription failed',
+            isTranscribing: false 
+          }))
+        }
+        
+        // Stop all tracks
+        stream.getTracks().forEach(track => track.stop())
+      }
+
+      mediaRecorder.start()
+      setDemoState(prev => ({ ...prev, isRecording: true, error: null }))
+      
+      // Start timer
+      timerRef.current = setInterval(() => {
+        setDemoState(prev => ({ ...prev, duration: prev.duration + 1 }))
+      }, 1000)
+      
+    } catch (error) {
+      setDemoState(prev => ({ 
+        ...prev, 
+        error: 'Could not access microphone. Please check permissions.',
+        isRecording: false 
+      }))
+    }
+  }
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && demoState.isRecording) {
+      mediaRecorderRef.current.stop()
+      setDemoState(prev => ({ ...prev, isRecording: false }))
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+        timerRef.current = null
+      }
+    }
+  }
+
+  const resetDemo = () => {
+    setDemoState({
+      isRecording: false,
+      isPaused: false,
+      duration: 0,
+      transcript: '',
+      isAnalyzing: false,
+      analysis: null,
+      audioBlob: null,
+      isTranscribing: false,
+      error: null
+    })
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+      timerRef.current = null
+    }
+  }
+
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins}:${secs.toString().padStart(2, '0')}`
+  }
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current)
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+        mediaRecorderRef.current.stop()
+      }
+    }
+  }, [])
+
+  // Reset demo state when switching between demo types
+  useEffect(() => {
+    resetDemo()
+  }, [activeDemo])
 
   return (
     <>
@@ -52,20 +227,20 @@ const Demo: React.FC = () => {
           
           <p className="text-lg text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed font-light">
             Try our AI-powered communication coach with real examples. 
-            See how we help professionals excel in IELTS and interviews.
+            See how we help professionals master communication skills and ace interviews.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <button
-              onClick={() => setActiveDemo('ielts')}
+              onClick={() => setActiveDemo('communication')}
               className={`flex items-center space-x-3 px-6 py-3 rounded-2xl font-medium text-base transition-all duration-300 ${
-                activeDemo === 'ielts'
+                activeDemo === 'communication'
                   ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/25'
                   : 'border border-gray-200 text-gray-700 hover:bg-gray-50'
               }`}
             >
               <Target className="w-5 h-5" />
-              <span>IELTS Practice</span>
+              <span>Communication Skills</span>
             </button>
             
             <button
@@ -86,15 +261,43 @@ const Demo: React.FC = () => {
       {/* Demo Content */}
       <section className="pb-24 px-4">
         <div className="max-w-6xl mx-auto">
-          {activeDemo === 'ielts' && (
+          {activeDemo === null && (
+            <div className="text-center py-16">
+              <div className="w-24 h-24 bg-gray-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                <Sparkles className="w-12 h-12 text-gray-400" />
+              </div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                Choose Your Practice Mode
+              </h3>
+              <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                Select either Communication Skills or Interview Practice above to experience our AI-powered training platform.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => setActiveDemo('communication')}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl font-medium text-base transition-all hover:shadow-lg hover:shadow-indigo-600/25"
+                >
+                  Try Communication Skills
+                </button>
+                <button
+                  onClick={() => setActiveDemo('interview')}
+                  className="border border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 px-8 py-4 rounded-2xl font-medium text-base transition-all hover:bg-gray-50"
+                >
+                  Try Interview Practice
+                </button>
+              </div>
+            </div>
+          )}
+
+          {activeDemo === 'communication' && (
             <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100">
               <div className="flex items-center space-x-4 mb-8">
                 <div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center">
                   <Target className="w-6 h-6 text-indigo-600" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-semibold text-gray-900">IELTS Speaking Practice</h3>
-                  <p className="text-gray-600 font-light">Part 2: Long Turn (Individual Speaking)</p>
+                  <h3 className="text-2xl font-semibold text-gray-900">Professional Communication Training</h3>
+                  <p className="text-gray-600 font-light">Presentation & Professional Speaking Skills</p>
                 </div>
               </div>
 
@@ -103,15 +306,23 @@ const Demo: React.FC = () => {
                 <div className="space-y-6">
                   <div className="bg-white rounded-2xl p-6 border border-gray-200">
                     <h4 className="text-lg font-semibold text-gray-900 mb-4">Sample Question</h4>
-                    <div className="bg-gray-50 rounded-2xl p-4 mb-4">
-                      <p className="text-gray-900 font-medium mb-3">{ieltsQuestions[0]}</p>
+                    <div className={`rounded-2xl p-4 mb-4 ${demoState.isRecording ? 'bg-red-50 border-2 border-red-200' : 'bg-gray-50'}`}>
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-gray-900 font-medium">{communicationQuestion.question}</p>
+                        {demoState.isRecording && (
+                          <div className="flex items-center space-x-2">
+                            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                            <span className="text-red-600 text-sm font-medium">Recording...</span>
+                          </div>
+                        )}
+                      </div>
                       <div className="text-sm text-gray-600 space-y-1">
-                        <p className="font-medium">You should say:</p>
+                        <p className="font-medium">Focus on:</p>
                         <ul className="list-disc list-inside ml-4 space-y-1 text-gray-500 font-light">
-                          <li>Where this place was</li>
-                          <li>When you visited it</li>
-                          <li>What made it interesting</li>
-                          <li>And explain why you would recommend it to others</li>
+                          <li>Clear structure and logical flow</li>
+                          <li>Professional vocabulary and tone</li>
+                          <li>Practical examples and solutions</li>
+                          <li>Confident delivery and body language</li>
                         </ul>
                       </div>
                     </div>
@@ -127,62 +338,135 @@ const Demo: React.FC = () => {
                     </div>
                   </div>
 
-                  <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-4 px-6 rounded-2xl flex items-center justify-center space-x-2 transition-all hover:shadow-lg hover:shadow-indigo-600/25">
-                    <Play className="w-5 h-5" />
-                    <span>Start Practice Session</span>
-                  </button>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center space-x-4 p-4 bg-gray-50 rounded-xl">
+                      <Clock className="w-5 h-5 text-gray-600" />
+                      <span className="text-lg font-mono text-gray-900">{formatTime(demoState.duration)}</span>
+                    </div>
+                    
+                    {!demoState.isRecording && !demoState.transcript ? (
+                      <button 
+                        onClick={startRecording}
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-4 px-6 rounded-2xl flex items-center justify-center space-x-2 transition-all hover:shadow-lg hover:shadow-indigo-600/25"
+                      >
+                        <Mic className="w-5 h-5" />
+                        <span>Start Recording</span>
+                      </button>
+                    ) : demoState.isRecording ? (
+                      <button 
+                        onClick={stopRecording}
+                        className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-4 px-6 rounded-2xl flex items-center justify-center space-x-2 transition-all hover:shadow-lg hover:shadow-red-600/25"
+                      >
+                        <Square className="w-5 h-5" />
+                        <span>Stop Recording</span>
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={resetDemo}
+                        className="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-4 px-6 rounded-2xl flex items-center justify-center space-x-2 transition-all hover:shadow-lg hover:shadow-gray-600/25"
+                      >
+                        <Play className="w-5 h-5" />
+                        <span>Try Again</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {/* AI Feedback Preview */}
                 <div className="space-y-6">
-                  <div className="bg-gray-700/50 rounded-2xl p-6 border border-gray-600">
-                    <h4 className="text-lg font-semibold text-teal-400 mb-4 flex items-center space-x-2">
-                      <BarChart3 className="w-5 h-5" />
-                      <span>AI Feedback Preview</span>
+                  <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                      <BarChart3 className="w-5 h-5 text-indigo-600" />
+                      <span>AI Analysis</span>
                     </h4>
                     
-                    <div className="space-y-4">
-                      <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4">
-                        <h5 className="text-emerald-400 font-medium mb-2">Strengths</h5>
-                        <ul className="space-y-1 text-sm text-gray-300">
-                          <li className="flex items-center space-x-2">
-                            <CheckCircle className="w-4 h-4 text-emerald-400" />
-                            <span>Clear pronunciation and good pace</span>
-                          </li>
-                          <li className="flex items-center space-x-2">
-                            <CheckCircle className="w-4 h-4 text-emerald-400" />
-                            <span>Good use of descriptive vocabulary</span>
-                          </li>
-                        </ul>
+                    {demoState.error && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <p className="text-red-700 text-sm">{demoState.error}</p>
                       </div>
-                      
-                      <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4">
-                        <h5 className="text-orange-400 font-medium mb-2">Areas for Improvement</h5>
-                        <ul className="space-y-1 text-sm text-gray-300">
-                          <li>• Add more specific examples</li>
-                          <li>• Use more complex sentence structures</li>
-                          <li>• Include personal opinions</li>
-                        </ul>
+                    )}
+                    
+                    {demoState.isTranscribing && (
+                      <div className="flex items-center space-x-3 p-4 bg-blue-50 rounded-lg">
+                        <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
+                        <span className="text-blue-700">Converting speech to text...</span>
                       </div>
-                      
-                      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-                        <h5 className="text-blue-400 font-medium mb-2">Score Estimate</h5>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-2xl font-bold text-white">6.5</span>
-                          <span className="text-gray-300">/9.0</span>
+                    )}
+                    
+                    {demoState.transcript && (
+                      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+                        <h5 className="text-gray-700 font-medium mb-2">Your Response:</h5>
+                        <p className="text-gray-900 text-sm">{demoState.transcript}</p>
+                      </div>
+                    )}
+                    
+                    {demoState.isAnalyzing && (
+                      <div className="flex items-center space-x-3 p-4 bg-indigo-50 rounded-lg">
+                        <Loader2 className="w-5 h-5 text-indigo-600 animate-spin" />
+                        <span className="text-indigo-700">Analyzing your response...</span>
+                      </div>
+                    )}
+                    
+                    {demoState.analysis && (
+                      <div className="space-y-4">
+                        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                          <h5 className="text-emerald-700 font-medium mb-2">Strengths</h5>
+                          <ul className="space-y-1 text-sm text-gray-700">
+                            {demoState.analysis.feedback.strengths.map((strength, idx) => (
+                              <li key={idx} className="flex items-start space-x-2">
+                                <CheckCircle className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
+                                <span>{strength}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        
+                        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                          <h5 className="text-orange-700 font-medium mb-2">Areas for Improvement</h5>
+                          <ul className="space-y-1 text-sm text-gray-700">
+                            {demoState.analysis.feedback.suggestions.map((suggestion, idx) => (
+                              <li key={idx}>• {suggestion}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <h5 className="text-blue-700 font-medium mb-2">Overall Score</h5>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-2xl font-bold text-gray-900">{demoState.analysis.overallScore}</span>
+                            <span className="text-gray-600">/100</span>
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <div className="text-lg font-semibold text-gray-900">{demoState.analysis.scores.clarity}</div>
+                            <div className="text-xs text-gray-600">Clarity</div>
+                          </div>
+                          <div className="text-center p-3 bg-gray-50 rounded-lg">
+                            <div className="text-lg font-semibold text-gray-900">{demoState.analysis.scores.relevance}</div>
+                            <div className="text-xs text-gray-600">Relevance</div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
+                    
+                    {!demoState.transcript && !demoState.isRecording && !demoState.isTranscribing && (
+                      <div className="text-center p-8 text-gray-500">
+                        <Volume2 className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                        <p>Start recording to see real-time AI analysis</p>
+                      </div>
+                    )}
                   </div>
                   
-                  <div className="bg-gray-800/50 border border-gray-600 rounded-xl p-4">
-                    <div className="flex items-center space-x-2 text-yellow-400 mb-2">
+                  <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4">
+                    <div className="flex items-center space-x-2 text-indigo-700 mb-2">
                       <Lock className="w-4 h-4" />
                       <span className="text-sm font-medium">Unlock Full Features</span>
                     </div>
-                    <p className="text-gray-300 text-sm mb-3">Get detailed feedback, pronunciation analysis, and personalized improvement plans.</p>
-                    <Link to="/register" className="text-emerald-400 hover:text-emerald-300 text-sm font-medium flex items-center space-x-1">
-                      <span>Sign up free</span>
+                    <p className="text-gray-700 text-sm mb-3">Get detailed feedback, grammar analysis, and personalized communication improvement plans.</p>
+                    <Link to="/register" className="text-indigo-600 hover:text-indigo-700 text-sm font-medium flex items-center space-x-1">
+                      <span>Get Premium Access</span>
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
@@ -192,97 +476,169 @@ const Demo: React.FC = () => {
           )}
 
           {activeDemo === 'interview' && (
-            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-3xl p-8 border border-orange-500/20 backdrop-blur-sm">
+            <div className="bg-purple-50 rounded-3xl p-8 border border-purple-200">
               <div className="flex items-center space-x-3 mb-8">
-                <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-purple-600 rounded-2xl flex items-center justify-center">
                   <Users className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-white">Interview Practice Session</h3>
-                  <p className="text-gray-400">Software Engineer Position - Behavioral Questions</p>
+                  <h3 className="text-2xl font-semibold text-gray-900">Interview Practice Session</h3>
+                  <p className="text-gray-600 font-light">Software Engineer Position - Behavioral Questions</p>
                 </div>
               </div>
 
               <div className="grid lg:grid-cols-2 gap-8">
                 {/* Question Interface */}
                 <div className="space-y-6">
-                  <div className="bg-gray-700/50 rounded-2xl p-6 border border-gray-600">
-                    <h4 className="text-lg font-semibold text-orange-400 mb-4">Current Question</h4>
-                    <div className="bg-gray-800 rounded-lg p-4 mb-4">
-                      <p className="text-white font-medium mb-3">{interviewQuestions[0]}</p>
-                      <div className="text-sm text-gray-400">
+                  <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4">Current Question</h4>
+                    <div className={`rounded-lg p-4 mb-4 ${demoState.isRecording ? 'bg-red-50 border-2 border-red-200' : 'bg-purple-50'}`}>
+                      <div className="flex items-center justify-between mb-3">
+                        <p className="text-gray-900 font-medium">{interviewQuestion.question}</p>
+                        {demoState.isRecording && (
+                          <div className="flex items-center space-x-2">
+                            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                            <span className="text-red-600 text-sm font-medium">Recording...</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-sm text-gray-600">
                         <p>💡 Tips: Structure your answer using the STAR method (Situation, Task, Action, Result)</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-4">
-                      <div className="flex items-center space-x-2 text-gray-400">
+                      <div className="flex items-center space-x-2 text-gray-600">
                         <MessageSquare className="w-4 h-4" />
                         <span className="text-sm">30 second prep time</span>
                       </div>
-                      <div className="flex items-center space-x-2 text-gray-400">
+                      <div className="flex items-center space-x-2 text-gray-600">
                         <Mic className="w-4 h-4" />
                         <span className="text-sm">2 minute response</span>
                       </div>
                     </div>
                   </div>
 
-                  <button className="w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-400 hover:to-pink-400 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center space-x-2 transition-all hover:scale-105 hover:shadow-lg">
-                    <Play className="w-5 h-5" />
-                    <span>Start Interview Practice</span>
-                  </button>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center space-x-4 p-4 bg-purple-50 rounded-xl">
+                      <Clock className="w-5 h-5 text-purple-600" />
+                      <span className="text-lg font-mono text-gray-900">{formatTime(demoState.duration)}</span>
+                    </div>
+                    
+                    {!demoState.isRecording && !demoState.transcript ? (
+                      <button 
+                        onClick={startRecording}
+                        className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-4 px-6 rounded-2xl flex items-center justify-center space-x-2 transition-all hover:shadow-lg hover:shadow-purple-600/25"
+                      >
+                        <Mic className="w-5 h-5" />
+                        <span>Start Recording</span>
+                      </button>
+                    ) : demoState.isRecording ? (
+                      <button 
+                        onClick={stopRecording}
+                        className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-4 px-6 rounded-2xl flex items-center justify-center space-x-2 transition-all hover:shadow-lg hover:shadow-red-600/25"
+                      >
+                        <Square className="w-5 h-5" />
+                        <span>Stop Recording</span>
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={resetDemo}
+                        className="w-full bg-gray-600 hover:bg-gray-700 text-white font-medium py-4 px-6 rounded-2xl flex items-center justify-center space-x-2 transition-all hover:shadow-lg hover:shadow-gray-600/25"
+                      >
+                        <Play className="w-5 h-5" />
+                        <span>Try Again</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {/* Interview Analysis */}
                 <div className="space-y-6">
-                  <div className="bg-gray-700/50 rounded-2xl p-6 border border-gray-600">
-                    <h4 className="text-lg font-semibold text-pink-400 mb-4 flex items-center space-x-2">
-                      <BarChart3 className="w-5 h-5" />
+                  <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+                    <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                      <BarChart3 className="w-5 h-5 text-purple-600" />
                       <span>Interview Analysis</span>
                     </h4>
                     
-                    <div className="space-y-4">
-                      <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-4">
-                        <h5 className="text-emerald-400 font-medium mb-2">Communication Skills</h5>
-                        <div className="flex items-center space-x-2 mb-2">
-                          <div className="flex-1 bg-gray-700 rounded-full h-2">
-                            <div className="bg-emerald-400 h-2 rounded-full" style={{width: '85%'}}></div>
-                          </div>
-                          <span className="text-sm text-gray-300">85%</span>
-                        </div>
-                        <p className="text-sm text-gray-300">Clear articulation and good eye contact</p>
+                    {demoState.error && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                        <p className="text-red-700 text-sm">{demoState.error}</p>
                       </div>
-                      
-                      <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-                        <h5 className="text-blue-400 font-medium mb-2">Content Quality</h5>
-                        <div className="flex items-center space-x-2 mb-2">
-                          <div className="flex-1 bg-gray-700 rounded-full h-2">
-                            <div className="bg-blue-400 h-2 rounded-full" style={{width: '78%'}}></div>
-                          </div>
-                          <span className="text-sm text-gray-300">78%</span>
-                        </div>
-                        <p className="text-sm text-gray-300">Good examples, could be more specific</p>
+                    )}
+                    
+                    {demoState.isTranscribing && (
+                      <div className="flex items-center space-x-3 p-4 bg-blue-50 rounded-lg">
+                        <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
+                        <span className="text-blue-700">Converting speech to text...</span>
                       </div>
-                      
-                      <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-                        <h5 className="text-purple-400 font-medium mb-2">Confidence Level</h5>
-                        <div className="flex items-center space-x-2 mb-2">
-                          <div className="flex-1 bg-gray-700 rounded-full h-2">
-                            <div className="bg-purple-400 h-2 rounded-full" style={{width: '72%'}}></div>
-                          </div>
-                          <span className="text-sm text-gray-300">72%</span>
-                        </div>
-                        <p className="text-sm text-gray-300">Some hesitation, practice more</p>
+                    )}
+                    
+                    {demoState.transcript && (
+                      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+                        <h5 className="text-gray-700 font-medium mb-2">Your Response:</h5>
+                        <p className="text-gray-900 text-sm">{demoState.transcript}</p>
                       </div>
-                    </div>
+                    )}
+                    
+                    {demoState.isAnalyzing && (
+                      <div className="flex items-center space-x-3 p-4 bg-purple-50 rounded-lg">
+                        <Loader2 className="w-5 h-5 text-purple-600 animate-spin" />
+                        <span className="text-purple-700">Analyzing your interview response...</span>
+                      </div>
+                    )}
+                    
+                    {demoState.analysis && (
+                      <div className="space-y-4">
+                        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                          <h5 className="text-emerald-700 font-medium mb-2">Communication Skills</h5>
+                          <div className="flex items-center space-x-2 mb-2">
+                            <div className="flex-1 bg-gray-200 rounded-full h-2">
+                              <div className="bg-emerald-600 h-2 rounded-full" style={{width: `${demoState.analysis.scores.clarity}%`}}></div>
+                            </div>
+                            <span className="text-sm text-gray-600">{demoState.analysis.scores.clarity}%</span>
+                          </div>
+                          <p className="text-sm text-gray-700">{demoState.analysis.feedback.strengths[0] || 'Clear communication'}</p>
+                        </div>
+                        
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <h5 className="text-blue-700 font-medium mb-2">Content Quality</h5>
+                          <div className="flex items-center space-x-2 mb-2">
+                            <div className="flex-1 bg-gray-200 rounded-full h-2">
+                              <div className="bg-blue-600 h-2 rounded-full" style={{width: `${demoState.analysis.scores.relevance}%`}}></div>
+                            </div>
+                            <span className="text-sm text-gray-600">{demoState.analysis.scores.relevance}%</span>
+                          </div>
+                          <p className="text-sm text-gray-700">{demoState.analysis.feedback.suggestions[0] || 'Good content structure'}</p>
+                        </div>
+                        
+                        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                          <h5 className="text-purple-700 font-medium mb-2">Overall Score</h5>
+                          <div className="flex items-center space-x-2 mb-2">
+                            <div className="flex-1 bg-gray-200 rounded-full h-2">
+                              <div className="bg-purple-600 h-2 rounded-full" style={{width: `${demoState.analysis.overallScore}%`}}></div>
+                            </div>
+                            <span className="text-sm text-gray-600">{demoState.analysis.overallScore}/100</span>
+                          </div>
+                          <p className="text-sm text-gray-700">{demoState.analysis.feedback.detailedFeedback.substring(0, 100)}...</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {!demoState.transcript && !demoState.isRecording && !demoState.isTranscribing && (
+                      <div className="text-center p-8 text-gray-500">
+                        <MicOff className="w-12 h-12 mx-auto mb-3 text-gray-400" />
+                        <p>Start recording to see real-time interview analysis</p>
+                      </div>
+                    )}
                   </div>
                   
-                  <div className="bg-gray-800/50 border border-gray-600 rounded-xl p-4">
-                    <div className="flex items-center space-x-2 text-yellow-400 mb-2">
+                  <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
+                    <div className="flex items-center space-x-2 text-purple-700 mb-2">
                       <Lock className="w-4 h-4" />
                       <span className="text-sm font-medium">Premium Features</span>
                     </div>
-                    <p className="text-gray-300 text-sm mb-3">Get company-specific questions, detailed body language analysis, and personalized interview strategies.</p>
-                    <Link to="/register" className="text-orange-400 hover:text-orange-300 text-sm font-medium flex items-center space-x-1">
+                    <p className="text-gray-700 text-sm mb-3">Get company-specific questions, detailed body language analysis, and personalized interview strategies.</p>
+                    <Link to="/register" className="text-purple-600 hover:text-purple-700 text-sm font-medium flex items-center space-x-1">
                       <span>Upgrade to Premium</span>
                       <ArrowRight className="w-4 h-4" />
                     </Link>
@@ -314,7 +670,7 @@ const Demo: React.FC = () => {
               to="/register"
               className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-2xl font-medium text-base transition-all hover:shadow-lg hover:shadow-gray-900/25"
             >
-              Start free practice
+              Start Premium Practice
             </Link>
             <Link
               to="/pricing"

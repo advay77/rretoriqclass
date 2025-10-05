@@ -185,5 +185,69 @@ export const seoData = {
     description: 'Manage your account settings, learning preferences, and personalize your AI coaching experience.',
     url: 'https://rretoriq.com/profile',
     noIndex: true
+  },
+
+  business: {
+    title: 'Corporate English Training & Assessment Solutions',
+    description: 'Transform your workforce communication with AI-powered English assessment and training. Reduce hiring mistakes by 87% and improve team efficiency by 42%. Perfect for HR, call centers, and international teams.',
+    keywords: 'corporate english training, employee assessment, AI language testing, business communication, workforce development, english proficiency assessment, CEFR assessment, HR solutions',
+    url: 'https://rretoriq.com/business',
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Corporate English Training Solutions",
+      "description": "AI-powered English assessment and training for businesses",
+      "provider": {
+        "@type": "Organization",
+        "name": "Rretoriq",
+        "url": "https://rretoriq.com"
+      },
+      "serviceType": "Corporate Training",
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Business"
+      },
+      "offers": {
+        "@type": "Offer",
+        "availability": "https://schema.org/Available",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "Contact for Quote",
+          "priceCurrency": "USD"
+        }
+      }
+    }
+  },
+
+  schools: {
+    title: 'AI-Powered English Assessment & Learning Platform for Schools',
+    description: 'Streamline your schools English curriculum with AI-powered assessment and learning tools. Improve student placement, enhance classroom learning, and track progress with detailed analytics.',
+    keywords: 'english assessment schools, AI language learning, student placement test, ESL curriculum, IELTS preparation schools, educational technology, language learning platform, student assessment tools',
+    url: 'https://rretoriq.com/schools',
+    structuredData: {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "Rretoriq for Schools",
+      "description": "AI-powered English learning platform for educational institutions",
+      "provider": {
+        "@type": "Organization",
+        "name": "Rretoriq",
+        "url": "https://rretoriq.com"
+      },
+      "educationalLevel": "Secondary and Higher Education",
+      "offers": {
+        "@type": "Offer",
+        "availability": "https://schema.org/Available",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "Contact for Quote",
+          "priceCurrency": "USD"
+        }
+      },
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": ["student", "teacher", "administrator"]
+      }
+    }
   }
 }

@@ -22,8 +22,8 @@ const FAQ: React.FC = () => {
           answer: 'Simply create an account, choose your practice type (IELTS or Interview), and start with our guided setup process. We\'ll help you configure your goals and preferences to personalize your learning experience.'
         },
         {
-          question: 'Is there a free trial available?',
-          answer: 'Yes! We offer a 7-day free trial with access to basic features. You can practice with limited questions and get AI feedback to experience the platform before upgrading.'
+          question: 'Can I see a demo before subscribing?',
+          answer: 'Yes! We offer interactive demos and detailed walkthroughs of our platform features. You can explore our mock interview scenarios and see AI feedback examples before choosing your subscription plan.'
         },
         {
           question: 'What devices can I use Rretoriq on?',
@@ -44,7 +44,7 @@ const FAQ: React.FC = () => {
         },
         {
           question: 'How many practice sessions can I do per day?',
-          answer: 'With a premium subscription, you can practice unlimited sessions. Free users get 3 practice sessions per day with basic feedback.'
+          answer: 'With our subscription plans, you get unlimited practice sessions with comprehensive AI feedback and detailed performance analytics.'
         }
       ]
     },

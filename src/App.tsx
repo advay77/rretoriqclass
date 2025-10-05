@@ -7,6 +7,8 @@ import ProtectedRoute from './components/ProtectedRoute'
 import ScrollToTop from './components/ScrollToTop'
 import Home from './pages/Home'
 import Demo from './pages/Demo'
+import Business from './pages/Business'
+import Schools from './pages/Schools'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
 import Dashboard from './pages/dashboard/Dashboardnew'
@@ -61,6 +63,8 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/demo" element={<Demo />} />
+          <Route path="/business" element={<Business />} />
+          <Route path="/schools" element={<Schools />} />
           
           {/* Auth Routes (redirect to dashboard if already authenticated) */}
           <Route path="/login" element={

@@ -24,7 +24,9 @@ import {
   Play,
   HelpCircle,
   Info,
-  TrendingUp
+  TrendingUp,
+  MessageSquare,
+  BookOpen
 } from 'lucide-react'
 
 interface LayoutProps {
@@ -41,13 +43,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const publicNavigation = [
     { name: 'Home', href: '/', icon: Brain },
     { name: 'Demo', href: '/demo', icon: Play },
-    { name: 'Pricing', href: '/pricing', icon: Target },
+    { name: 'Business', href: '/business', icon: Users },
+    { name: 'Schools', href: '/schools', icon: Target },
+    { name: 'Pricing', href: '/pricing', icon: BarChart3 },
   ]
 
   const authenticatedNavigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'IELTS Practice', href: '/ielts', icon: Target },
-    { name: 'Interview Practice', href: '/interview', icon: Users },
+    { name: 'Mock Interviews', href: '/interview', icon: Users },
+    { name: 'Communication Skills', href: '/ielts', icon: MessageSquare },
+    { name: 'Grammar & Vocabulary', href: '/ai-interview', icon: BookOpen },
     { name: 'Progress', href: '/progress', icon: BarChart3 },
     { name: 'Plan Upgrade', href: '/plans', icon: TrendingUp },
   ]
@@ -585,7 +590,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </div>
               
               <p className="text-gray-700 text-sm leading-relaxed max-w-md">
-                Providing enterprise-grade AI communication training to institutions and professionals. Scalable solutions for IELTS, interview preparation, and business communication.
+                Providing enterprise-grade AI communication training to institutions and professionals. Comprehensive mock interview preparation, professional communication skills, grammar excellence, and vocabulary enhancement for career success.
               </p>
               
               {/* Stats */}
@@ -626,15 +631,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <h4 className="font-bold text-gray-900 mb-6 text-sm uppercase tracking-wider">Features</h4>
               <ul className="space-y-3">
                 <li>
-                  <Link to="/ielts" className="flex items-center space-x-2 text-gray-600 hover:text-emerald-600 transition-colors text-sm group">
-                    <Target className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                    <span>IELTS Practice</span>
+                  <Link to="/interview" className="flex items-center space-x-2 text-gray-600 hover:text-orange-600 transition-colors text-sm group">
+                    <Users className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    <span>Mock Interviews</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/interview" className="flex items-center space-x-2 text-gray-600 hover:text-orange-600 transition-colors text-sm group">
-                    <Users className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                    <span>Interview Prep</span>
+                  <Link to="/ielts" className="flex items-center space-x-2 text-gray-600 hover:text-emerald-600 transition-colors text-sm group">
+                    <MessageSquare className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    <span>Communication Skills</span>
                   </Link>
                 </li>
                 <li>

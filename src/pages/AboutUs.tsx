@@ -260,7 +260,7 @@ const AboutUs: React.FC = () => {
           </p>
           <div className="flex justify-center space-x-4">
             <button className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors">
-              Start Free Trial
+              Get Started Today
             </button>
             <button className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
               Contact Sales

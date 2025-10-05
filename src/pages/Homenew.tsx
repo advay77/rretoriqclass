@@ -252,7 +252,7 @@ export default function Home() {
                 to="/register"
                 className="bg-white hover:bg-gray-50 text-indigo-600 px-8 py-4 rounded-full font-medium text-lg transition-all duration-300 hover:shadow-lg"
               >
-                Get Started Today
+                Start Free Trial
               </Link>
               <Link
                 to="/pricing"
