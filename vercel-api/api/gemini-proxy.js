@@ -54,31 +54,33 @@ module.exports = async (req, res) => {
 
     let lastError = null
     const tried = []
+    const suffixes = [':generateContent', ':generate']
     for (const candidateUrl of candidates) {
-      try {
-        const headers = { ...headersBase }
-        let url = candidateUrl
-        if (isBearer) headers.Authorization = `Bearer ${GEMINI_KEY}`
-        else url = `${candidateUrl}?key=${encodeURIComponent(GEMINI_KEY)}`
-  // Mask any API key in the URL before recording it in diagnostics
-  const maskedUrl = url.replace(/([?&]key=)[^&]+/i, '$1[REDACTED]')
-  tried.push(maskedUrl)
-        const response = await axios.post(url, body, { headers, timeout: 60000 })
-        // If successful, return immediately
-        return res.status(response.status).json(response.data)
-      } catch (e) {
-        // If 404, try the next candidate. Otherwise keep the error and break
-        const status = e?.response?.status
-        lastError = e
-        if (status === 404) {
-          // try next candidate
-          continue
-        } else {
-          // Non-404 error; return immediately with details
-          console.error('Gemini proxy error (non-404):', e?.response?.data || e.message || e)
-          const statusCode = status || 500
-          const data = e?.response?.data || { error: e.message }
-          return res.status(statusCode).json({ error: data, tried })
+      for (const suffix of suffixes) {
+        try {
+          const headers = { ...headersBase }
+          let url = `${candidateUrl}${suffix}`
+          if (isBearer) headers.Authorization = `Bearer ${GEMINI_KEY}`
+          else url = `${url}?key=${encodeURIComponent(GEMINI_KEY)}`
+
+          // Mask any API key in the URL before recording it in diagnostics
+          const maskedUrl = url.replace(/([?&]key=)[^&]+/i, '$1[REDACTED]')
+          tried.push(maskedUrl)
+
+          const response = await axios.post(url, body, { headers, timeout: 60000 })
+          // If successful, return immediately
+          return res.status(response.status).json(response.data)
+        } catch (e) {
+          const status = e?.response?.status
+          lastError = e
+          if (status === 404) {
+            continue
+          } else {
+            console.error('Gemini proxy error (non-404):', e?.response?.data || e.message || e)
+            const statusCode = status || 500
+            const data = e?.response?.data || { error: e.message }
+            return res.status(statusCode).json({ error: data, tried })
+          }
         }
       }
     }
