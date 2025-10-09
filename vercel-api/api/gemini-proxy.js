@@ -1,4 +1,14 @@
 export default async function handler(req, res) {
+  // ✅ Allow cross-origin requests from your frontend
+  res.setHeader("Access-Control-Allow-Origin", "https://rretoriq25.web.app");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // ✅ Handle preflight (OPTIONS) request directly
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Only POST requests allowed" });
   }
@@ -20,18 +30,18 @@ export default async function handler(req, res) {
           parts: [
             {
               text: `You are an AI interview evaluator.
-Analyze this candidate's spoken answer and give a short structured communication-skill analysis.
+Analyze this candidate's spoken answer and give a structured communication-skill analysis.
 
 Question: ${question}
 Answer: ${answer}
 Metadata: ${JSON.stringify(metadata)}
 
-Return JSON with keys:
+Return JSON like:
 {
   "clarity": "score out of 10",
   "confidence": "score out of 10",
   "fluency": "score out of 10",
-  "summary": "short human-readable feedback"
+  "summary": "short feedback"
 }`,
             },
           ],
