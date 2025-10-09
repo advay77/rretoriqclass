@@ -14,15 +14,22 @@ if (req.method === "OPTIONS") {
   }
 
   try {
-  const { question, answer, metadata } = req.body;
-  console.log("🧠 Incoming Gemini Request:", { question, answer, metadata });
+  // Frontend sends: { model: 'gemini-2.0-flash', input: '<prompt>' }
+  const { model = 'gemini-1.5-flash', input } = req.body;
+  console.log("🧠 Incoming Gemini Request:", { model, inputLength: input?.length });
+
+  if (!input) {
+    return res.status(400).json({ error: "Missing 'input' in request body" });
+  }
 
   if (!process.env.GEMINI_API_KEY) {
     console.error("❌ Gemini API key not found");
     return res.status(500).json({ error: "Gemini API key not configured." });
   }
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${process.env.GEMINI_API_KEY}`;
+  // Use the model from request or default to gemini-1.5-flash
+  const geminiModel = model.includes('gemini') ? model : 'gemini-1.5-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${process.env.GEMINI_API_KEY}`;
 
   const payload = {
     contents: [
@@ -30,23 +37,11 @@ if (req.method === "OPTIONS") {
         role: "user",
         parts: [
           {
-            text: `You are an AI interview evaluator.
-Analyze this candidate's spoken answer and give a structured communication-skill analysis.
-
-Question: ${question}
-Answer: ${answer}
-Metadata: ${JSON.stringify(metadata)}
-
-Return JSON like:
-{
-  "clarity": "score out of 10",
-  "confidence": "score out of 10",
-  "fluency": "score out of 10",
-  "summary": "short feedback"
-}` },
-        ],
-      },
-    ],
+            text: input
+          }
+        ]
+      }
+    ]
   };
 
   console.log("📡 Sending payload to Gemini:", payload);
@@ -58,18 +53,21 @@ Return JSON like:
   });
 
   const raw = await geminiResponse.text();
-  console.log("🔍 Gemini Raw Response:", raw);
+  console.log("🔍 Gemini Raw Response:", raw.substring(0, 500)); // Log first 500 chars
 
   if (!geminiResponse.ok) {
     console.error("❌ Gemini API error response:", raw);
-    return res.status(500).json({ error: `Gemini API error: ${raw}` });
+    return res.status(geminiResponse.status).json({ error: `Gemini API error: ${raw}` });
   }
 
   const data = JSON.parse(raw);
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-
-  console.log("✅ Gemini Parsed Output:", text);
-  return res.status(200).json({ result: text });
+  console.log("✅ Gemini Response received:", { 
+    hasCandidates: !!data.candidates, 
+    candidatesCount: data.candidates?.length 
+  });
+  
+  // Return the raw Google Gemini response format (frontend expects this structure)
+  return res.status(200).json(data);
 
   } catch (error) {
     console.error("❌ Gemini Proxy Crash:", error);
