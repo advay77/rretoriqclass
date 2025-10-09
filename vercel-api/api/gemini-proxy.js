@@ -15,7 +15,7 @@ if (req.method === "OPTIONS") {
 
   try {
   // Frontend sends: { model: 'gemini-2.0-flash', input: '<prompt>' }
-  const { model = 'gemini-1.5-flash', input } = req.body;
+  const { model = 'gemini-pro', input } = req.body;
   console.log("🧠 Incoming Gemini Request:", { model, inputLength: input?.length });
 
   if (!input) {
@@ -27,8 +27,15 @@ if (req.method === "OPTIONS") {
     return res.status(500).json({ error: "Gemini API key not configured." });
   }
 
-  // Use the model from request or default to gemini-1.5-flash
-  const geminiModel = model.includes('gemini') ? model : 'gemini-1.5-flash';
+  // Map common model names to actual v1beta model names
+  const modelMapping = {
+    'gemini-2.0-flash': 'gemini-pro',
+    'gemini-2.0-flash-exp': 'gemini-pro',
+    'gemini-1.5-flash': 'gemini-pro',
+    'gemini-1.5-pro': 'gemini-pro'
+  };
+  
+  const geminiModel = modelMapping[model] || model || 'gemini-pro';
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${process.env.GEMINI_API_KEY}`;
 
   const payload = {
