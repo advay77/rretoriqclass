@@ -5,17 +5,30 @@
 const { initializeApp, cert, getApps } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 
-if (!getApps().length) {
-  initializeApp({
-    credential: cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    }),
-  });
+// Initialize Firebase Admin (only once)
+let db;
+try {
+  if (!getApps().length) {
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+    
+    if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !privateKey) {
+      throw new Error('Missing Firebase environment variables');
+    }
+    
+    initializeApp({
+      credential: cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: privateKey,
+      }),
+    });
+    
+    console.log('✅ Firebase Admin initialized successfully');
+  }
+  db = getFirestore();
+} catch (error) {
+  console.error('❌ Firebase initialization error:', error);
 }
-
-const db = getFirestore();
 
 module.exports = async (req, res) => {
   // Set CORS headers first, before any logic
@@ -32,6 +45,10 @@ module.exports = async (req, res) => {
   }
 
   try {
+    if (!db) {
+      throw new Error('Firebase Admin not initialized');
+    }
+    
     const { adminUserId, institutionId } = req.query;
     
     console.log('🔍 get-institution called with:', { adminUserId, institutionId });
