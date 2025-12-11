@@ -52,6 +52,12 @@ export class QuestionBankService {
         )
       }
       
+      if (filters.subject) {
+        filteredQuestions = filteredQuestions.filter(q => 
+          q.subject?.toLowerCase() === filters.subject?.toLowerCase()
+        )
+      }
+      
       if (filters.category) {
         filteredQuestions = filteredQuestions.filter(q => 
           q.metadata?.industry?.toLowerCase() === filters.category?.toLowerCase()

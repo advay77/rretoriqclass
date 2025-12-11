@@ -35,6 +35,8 @@ export interface SessionData {
   userId: string
   sessionType: 'ielts' | 'interview' | 'practice'
   interviewType?: 'hr' | 'technical' | 'aptitude' | 'mixed'
+  practiceType?: 'speaking' | 'reading' | 'writing' // For Let's Communicate sessions
+  difficulty?: string // For sessions with difficulty levels
   status: 'in-progress' | 'completed' | 'abandoned'
   startTime: Date
   endTime?: Date
@@ -113,21 +115,46 @@ class FirebaseSessionService {
    * @param userId - User ID
    * @param sessionType - Type of session (ielts, interview, practice)
    * @param interviewType - Interview type (if applicable)
+   * @param practiceType - Practice type for Let's Communicate (speaking, reading, writing)
    * @returns Promise<string> - Session ID
    */
   async createSession(
     userId: string,
     sessionType: 'ielts' | 'interview' | 'practice',
-    interviewType?: 'hr' | 'technical' | 'aptitude' | 'mixed'
+    interviewType?: 'hr' | 'technical' | 'aptitude' | 'mixed',
+    practiceType?: 'speaking' | 'reading' | 'writing'
   ): Promise<string> {
     try {
+      // Check if user has available seats
+      const userRef = doc(db, 'users', userId)
+      const userSnap = await getDoc(userRef)
+      
+      if (userSnap.exists()) {
+        const userData = userSnap.data()
+        const seats = userData.seats
+        
+        if (seats && seats.available <= 0) {
+          throw new Error('No seats available. Please contact admin to purchase more seats.')
+        }
+        
+        // Decrement available seats atomically
+        if (seats) {
+          await updateDoc(userRef, {
+            'seats.available': increment(-1),
+            'seats.allocated': increment(1)
+          })
+          console.log(`💺 Seat consumed. Remaining: ${seats.available - 1}`)
+        }
+      }
+      
       const sessionId = `session_${Date.now()}_${userId.substring(0, 8)}`
       
       const sessionData: Partial<SessionData> = {
         id: sessionId,
         userId,
         sessionType,
-        interviewType,
+        ...(interviewType && { interviewType }), // Only include if defined
+        ...(practiceType && { practiceType }), // Include practice type if defined
         status: 'in-progress',
         startTime: new Date(),
         totalDuration: 0,
@@ -151,6 +178,9 @@ class FirebaseSessionService {
 
     } catch (error) {
       console.error('❌ Failed to create session:', error)
+      if (error instanceof Error && error.message.includes('No seats available')) {
+        throw error // Re-throw seat error as-is
+      }
       throw new Error('Failed to create practice session')
     }
   }

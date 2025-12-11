@@ -89,9 +89,9 @@ class ProgressService {
         }
       }
 
-      // Calculate IELTS scores
+      // Calculate IELTS/Communication scores (including practice sessions)
       const ieltsScores = sessions
-        .filter((s: any) => s.sessionType === 'ielts' && s.averageScore)
+        .filter((s: any) => (s.sessionType === 'ielts' || s.sessionType === 'practice') && s.averageScore)
         .map((s: any) => s.averageScore)
       
       const overallIeltsScore = ieltsScores.length > 0 
@@ -197,7 +197,11 @@ class ProgressService {
 
         return {
           id: data.id || `session-${index}`,
-          type: data.sessionType === 'ielts' ? 'IELTS Speaking' : `${data.sessionType || 'Interview'} Interview`,
+          type: data.sessionType === 'ielts' || data.sessionType === 'practice' 
+            ? 'Let\'s Communicate' 
+            : data.sessionType === 'interview'
+            ? 'Mock Interview'
+            : 'Practice Session',
           date: startTime ? startTime.toLocaleDateString() : new Date().toLocaleDateString(),
           score: data.averageScore || 0,
           duration: `${Math.floor(totalDuration / 60)}m`,
@@ -250,7 +254,7 @@ class ProgressService {
         })
 
         const ieltsScores = daySessions
-          .filter((s: any) => s.sessionType === 'ielts')
+          .filter((s: any) => s.sessionType === 'ielts' || s.sessionType === 'practice')
           .map((s: any) => s.averageScore || 0)
         
         const interviewScores = daySessions
@@ -415,15 +419,15 @@ class ProgressService {
 
       // Calculate based on overall performance
       const avgScore = sessions.reduce((sum: number, s: any) => sum + (s.averageScore || 0), 0) / sessions.length
-      const normalizedScore = (avgScore / 10) * 100 // Convert to percentage
+      const normalizedScore = Math.min(100, (avgScore / 9) * 100) // Convert to percentage (max score is 9.0)
 
       return [
-        { skill: 'Fluency', score: Math.round(normalizedScore * 0.9) },
-        { skill: 'Vocabulary', score: Math.round(normalizedScore * 0.85) },
-        { skill: 'Grammar', score: Math.round(normalizedScore * 0.95) },
-        { skill: 'Pronunciation', score: Math.round(normalizedScore * 1.1) },
-        { skill: 'Coherence', score: Math.round(normalizedScore * 0.8) },
-        { skill: 'Confidence', score: Math.round(normalizedScore * 0.75) }
+        { skill: 'Fluency', score: Math.min(100, Math.round(normalizedScore * 0.9)) },
+        { skill: 'Vocabulary', score: Math.min(100, Math.round(normalizedScore * 0.85)) },
+        { skill: 'Grammar', score: Math.min(100, Math.round(normalizedScore * 0.95)) },
+        { skill: 'Pronunciation', score: Math.min(100, Math.round(normalizedScore * 1.0)) },
+        { skill: 'Coherence', score: Math.min(100, Math.round(normalizedScore * 0.88)) },
+        { skill: 'Confidence', score: Math.min(100, Math.round(normalizedScore * 0.92)) }
       ]
     } catch (error) {
       console.error('Error fetching radar data:', error)

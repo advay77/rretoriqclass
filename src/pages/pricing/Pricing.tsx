@@ -52,7 +52,7 @@ const pricingPlans: PricingPlan[] = [
   {
     id: 'institutional',
     name: 'Institutional',
-    price: 49999,
+    price: 89999,
     period: 'month',
     description: 'Enterprise solution for organizations',
     icon: Shield,

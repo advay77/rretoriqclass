@@ -26,6 +26,7 @@ export interface User {
   isNewUser?: boolean
   admin?: boolean // Custom claim for institutional admins
   institutionId?: string // Institution the user belongs to (for students)
+  approved?: boolean // whether admin approved this user to access the app
 }
 
 export interface LoginCredentials {
@@ -60,6 +61,7 @@ interface AuthActions {
   checkProfileCompletion: (userId: string) => Promise<boolean>
   completeProfile: (userId: string, profileData: any) => Promise<void>
   markProfileCompleted: () => void
+  refreshClaims: () => Promise<void>
 }
 
 type AuthStore = AuthState & AuthActions
@@ -74,12 +76,30 @@ const convertFirebaseUser = async (firebaseUser: FirebaseUser, isNewUser: boolea
   const userProfile = await userProfileService.getUserProfile(firebaseUser.uid)
   const profileCompleted = userProfile ? checkProfileCompleteness(userProfile) : false
   
-  // Get custom claims (admin status) from ID token
-  const idTokenResult = await firebaseUser.getIdTokenResult()
-  const isAdmin = idTokenResult.claims.admin === true
+  // Get custom claims (admin status) from ID token. Force a token refresh
+  // so recently-set custom claims (from admin SDK) are picked up by clients.
+  let idTokenResult
+  try {
+    idTokenResult = await firebaseUser.getIdTokenResult(true)
+  } catch (err) {
+    // If forcing a refresh fails (network issues), fall back to cached token
+    console.warn('Failed to refresh ID token for claims; falling back to cached token', err)
+    idTokenResult = await firebaseUser.getIdTokenResult()
+  }
+
+  // Debug: show claims to diagnose admin access issues
+  try {
+    // eslint-disable-next-line no-console
+    console.debug('Firebase ID token claims:', idTokenResult.claims)
+  } catch (e) {
+    // ignore
+  }
+  const isAdmin = idTokenResult.claims.admin === true || idTokenResult.claims.isAdmin === true
   
   if (userDoc.exists()) {
     const userData = userDoc.data()
+    // If approved is undefined (older users), default to true to avoid locking existing accounts.
+  const isApproved = userData.approved === undefined ? true : !!userData.approved
     return {
       id: firebaseUser.uid,
       email: firebaseUser.email || '',
@@ -91,8 +111,9 @@ const convertFirebaseUser = async (firebaseUser: FirebaseUser, isNewUser: boolea
       createdAt: userData.createdAt || new Date().toISOString(),
       profileCompleted,
       isNewUser,
-      admin: isAdmin,
-      institutionId: userData.institutionId
+  admin: isAdmin,
+      institutionId: userData.institutionId,
+      approved: isApproved
     }
   }
 
@@ -132,6 +153,8 @@ const saveUserToFirestore = async (firebaseUser: FirebaseUser, additionalData?: 
     emailVerified: firebaseUser.emailVerified,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    // New users are NOT approved by default. Admin must approve via terminal script.
+    approved: typeof additionalData?.approved === 'boolean' ? additionalData!.approved : false,
     ...additionalData
   }
   
@@ -149,13 +172,16 @@ export const useAuthStore = create<AuthStore>()(
       profileCompleted: false,
       isNewUser: false,
 
-      // Actions
+  // Actions
+
       login: async (credentials: LoginCredentials) => {
         try {
           set({ isLoading: true, error: null })
           const userCredential = await signInWithEmailAndPassword(auth, credentials.email, credentials.password)
           const user = await convertFirebaseUser(userCredential.user)
-          
+          // Previously we blocked sign-in for unapproved users. Approval flow
+          // has been removed — accept the user regardless of any `approved` flag.
+
           set({ 
             user, 
             isAuthenticated: true, 
@@ -196,6 +222,9 @@ export const useAuthStore = create<AuthStore>()(
           }
           
           const user = await convertFirebaseUser(userCredential.user, isNewUser)
+
+          // Approval flow removed — proceed normally
+
           set({ 
             user, 
             isAuthenticated: true, 
@@ -237,6 +266,9 @@ export const useAuthStore = create<AuthStore>()(
           })
 
           const user = await convertFirebaseUser(userCredential.user, true)
+
+          // Approval flow removed — proceed normally for newly registered users
+
           set({ 
             user, 
             isAuthenticated: true, 
@@ -279,13 +311,29 @@ export const useAuthStore = create<AuthStore>()(
         }
       },
 
+  // removed clearApprovalPending and approval UI state
+
       initializeAuth: () => {
+        // Start loading and attach a watchdog timeout so the UI doesn't stay
+        // stuck in 'Loading...' if the auth listener never fires (for
+        // example when extensions block Firebase network requests).
         set({ isLoading: true })
-        
+
+        let settled = false
+        const watchdog = setTimeout(() => {
+          if (!settled) {
+            console.warn('Auth initialization watchdog fired — marking not-loading to avoid indefinite spinner')
+            set({ isLoading: false })
+          }
+        }, 10000) // 10s
+
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
           try {
             if (firebaseUser) {
               const user = await convertFirebaseUser(firebaseUser)
+
+              // Approval flow removed — allow user to stay signed in
+
               set({ 
                 user, 
                 isAuthenticated: true, 
@@ -304,6 +352,9 @@ export const useAuthStore = create<AuthStore>()(
                 isNewUser: false
               })
             }
+
+            settled = true
+            clearTimeout(watchdog)
           } catch (error) {
             console.error('Auth state change error:', error)
             set({ 
@@ -314,6 +365,9 @@ export const useAuthStore = create<AuthStore>()(
               profileCompleted: false,
               isNewUser: false
             })
+
+            settled = true
+            clearTimeout(watchdog)
           }
         })
 
@@ -332,6 +386,38 @@ export const useAuthStore = create<AuthStore>()(
         } catch (error) {
           console.error('Error checking profile completion:', error)
           return false
+        }
+      },
+
+      // Force-refresh ID token claims and update stored user.admin flag.
+      refreshClaims: async () => {
+        try {
+          const state = useAuthStore.getState()
+          const currentUser = auth.currentUser
+          if (!currentUser) return
+
+          // Force refresh token to pick up recently-set custom claims
+          let idTokenResult
+          try {
+            idTokenResult = await currentUser.getIdTokenResult(true)
+          } catch (err) {
+            console.warn('refreshClaims: failed to force-refresh token, falling back to cached token', err)
+            idTokenResult = await currentUser.getIdTokenResult()
+          }
+
+          const isAdmin = idTokenResult.claims?.admin === true || idTokenResult.claims?.isAdmin === true
+
+          // Update the stored user object if present
+          const existingUser = state.user
+          if (existingUser) {
+            const updatedUser = { ...existingUser, admin: isAdmin }
+            // Use the same setter used elsewhere
+            // Note: set is not available here, so call setLoading as a lightweight state update
+            // then replace the user by calling initializeAuth flow if needed. Simpler: write directly
+            useAuthStore.setState({ user: updatedUser, isAuthenticated: true })
+          }
+        } catch (error) {
+          console.error('Error refreshing claims:', error)
         }
       },
 

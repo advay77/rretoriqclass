@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import { useEffect } from 'react';
 
 /**
  * Protected route component for admin-only pages
@@ -7,6 +8,7 @@ import { useAuthStore } from '../store/authStore';
  */
 const AdminRoute = () => {
   const { user, isLoading } = useAuthStore();
+  const { refreshClaims } = useAuthStore();
 
   // Show loading state while checking auth
   if (isLoading) {
@@ -28,6 +30,15 @@ const AdminRoute = () => {
   // Check for admin custom claim
   // Note: Custom claims are available in the ID token
   const isAdmin = user.admin === true;
+
+  // Try to refresh claims once on mount if the user exists but isn't marked admin yet.
+  // This covers the case where admin claim was set server-side after the user logged in.
+  useEffect(() => {
+    if (user && !isAdmin) {
+      // refreshClaims is async but we don't need to await here
+      refreshClaims().catch(err => console.warn('AdminRoute: refreshClaims failed', err))
+    }
+  }, [user, isAdmin, refreshClaims])
 
   // Redirect to home if not an admin
   if (!isAdmin) {

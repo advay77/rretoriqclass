@@ -436,7 +436,7 @@ export const EnhancedInterviewSession: React.FC<EnhancedInterviewSessionProps> =
                   question={convertToInterviewQuestion(currentQuestion)}
                   onAnalysisComplete={handleAnalysisComplete}
                   onTranscriptionComplete={handleTranscriptionComplete}
-                  maxDuration={currentQuestion.metadata?.expectedAnswerLength || 300}
+                  maxDuration={Math.min(currentQuestion.metadata?.expectedAnswerLength || 60, 60)}
                   className=""
                 />
               </div>

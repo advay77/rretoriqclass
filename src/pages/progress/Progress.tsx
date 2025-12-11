@@ -376,19 +376,36 @@ export default function Progress() {
             <div className="border border-gray-200 rounded-xl p-8">
               <h2 className="text-lg font-medium text-gray-900 mb-8">Performance Radar</h2>
               <div className="h-80">
-                {performanceRadar.some(item => item.score > 0) ? (
+                {performanceRadar.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart data={performanceRadar}>
-                      <PolarGrid stroke="#f3f4f6" />
-                      <PolarAngleAxis dataKey="skill" tick={{ fontSize: 12, fill: '#6b7280' }} />
-                      <PolarRadiusAxis angle={90} domain={[0, 100]} tick={false} />
+                      <PolarGrid stroke="#e5e7eb" strokeWidth={1} />
+                      <PolarAngleAxis 
+                        dataKey="skill" 
+                        tick={{ fontSize: 13, fill: '#374151', fontWeight: 500 }}
+                      />
+                      <PolarRadiusAxis 
+                        angle={90} 
+                        domain={[0, 100]} 
+                        tick={{ fontSize: 11, fill: '#9ca3af' }}
+                        stroke="#e5e7eb"
+                      />
                       <Radar
                         name="Current Performance"
                         dataKey="score"
-                        stroke="#374151"
-                        fill="#f9fafb"
-                        fillOpacity={0.6}
+                        stroke="#6366f1"
+                        fill="#818cf8"
+                        fillOpacity={0.5}
                         strokeWidth={2}
+                      />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: 'white',
+                          border: '1px solid #e5e7eb',
+                          borderRadius: '8px',
+                          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                        }}
+                        formatter={(value: any) => [`${value}%`, 'Score']}
                       />
                     </RadarChart>
                   </ResponsiveContainer>

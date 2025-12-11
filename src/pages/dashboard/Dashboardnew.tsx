@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { dashboardService } from '../../services/dashboardService'
 import { getInstitution } from '../../services/adminService'
+import WordPhraseCard from '../../components/WordPhraseCard'
 import { 
   BookOpen, 
   Briefcase, 
@@ -157,58 +158,58 @@ export default function Dashboard() {
   const displayData = isAdmin && institutionData ? institutionData : dashboardData
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 pb-12">
-      <div className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 pb-16">
+      <div className="space-y-10 max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-14">
       {/* Admin Institution Banner */}
       {isAdmin && institutionData && (
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-6 text-white">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 text-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                <Building2 className="w-6 h-6" />
+            <div className="flex items-center gap-5">
+              <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm shadow-lg">
+                <Building2 className="w-7 h-7" />
               </div>
               <div>
-                <h2 className="text-xl font-semibold">{institutionData.institutionName}</h2>
-                <p className="text-blue-100 text-sm mt-1">Institution Dashboard - Aggregated Student Statistics</p>
+                <h2 className="text-2xl font-semibold">{institutionData.institutionName}</h2>
+                <p className="text-blue-100 text-sm mt-1.5">Institution Dashboard - Aggregated Student Statistics</p>
               </div>
             </div>
             <Link 
               to="/admin/dashboard"
-              className="px-4 py-2 bg-white text-blue-600 rounded-lg font-medium text-sm hover:bg-blue-50 transition-colors"
+              className="px-5 py-2.5 bg-white text-blue-600 rounded-lg font-medium text-sm hover:bg-blue-50 transition-all duration-300 hover:shadow-lg"
             >
               Manage Institution
             </Link>
           </div>
           
-          <div className="grid grid-cols-2 gap-4 mt-6">
-            <div className="bg-white/10 rounded-lg p-4">
-              <div className="flex items-center gap-2 text-blue-100 text-sm mb-1">
+          <div className="grid grid-cols-2 gap-5 mt-8">
+            <div className="bg-white/10 rounded-xl p-5 backdrop-blur-sm hover:bg-white/15 transition-colors duration-300">
+              <div className="flex items-center gap-2 text-blue-100 text-sm mb-2">
                 <Users className="w-4 h-4" />
                 Total Students
               </div>
-              <p className="text-2xl font-semibold">{institutionData.totalStudents}</p>
+              <p className="text-3xl font-semibold">{institutionData.totalStudents}</p>
             </div>
-            <div className="bg-white/10 rounded-lg p-4">
-              <div className="flex items-center gap-2 text-blue-100 text-sm mb-1">
+            <div className="bg-white/10 rounded-xl p-5 backdrop-blur-sm hover:bg-white/15 transition-colors duration-300">
+              <div className="flex items-center gap-2 text-blue-100 text-sm mb-2">
                 <Activity className="w-4 h-4" />
                 Active Students
               </div>
-              <p className="text-2xl font-semibold">{institutionData.activeStudents}</p>
+              <p className="text-3xl font-semibold">{institutionData.activeStudents}</p>
             </div>
           </div>
         </div>
       )}
 
       {/* Header Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
         <div>
-          <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900">
             {isAdmin && institutionData 
               ? `${institutionData.institutionName} Overview` 
               : `Welcome back, ${(user as any)?.displayName || (user as any)?.firstName || 'User'}`
             }
           </h1>
-          <p className="text-gray-600 mt-1 text-sm sm:text-base">
+          <p className="text-gray-600 mt-2 text-sm sm:text-base">
             {isAdmin && institutionData 
               ? 'Aggregated statistics from all students in your institution' 
               : "Here's your learning progress overview"
@@ -216,60 +217,63 @@ export default function Dashboard() {
           </p>
         </div>
         {!isAdmin && (
-          <button className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors w-full sm:w-auto justify-center">
+          <button className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white text-sm font-medium rounded-xl hover:bg-gray-800 transition-all duration-300 w-full sm:w-auto justify-center hover:shadow-lg hover:scale-105">
             <Plus className="w-4 h-4" />
             New Session
           </button>
         )}
       </div>
 
+      {/* Word & Phrase of the Day - Placed prominently at top */}
+      <WordPhraseCard className="w-full" />
+
       {/* Stats Grid - Colorful and vibrant */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
         {/* Total Sessions Card */}
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white hover:shadow-lg transition-all hover:scale-105">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-              <Target className="w-5 h-5 text-white" />
+        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-7 text-white hover:shadow-2xl transition-all duration-300 hover:scale-105">
+          <div className="flex items-center justify-between mb-5">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm shadow-lg">
+              <Target className="w-6 h-6 text-white" />
             </div>
           </div>
-          <h3 className="text-white/80 text-sm font-medium mb-1">Total Sessions</h3>
-          <p className="text-3xl font-bold">{displayData.totalSessions}</p>
+          <h3 className="text-white/80 text-sm font-medium mb-1.5">Total Sessions</h3>
+          <p className="text-4xl font-bold mb-1">{displayData.totalSessions}</p>
           <p className="text-white/70 text-xs mt-2">All completed practice sessions</p>
         </div>
 
         {/* Average Score Card */}
-        <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-6 text-white hover:shadow-lg transition-all hover:scale-105">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-              <TrendingUp className="w-5 h-5 text-white" />
+        <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-7 text-white hover:shadow-2xl transition-all duration-300 hover:scale-105">
+          <div className="flex items-center justify-between mb-5">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm shadow-lg">
+              <TrendingUp className="w-6 h-6 text-white" />
             </div>
           </div>
-          <h3 className="text-white/80 text-sm font-medium mb-1">Average Score</h3>
-          <p className="text-3xl font-bold">{displayData.averageScore.toFixed(1)}</p>
+          <h3 className="text-white/80 text-sm font-medium mb-1.5">Average Score</h3>
+          <p className="text-4xl font-bold mb-1">{displayData.averageScore.toFixed(1)}</p>
           <p className="text-white/70 text-xs mt-2">Across all practice areas</p>
         </div>
 
         {/* Practice Time Card */}
-        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white hover:shadow-lg transition-all hover:scale-105">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-              <Clock className="w-5 h-5 text-white" />
+        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-7 text-white hover:shadow-2xl transition-all duration-300 hover:scale-105">
+          <div className="flex items-center justify-between mb-5">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm shadow-lg">
+              <Clock className="w-6 h-6 text-white" />
             </div>
           </div>
-          <h3 className="text-white/80 text-sm font-medium mb-1">Practice Time</h3>
-          <p className="text-3xl font-bold">{Math.floor(displayData.totalPracticeTime / 3600)}h</p>
+          <h3 className="text-white/80 text-sm font-medium mb-1.5">Practice Time</h3>
+          <p className="text-4xl font-bold mb-1">{Math.floor(displayData.totalPracticeTime / 3600)}h</p>
           <p className="text-white/70 text-xs mt-2">Total learning hours</p>
         </div>
 
         {/* Achievements Card */}
-        <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white hover:shadow-lg transition-all hover:scale-105">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
-              <Award className="w-5 h-5 text-white" />
+        <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-7 text-white hover:shadow-2xl transition-all duration-300 hover:scale-105">
+          <div className="flex items-center justify-between mb-5">
+            <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm shadow-lg">
+              <Award className="w-6 h-6 text-white" />
             </div>
           </div>
-          <h3 className="text-white/80 text-sm font-medium mb-1">Achievements</h3>
-          <p className="text-3xl font-bold">{displayData.achievementsCount}</p>
+          <h3 className="text-white/80 text-sm font-medium mb-1.5">Achievements</h3>
+          <p className="text-4xl font-bold mb-1">{displayData.achievementsCount}</p>
           <p className="text-white/70 text-xs mt-2">Milestones unlocked</p>
         </div>
       </div>
@@ -277,21 +281,21 @@ export default function Dashboard() {
       {/* Quick Actions - Sana.ai inspired card layout - Hidden for admins */}
       {!isAdmin && (
         <div>
-          <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Quick Actions</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-6 sm:mb-8">Quick Actions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-7">
           {/* Let's Communicate Card */}
           <Link 
             to="/ielts"
-            className="group bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
+            className="group bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-7 hover:shadow-2xl hover:scale-105 transition-all duration-300"
           >
-            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mb-4">
-              <BookOpen className="w-6 h-6 text-white" />
+            <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <BookOpen className="w-7 h-7 text-white" />
             </div>
-            <h3 className="font-semibold text-white mb-2">Let's Communicate</h3>
-            <p className="text-sm text-blue-100 mb-4 leading-relaxed">
+            <h3 className="font-semibold text-white mb-3 text-lg">Let's Communicate</h3>
+            <p className="text-sm text-blue-100 mb-5 leading-relaxed">
               Improve your communication skills with AI-powered feedback and personalized coaching sessions.
             </p>
-            <div className="flex items-center text-white font-medium text-sm group-hover:translate-x-1 transition-transform">
+            <div className="flex items-center text-white font-medium text-sm group-hover:translate-x-2 transition-transform duration-300">
               Start Practice
               <ArrowUpRight className="w-4 h-4 ml-1" />
             </div>
@@ -300,16 +304,16 @@ export default function Dashboard() {
           {/* Interview Practice Card */}
           <Link 
             to="/interview"
-            className="group bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl p-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
+            className="group bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl p-7 hover:shadow-2xl hover:scale-105 transition-all duration-300"
           >
-            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mb-4">
-              <Briefcase className="w-6 h-6 text-white" />
+            <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <Briefcase className="w-7 h-7 text-white" />
             </div>
-            <h3 className="font-semibold text-white mb-2">Interview Practice</h3>
-            <p className="text-sm text-emerald-100 mb-4 leading-relaxed">
+            <h3 className="font-semibold text-white mb-3 text-lg">Interview Practice</h3>
+            <p className="text-sm text-emerald-100 mb-5 leading-relaxed">
               Prepare for job interviews with mock sessions, real-time feedback, and expert tips.
             </p>
-            <div className="flex items-center text-white font-medium text-sm group-hover:translate-x-1 transition-transform">
+            <div className="flex items-center text-white font-medium text-sm group-hover:translate-x-2 transition-transform duration-300">
               Start Interview
               <ArrowUpRight className="w-4 h-4 ml-1" />
             </div>
@@ -318,16 +322,16 @@ export default function Dashboard() {
           {/* Progress Analytics Card */}
           <Link 
             to="/progress"
-            className="group bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 hover:shadow-xl hover:scale-105 transition-all duration-300"
+            className="group bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-7 hover:shadow-2xl hover:scale-105 transition-all duration-300"
           >
-            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mb-4">
-              <BarChart3 className="w-6 h-6 text-white" />
+            <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <BarChart3 className="w-7 h-7 text-white" />
             </div>
-            <h3 className="font-semibold text-white mb-2">View Progress</h3>
-            <p className="text-sm text-purple-100 mb-4 leading-relaxed">
+            <h3 className="font-semibold text-white mb-3 text-lg">View Progress</h3>
+            <p className="text-sm text-purple-100 mb-5 leading-relaxed">
               Track your improvement with detailed analytics, insights, and performance metrics.
             </p>
-            <div className="flex items-center text-white font-medium text-sm group-hover:translate-x-1 transition-transform">
+            <div className="flex items-center text-white font-medium text-sm group-hover:translate-x-2 transition-transform duration-300">
               View Analytics
               <ArrowUpRight className="w-4 h-4 ml-1" />
             </div>
@@ -336,57 +340,34 @@ export default function Dashboard() {
       </div>
       )}
 
-      {/* Recent Activity Section - Hidden for admins */}
+      {/* Motivational Message Section - Hidden for admins */}
       {!isAdmin && (
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-6">Recent Activity</h2>
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-purple-100 shadow-lg p-6">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between py-3 border-b border-purple-50 last:border-0">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-sm">
-                  <BookOpen className="w-4 h-4 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">Completed IELTS Speaking Practice</p>
-                  <p className="text-xs text-gray-500">Score: 8.5/9.0 • 2 hours ago</p>
-                </div>
-              </div>
-              <div className="flex items-center text-xs text-emerald-600 font-medium bg-emerald-50 px-2 py-1 rounded-full">
-                <TrendingUp className="w-3 h-3 mr-1" />
-                +0.5
-              </div>
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-6 sm:mb-8">Your Learning Journey</h2>
+        <div className="bg-gradient-to-br from-purple-500 via-purple-600 to-pink-600 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 p-8 sm:p-10 text-white">
+          <div className="flex items-start gap-6">
+            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
+              <Sparkles className="w-8 h-8 text-white" />
             </div>
-            
-            <div className="flex items-center justify-between py-3 border-b border-purple-50 last:border-0">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center shadow-sm">
-                  <Briefcase className="w-4 h-4 text-white" />
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold mb-3">Keep Going! You're Doing Great!</h3>
+              <p className="text-purple-100 text-base leading-relaxed mb-6">
+                Every practice session brings you one step closer to mastering communication. Consistency is key to improvement. 
+                {displayData.totalSessions > 0 
+                  ? ` You've already completed ${displayData.totalSessions} session${displayData.totalSessions > 1 ? 's' : ''} - that's amazing progress!`
+                  : " Start your first practice session today and begin your journey to excellence!"
+                }
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <div className="bg-white/20 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-medium shadow-md">
+                  💪 Stay Consistent
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">Mock Interview Session</p>
-                  <p className="text-xs text-gray-500">Technical Interview • Yesterday</p>
+                <div className="bg-white/20 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-medium shadow-md">
+                  🎯 Focus on Growth
                 </div>
-              </div>
-              <div className="flex items-center text-xs text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded-full">
-                <Activity className="w-3 h-3 mr-1" />
-                85%
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between py-3 border-b border-purple-50 last:border-0">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center shadow-sm">
-                  <Award className="w-4 h-4 text-white" />
+                <div className="bg-white/20 backdrop-blur-sm px-5 py-2.5 rounded-xl text-sm font-medium shadow-md">
+                  ✨ Believe in Yourself
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">Achievement Unlocked</p>
-                  <p className="text-xs text-gray-500">First Perfect Score • 2 days ago</p>
-                </div>
-              </div>
-              <div className="flex items-center text-xs text-amber-600 font-medium bg-amber-50 px-2 py-1 rounded-full">
-                <Sparkles className="w-3 h-3 mr-1" />
-                New
               </div>
             </div>
           </div>

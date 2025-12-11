@@ -529,7 +529,7 @@ export default function Profile() {
                           <input
                             {...register('firstName')}
                             type="text"
-                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
                             placeholder="Enter first name"
                           />
                         </div>
@@ -547,7 +547,7 @@ export default function Profile() {
                           <input
                             {...register('lastName')}
                             type="text"
-                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
                             placeholder="Enter last name"
                           />
                         </div>
@@ -566,7 +566,7 @@ export default function Profile() {
                         <input
                           {...register('email')}
                           type="email"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
                           placeholder="Enter email address"
                         />
                       </div>
@@ -585,7 +585,7 @@ export default function Profile() {
                           <input
                             {...register('phone')}
                             type="tel"
-                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
                             placeholder="+91 98765 43210"
                           />
                         </div>
@@ -600,7 +600,7 @@ export default function Profile() {
                           <input
                             {...register('location')}
                             type="text"
-                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
                             placeholder="Mumbai, India"
                           />
                         </div>
@@ -616,7 +616,7 @@ export default function Profile() {
                         <input
                           {...register('dateOfBirth')}
                           type="date"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
                         />
                       </div>
                     </div>
@@ -631,7 +631,7 @@ export default function Profile() {
                           <input
                             {...register('occupation')}
                             type="text"
-                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
                             placeholder="Software Engineer"
                           />
                         </div>
@@ -646,7 +646,7 @@ export default function Profile() {
                           <input
                             {...register('company')}
                             type="text"
-                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
                             placeholder="Tech Corp Ltd."
                           />
                         </div>
@@ -662,7 +662,7 @@ export default function Profile() {
                         <input
                           {...register('education')}
                           type="text"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
                           placeholder="B.Tech in Computer Science"
                         />
                       </div>
@@ -677,7 +677,7 @@ export default function Profile() {
                         <input
                           {...register('languages')}
                           type="text"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
                           placeholder="English, Hindi, Regional languages"
                         />
                       </div>
@@ -690,7 +690,7 @@ export default function Profile() {
                       <textarea
                         {...register('bio')}
                         rows={4}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 resize-none"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 resize-none text-white placeholder-gray-500"
                         placeholder="Tell us about yourself, your goals, and what you hope to achieve..."
                       />
                     </div>
@@ -747,7 +747,7 @@ export default function Profile() {
                         Practice Frequency
                       </label>
                       <select 
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white bg-gray-700"
                         value={preferences.practiceFrequency}
                         onChange={(e) => setPreferences(prev => ({ ...prev, practiceFrequency: e.target.value }))}
                       >

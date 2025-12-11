@@ -11,7 +11,7 @@ describe('Home Page', () => {
 
   it('displays the hero section with call-to-action', () => {
     render(<Home />)
-    const coaches = screen.getAllByText(/AI-Powered Communication Training/i)
+    const coaches = screen.getAllByText(/Bridging communication with Intelligence/i)
     expect(coaches.length).toBeGreaterThan(0)
   })
 

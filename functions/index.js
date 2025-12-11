@@ -157,3 +157,114 @@ app.get('/health', (req, res) => {
 })
 
 exports.api = functions.https.onRequest(app)
+
+// Admin + Seats Management Function
+// Sets admin claim + seat allocation in one operation
+// Only callable by super-admin (you) via service account
+exports.setAdminWithSeats = functions.https.onCall(async (data, context) => {
+  try {
+    // Verify caller is authenticated (optional: add super-admin check here)
+    if (!context.auth) {
+      throw new functions.https.HttpsError('unauthenticated', 'Must be authenticated to call this function')
+    }
+
+    const { email, seats } = data
+
+    if (!email || typeof seats !== 'number' || seats < 0) {
+      throw new functions.https.HttpsError('invalid-argument', 'Must provide email and valid seats count (number >= 0)')
+    }
+
+    // Get user by email
+    const userRecord = await admin.auth().getUserByEmail(email)
+    const uid = userRecord.uid
+
+    // Set admin custom claim
+    await admin.auth().setCustomUserClaims(uid, { isAdmin: true })
+
+    // Set seats in Firestore
+    await admin.firestore().collection('users').doc(uid).set({
+      seats: {
+        total: seats,
+        allocated: 0,
+        available: seats,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedBy: context.auth.uid || 'system'
+      }
+    }, { merge: true })
+
+    console.log(`✅ Admin access + ${seats} seats granted to ${email} (${uid})`)
+
+    return {
+      success: true,
+      message: `Admin access granted to ${email} with ${seats} seats`,
+      userId: uid,
+      seats: {
+        total: seats,
+        available: seats
+      }
+    }
+  } catch (error) {
+    console.error('Error in setAdminWithSeats:', error)
+    
+    if (error.code === 'auth/user-not-found') {
+      throw new functions.https.HttpsError('not-found', `No user found with email: ${data.email}`)
+    }
+    
+    throw new functions.https.HttpsError('internal', error.message)
+  }
+})
+
+// Update Seats Only (for existing admins)
+// Use this when institution buys more seats
+exports.updateSeats = functions.https.onCall(async (data, context) => {
+  try {
+    if (!context.auth) {
+      throw new functions.https.HttpsError('unauthenticated', 'Must be authenticated')
+    }
+
+    const { email, additionalSeats } = data
+
+    if (!email || typeof additionalSeats !== 'number') {
+      throw new functions.https.HttpsError('invalid-argument', 'Must provide email and additionalSeats (number)')
+    }
+
+    const userRecord = await admin.auth().getUserByEmail(email)
+    const uid = userRecord.uid
+
+    // Get current seats
+    const userDoc = await admin.firestore().collection('users').doc(uid).get()
+    const currentSeats = userDoc.data()?.seats || { total: 0, allocated: 0, available: 0 }
+
+    const newTotal = currentSeats.total + additionalSeats
+    const newAvailable = currentSeats.available + additionalSeats
+
+    // Update seats
+    await admin.firestore().collection('users').doc(uid).update({
+      'seats.total': newTotal,
+      'seats.available': newAvailable,
+      'seats.updatedAt': admin.firestore.FieldValue.serverTimestamp(),
+      'seats.updatedBy': context.auth.uid || 'system'
+    })
+
+    console.log(`✅ Added ${additionalSeats} seats to ${email}. New total: ${newTotal}`)
+
+    return {
+      success: true,
+      message: `Added ${additionalSeats} seats to ${email}`,
+      userId: uid,
+      seats: {
+        total: newTotal,
+        allocated: currentSeats.allocated,
+        available: newAvailable
+      }
+    }
+  } catch (error) {
+    console.error('Error in updateSeats:', error)
+    
+    if (error.code === 'auth/user-not-found') {
+      throw new functions.https.HttpsError('not-found', `No user found with email: ${data.email}`)
+    }
+    
+    throw new functions.https.HttpsError('internal', error.message)
+  }
+})

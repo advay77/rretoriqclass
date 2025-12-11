@@ -57,7 +57,7 @@ const NewsletterSubscription: React.FC = () => {
   return (
     <div className="p-4 bg-gray-800/50 rounded-xl border border-gray-700 backdrop-blur-sm">
       <h5 className="text-sm font-semibold text-white mb-2">Stay Updated</h5>
-      <p className="text-xs text-gray-400 mb-4">Get the latest tips and updates</p>
+      <p className="text-xs text-gray-300 mb-4">Get the latest tips and updates</p>
       
       <form onSubmit={handleSubmit} className="space-y-3">
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-2">

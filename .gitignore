@@ -25,3 +25,8 @@ dist-ssr
 
 # Local environment file (do not commit)
 .env
+
+# Exclude directory with long filenames
+11readingnew/
+
+public/resources/reading-images/

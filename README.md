@@ -1,6 +1,6 @@
 # Rretoriq - AI Communication Excellence
 
-A modern, AI-powered communication training platform designed specifically for Indian professionals and students. Built with React, TypeScript, and Tailwind CSS.
+A modern platform for Bridging communication with Intelligence, designed specifically for Indian professionals and students. Built with React, TypeScript, and Tailwind CSS.
 
 ## 🚀 Features
 

@@ -1,4 +1,5 @@
 import type { Question } from '../types/questions'
+import { technicalQuestionsSubjectBased } from './technicalQuestions'
 
 export const allQuestions: Question[] = [
   // ========================
@@ -191,6 +192,259 @@ export const allQuestions: Question[] = [
     metadata: {
       expectedAnswerLength: 75,
       keyPoints: ["Prioritizing tasks", "Being focused at work", "Personal time to recharge"]
+    }
+  },
+  {
+    id: "hr-easy-018",
+    text: "Why do you want to join our company (TCS/Infosys/Wipro, etc.)?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Research", "Motivation", "Company Interest"],
+    metadata: {
+      expectedAnswerLength: 90,
+      keyPoints: ["Shows company research", "Aligns personal goals with company value", "Mentions specific company strength (e.g., training, projects)"]
+    }
+  },
+  {
+    id: "hr-easy-019",
+    text: "What do you know about our company (e.g., recent news, CEO, founders, business model)?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Company Knowledge", "Research", "Preparation"],
+    metadata: {
+      expectedAnswerLength: 100,
+      keyPoints: ["Mentions 1-2 key facts (e.g., CEO, recent award, market position)", "Shows genuine interest", "Avoids generic answers"]
+    }
+  },
+  {
+    id: "hr-easy-020",
+    text: "Why should we hire you and not the other candidates?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Value Proposition", "Confidence", "Self-Awareness"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Focuses on unique strengths (e.g., fast learner, specific skill)", "Connects skills to the job role", "Positive attitude, not arrogant"]
+    }
+  },
+  {
+    id: "hr-easy-021",
+    text: "What is the difference between a service-based and a product-based company? Why choose a service-based one?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Business Model Awareness", "Industry Knowledge", "Career Choice"],
+    metadata: {
+      expectedAnswerLength: 130,
+      keyPoints: ["Service-based: Works for clients (e.g., TCS)", "Product-based: Creates its own product (e.g., Google)", "Reason: Exposure to diverse clients/technologies, strong training programs"]
+    }
+  },
+  {
+    id: "hr-easy-022",
+    text: "What is the latest news or current trend in the IT industry?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Industry Awareness", "Curiosity", "Continuous Learning"],
+    metadata: {
+      expectedAnswerLength: 80,
+      keyPoints: ["Mentions a relevant trend (e.g., GenAI, Cybersecurity, Cloud)", "Shows they follow industry news"]
+    }
+  },
+  {
+    id: "hr-easy-023",
+    text: "What are our competitors?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Market Awareness", "Research", "Company Knowledge"],
+    metadata: {
+      expectedAnswerLength: 60,
+      keyPoints: ["Names 1-2 major competitors", "Shows basic market research"]
+    }
+  },
+  {
+    id: "hr-easy-024",
+    text: "What do you expect from us as an employer?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Expectations", "Self-Awareness", "Career Goals"],
+    metadata: {
+      expectedAnswerLength: 90,
+      keyPoints: ["Focuses on growth (training, mentorship)", "Good work environment", "Avoids focusing solely on salary"]
+    }
+  },
+  {
+    id: "hr-easy-025",
+    text: "How would you be an asset to our organization?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Value Proposition", "Self-Awareness", "Confidence"],
+    metadata: {
+      expectedAnswerLength: 100,
+      keyPoints: ["Highlights positive traits (e.g., team player, fast learner, dedicated)", "Connects skills to company needs"]
+    }
+  },
+  {
+    id: "hr-easy-026",
+    text: "Are you willing to work on night shifts or weekends if the project demands it?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Work Hours Flexibility", "Commitment", "Attitude"],
+    metadata: {
+      expectedAnswerLength: 40,
+      keyPoints: ["Honest answer", "Shows flexibility and understanding of project-based work", "Positive and willing attitude"]
+    }
+  },
+  {
+    id: "hr-easy-027",
+    text: "How committed are you to working here for a minimum of 2-3 years?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Long-term Commitment", "Career Goals"],
+    metadata: {
+      expectedAnswerLength: 70,
+      keyPoints: ["Expresses desire for long-term growth", "Sees the company as a place to build a career", "Avoids non-committal answers"]
+    }
+  },
+  {
+    id: "hr-easy-028",
+    text: "What are the challenges you anticipate facing in the IT industry?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Industry Insight", "Awareness", "Proactiveness"],
+    metadata: {
+      expectedAnswerLength: 80,
+      keyPoints: ["Mentions a relevant challenge (e.g., rapid technology change, need for constant learning)", "Shows awareness of the field"]
+    }
+  },
+  {
+    id: "hr-easy-029",
+    text: "What kind of training are you looking forward to after joining?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Learning Interest", "Motivation", "Self-Awareness"],
+    metadata: {
+      expectedAnswerLength: 75,
+      keyPoints: ["Shows enthusiasm for the company's training program", "Mentions specific areas of interest (e.g., cloud, a programming language)"]
+    }
+  },
+  {
+    id: "hr-easy-030",
+    text: "Describe the job role you are interviewing for in your own words.",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Role Understanding", "Preparation", "Clarity"],
+    metadata: {
+      expectedAnswerLength: 90,
+      keyPoints: ["Summarizes the job description accurately", "Shows they have read and understood the role", "Connects it to a broader team goal"]
+    }
+  },
+  {
+    id: "hr-easy-031",
+    text: "What is the vision/mission of our company?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Company Knowledge", "Research", "Alignment"],
+    metadata: {
+      expectedAnswerLength: 70,
+      keyPoints: ["Paraphrases the company's core values or mission statement", "Shows they've done basic research on the company website"]
+    }
+  },
+  {
+    id: "hr-easy-032",
+    text: "How do you ensure client satisfaction?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Service Focus", "Communication", "Problem Solving"],
+    metadata: {
+      expectedAnswerLength: 90,
+      keyPoints: ["Understanding client requirements clearly", "Communicating proactively", "Delivering quality work on time"]
+    }
+  },
+  {
+    id: "hr-easy-033",
+    text: "Describe a time when you had a conflict with a team member or classmate. How did you resolve it?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Conflict Resolution", "Teamwork", "Communication"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Uses STAR method (Situation, Task, Action, Result)", "Focuses on professional disagreement, not personal", "Highlights listening and finding a compromise"]
+    }
+  },
+  {
+    id: "hr-easy-034",
+    text: "Give an example of a time when you displayed leadership skills in a college project.",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Leadership", "Teamwork", "Initiative"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Does not have to be an 'official' leader role", "Mentions motivating others, organizing tasks, or resolving a problem for the team"]
+    }
+  },
+  {
+    id: "hr-easy-035",
+    text: "Describe a situation where you had to teach a difficult technical concept to a non-technical person.",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Communication", "Empathy", "Simplification"],
+    metadata: {
+      expectedAnswerLength: 110,
+      keyPoints: ["Focuses on using analogies", "Avoiding jargon", "Checking for understanding", "Patience"]
+    }
+  },
+  {
+    id: "hr-easy-036",
+    text: "Are you a team player or do you prefer individual work? Justify with an example.",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Teamwork", "Self-Awareness", "Adaptability"],
+    metadata: {
+      expectedAnswerLength: 100,
+      keyPoints: ["Best answer: 'Both' or 'Adaptable'", "Recognizes that both are needed", "Gives an example of successful team collaboration"]
+    }
+  },
+  {
+    id: "hr-easy-037",
+    text: "Describe a time when you were a part of a diverse team. What did you learn?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Diversity", "Inclusion", "Teamwork", "Self-Awareness"],
+    metadata: {
+      expectedAnswerLength: 110,
+      keyPoints: ["Defines diversity (e.g., skills, background, ideas)", "Focuses on the value of different perspectives", "Mentions learning to listen and collaborate"]
+    }
+  },
+  {
+    id: "hr-easy-038",
+    text: "Describe a time when your work was criticized. How did you handle it?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Feedback Handling", "Resilience", "Growth Mindset"],
+    metadata: {
+      expectedAnswerLength: 110,
+      keyPoints: ["Did not get defensive", "Listened to the feedback", "Asked questions to understand", "Took action to improve"]
+    }
+  },
+  {
+    id: "hr-easy-039",
+    text: "Tell me about a time when you had to prioritize multiple urgent tasks.",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Prioritization", "Time Management", "Stress Management"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Explains the situation (e.g., two project deadlines)", "Describes the method of prioritization (e.g., by deadline, by importance)", "Shows successful completion"]
+    }
+  },
+  {
+    id: "hr-easy-040",
+    text: "Describe a task you were given that you initially thought was too difficult. What did you do?",
+    type: "HR",
+    difficulty: "Easy",
+    skillsEvaluated: ["Challenge Handling", "Problem Solving", "Proactiveness"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Broke the problem down into smaller parts", "Sought help or researched", "Persevered and completed the task", "Focuses on the *action* taken"]
     }
   },
 
@@ -470,7 +724,171 @@ export const allQuestions: Question[] = [
       keyPoints: ["Connect job responsibilities to skills", "How it fits career goals"]
     }
   },
-
+  {
+    id: "hr-medium-026",
+    text: "What are your greatest strengths and weaknesses?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Self-Awareness", "Honesty", "Growth Mindset"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Strength: Relevant to the job", "Weakness: Real but not a deal-breaker", "Action: Steps taken to improve weakness"]
+    }
+  },
+  {
+    id: "hr-medium-027",
+    text: "Why did you choose Engineering? Why not a different field?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Career Choice", "Motivation", "Self-Awareness"],
+    metadata: {
+      expectedAnswerLength: 90,
+      keyPoints: ["Genuine passion for problem-solving", "Specific interest (e.g., technology, building)", "Logical reasoning for the choice"]
+    }
+  },
+  {
+    id: "hr-medium-028",
+    text: "How do you deal with failure or setbacks?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Resilience", "Problem Solving", "Accountability"],
+    metadata: {
+      expectedAnswerLength: 100,
+      keyPoints: ["Taking responsibility (accountability)", "Analyzing the root cause", "Focusing on learning and solutions", "Not blaming others"]
+    }
+  },
+  {
+    id: "hr-medium-029",
+    text: "What motivates you to do a good job?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Motivation", "Work Ethic", "Self-Awareness"],
+    metadata: {
+      expectedAnswerLength: 90,
+      keyPoints: ["Intrinsic motivation (e.g., problem-solving, learning)", "Extrinsic motivation (e.g., team success, recognition)", "Aligning with company goals"]
+    }
+  },
+  {
+    id: "hr-medium-030",
+    text: "Where do you see yourself five years from now?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Career Goals", "Ambition", "Strategic Thinking"],
+    metadata: {
+      expectedAnswerLength: 100,
+      keyPoints: ["Realistic and ambitious goals", "Focus on skill growth and responsibility", "Connecting goals to the company's growth"]
+    }
+  },
+  {
+    id: "hr-medium-031",
+    text: "What is the difference between hard work and smart work? Give an example.",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Attitude", "Efficiency", "Problem Solving"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Hard work: Effort and hours (quantity)", "Smart work: Prioritizing and efficiency (quality)", "Both are important", "Example: Automating a repetitive task vs. doing it manually every day"]
+    }
+  },
+  {
+    id: "hr-medium-032",
+    text: "What is the meaning of your name?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Personal", "Self-Awareness", "Communication"],
+    metadata: {
+      expectedAnswerLength: 40,
+      keyPoints: ["Knowing the literal meaning", "Stating it clearly and confidently"]
+    }
+  },
+  {
+    id: "hr-medium-033",
+    text: "Are you willing to relocate to any city in India?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Flexibility", "Commitment"],
+    metadata: {
+      expectedAnswerLength: 30,
+      keyPoints: ["Honest answer (Yes/No/Preferred locations)", "Demonstrating flexibility if possible", "Understanding it's a job requirement"]
+    }
+  },
+  {
+    id: "hr-medium-034",
+    text: "Are you willing to work in a different domain than your specialization (e.g., Non-CS student in IT)?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Flexibility", "Adaptability", "Learning Agility"],
+    metadata: {
+      expectedAnswerLength: 75,
+      keyPoints: ["Expressing openness to learning", "Connecting existing skills to the new domain", "Showing a positive attitude towards new challenges"]
+    }
+  },
+  {
+    id: "hr-medium-035",
+    text: "How do you handle stress or work under pressure?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Stress Management", "Resilience", "Prioritization"],
+    metadata: {
+      expectedAnswerLength: 100,
+      keyPoints: ["Focusing on prioritization", "Breaking tasks into smaller steps", "Staying calm and objective", "Not letting stress affect the team"]
+    }
+  },
+  {
+    id: "hr-medium-036",
+    text: "How do you ensure you meet deadlines?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Time Management", "Reliability", "Planning"],
+    metadata: {
+      expectedAnswerLength: 90,
+      keyPoints: ["Planning and prioritization", "Breaking down large tasks", "Communicating early if a deadline is at risk", "Using tools (e.g., to-do lists, calendars)"]
+    }
+  },
+  {
+    id: "hr-medium-037",
+    text: "What are your hobbies and interests outside of academics?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Personal", "Work-Life Balance", "Personality"],
+    metadata: {
+      expectedAnswerLength: 75,
+      keyPoints: ["Shows a well-rounded personality", "Hobbies that might imply positive traits (e.g., teamwork in sports, discipline in music)"]
+    }
+  },
+  {
+    id: "hr-medium-038",
+    text: "Who is your role model and why?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Inspiration", "Values", "Self-Awareness"],
+    metadata: {
+      expectedAnswerLength: 100,
+      keyPoints: ["Choosing a specific person", "Explaining *why* (specific traits)", "Connecting those traits to personal or professional values"]
+    }
+  },
+  {
+    id: "hr-medium-039",
+    text: "What are your salary expectations?",
+    type: "HR",
+    difficulty: "Medium",
+    skillsEvaluated: ["Compensation", "Negotiation", "Professionalism"],
+    metadata: {
+      expectedAnswerLength: 75,
+      keyPoints: ["Being prepared with market research", "Giving a range or deferring to the company's budget", "Focusing on the value of the role and opportunity"]
+    }
+  },
+  {
+  id: "hr-medium-040",
+  text: "What is the difference between confidence and overconfidence?",
+  type: "HR",
+  difficulty: "Medium",
+  skillsEvaluated: ["Attitude", "Self-Awareness", "Humility"],
+  metadata: {
+    expectedAnswerLength: 110,
+    keyPoints: ["Confidence: Belief in abilities based on preparation and evidence", "Overconfidence: Excessive belief without evidence, ignoring risks", "Confidence includes humility; overconfidence lacks self-awareness"]
+  }
+},
   // HR Hard Questions (6)
   {
     id: "hr-hard-001",
@@ -538,475 +956,385 @@ export const allQuestions: Question[] = [
       keyPoints: ["Mention seeking more internships", "Focus on practical projects", "Show continuous improvement mindset"]
     }
   },
-
-  // ================================
-  // TECHNICAL QUESTIONS (42 total)
-  // ================================
-  
-  // Technical Easy Questions (42)
   {
-    id: "tech-easy-001",
-    text: "What is a pointer? How does it differ from a reference variable?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["C++ Fundamentals", "Memory Management"],
+    id: "hr-hard-007",
+    text: "Describe a time when you had to work with a team member you disliked or disagreed with strongly.",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Team Dynamics", "Conflict Resolution", "Professionalism", "Emotional Intelligence"],
     metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Pointer stores memory address", "Reference is alias for variable", "Pointers can be null/reassigned"],
-      industry: "Software Development"
+      expectedAnswerLength: 150,
+      keyPoints: ["STAR method", "Focus on professional behavior, not personal feelings", "Separating the person from the problem", "Achieving a professional outcome"]
     }
   },
   {
-    id: "tech-easy-002",
-    text: "Explain the difference between array and linked list.",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Data Structures", "Memory Management"],
+    id: "hr-hard-008",
+    text: "Tell me about a time you had to break a rule (college or project) to achieve a necessary outcome.",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Ethics", "Discretion", "Judgment", "Problem Solving"],
+    metadata: {
+      expectedAnswerLength: 160,
+      keyPoints: ["Tread carefully", "Explain the situation and the 'why'", "The outcome must be overwhelmingly positive", "Show understanding of why the rule existed"]
+    }
+  },
+  {
+    id: "hr-hard-009",
+    text: "Describe a time when you were tasked with a project that seemed impossible to complete. What did you do?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Resilience", "Goal Setting", "Problem Solving", "Grit"],
+    metadata: {
+      expectedAnswerLength: 150,
+      keyPoints: ["STAR method", "How you broke the problem down", "How you sought help or resources", "Perseverance and final outcome"]
+    }
+  },
+  {
+    id: "hr-hard-010",
+    text: "Give an example of a time when you had to manage conflict between two other team members.",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Mediation", "Leadership", "Conflict Resolution", "Communication"],
+    metadata: {
+      expectedAnswerLength: 150,
+      keyPoints: ["Not taking sides", "Facilitating a discussion", "Focusing on common goals", "Finding a mutually agreeable solution"]
+    }
+  },
+  {
+    id: "hr-hard-011",
+    text: "What would you do if you realized a team member was taking credit for your work?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Integrity", "Fairness", "Assertiveness", "Conflict Resolution"],
+    metadata: {
+      expectedAnswerLength: 140,
+      keyPoints: ["Gather evidence", "Speak to the team member privately first", "Assume positive intent (misunderstanding)", "Escalate to manager with facts if it persists"]
+    }
+  },
+  {
+    id: "hr-hard-012",
+    text: "Describe a project where you were the subject matter expert. How did you share knowledge?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Knowledge Transfer", "Mentorship", "Communication", "Teamwork"],
+    metadata: {
+      expectedAnswerLength: 130,
+      keyPoints: ["Creating documentation", "Holding training sessions", "Pair programming", "Being approachable for questions"]
+    }
+  },
+  {
+    id: "hr-hard-013",
+    text: "Give an example of a time when your initiative led to a significant improvement in a process.",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Initiative", "Innovation", "Problem Solving", "Proactiveness"],
+    metadata: {
+      expectedAnswerLength: 150,
+      keyPoints: ["STAR method", "Identifying an inefficiency", "Proposing a solution", "Taking ownership to implement it", "Measuring the positive outcome"]
+    }
+  },
+  {
+    id: "hr-hard-014",
+    text: "Describe a situation where you had to deliver bad news (e.g., project delay) to a stakeholder.",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Difficult Communication", "Professionalism", "Accountability"],
+    metadata: {
+      expectedAnswerLength: 140,
+      keyPoints: ["Being prompt and direct (no sugarcoating)", "Taking responsibility", "Explaining the 'why' clearly", "Presenting a solution or mitigation plan"]
+    }
+  },
+  {
+    id: "hr-hard-015",
+    text: "Tell me about a time you had to give up on a project or idea. What made you stop?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Evaluation", "Resource Management", "Strategic Thinking", "Decision Making"],
+    metadata: {
+      expectedAnswerLength: 150,
+      keyPoints: ["'Sunk cost fallacy'", "Recognizing it wasn't feasible (e.g., time, resources, data)", "Making a logical decision to stop", "What was learned from the failure"]
+    }
+  },
+  {
+    id: "hr-hard-016",
+    text: "How do you handle resistance to change when introducing a new idea or technology?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Change Management", "Persuasion", "Empathy", "Communication"],
+    metadata: {
+      expectedAnswerLength: 140,
+      keyPoints: ["Listen to understand the resistance (empathy)", "Clearly communicate the 'why' (benefits)", "Provide training and support", "Find champions or early adopters"]
+    }
+  },
+  {
+    id: "hr-hard-017",
+    text: "What is the most unethical behavior you have witnessed in a team setting?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Ethics", "Values", "Judgment"],
+    metadata: {
+      expectedAnswerLength: 130,
+      keyPoints: ["Be careful not to gossip", "Focus on the behavior (e.g., plagiarism, lying, data falsification)", "State what you did or what should have been done"]
+    }
+  },
+  {
+    id: "hr-hard-018",
+    text: "Describe a time when you were faced with too many options. How did you decide?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Decision Making", "Analytical Skills", "Prioritization"],
+    metadata: {
+      expectedAnswerLength: 140,
+      keyPoints: ["Using a logical framework (e.g., pros/cons list, cost-benefit analysis)", "Aligning options with the main goal", "Making a data-driven choice"]
+    }
+  },
+  {
+    id: "hr-hard-019",
+    text: "How do you deal with a lack of resources or information needed for a task?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Resourcefulness", "Problem Solving", "Proactiveness"],
     metadata: {
       expectedAnswerLength: 120,
-      keyPoints: ["Array: contiguous memory, O(1) access", "Linked list: non-contiguous, O(n) access", "Array fixed size, linked list dynamic"]
+      keyPoints: ["Proactively seeking information", "Finding alternative solutions", "Communicating the blocker early", "Not just waiting to be told"]
     }
   },
   {
-    id: "tech-easy-003",
-    text: "What is the difference between stack and heap memory?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Memory Management", "System Architecture"],
+    id: "hr-hard-020",
+    text: "Tell me about a time you had to apologize to someone.",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Accountability", "Humility", "Self-Awareness", "Integrity"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Taking clear ownership of the mistake", "Apologizing sincerely without excuses", "Explaining what you learned", "Stating how you'll prevent it in the future"]
+    }
+  },
+  {
+    id: "hr-hard-021",
+    text: "What were the most difficult technical requirements you had to implement in your project?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Technical Challenge", "Problem Solving", "Resilience"],
+    metadata: {
+      expectedAnswerLength: 150,
+      keyPoints: ["Clearly explain the *challenge*", "Describe the *process* of solving it (research, help, debugging)", "Focus on the learning and the successful outcome"]
+    }
+  },
+  {
+    id: "hr-hard-022",
+    text: "Describe a time when you had to motivate your team during a difficult phase.",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Team Motivation", "Leadership", "Empathy", "Communication"],
+    metadata: {
+      expectedAnswerLength: 140,
+      keyPoints: ["Leading by example", "Maintaining a positive attitude", "Reminding the team of the goal", "Listening to concerns", "Celebrating small wins"]
+    }
+  },
+  {
+    id: "hr-hard-023",
+    text: "How do you prioritize between speed and quality when developing software?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Trade-offs", "Judgment", "Business Acumen", "Risk Assessment"],
+    metadata: {
+      expectedAnswerLength: 130,
+      keyPoints: ["It's a trade-off; depends on the context", "Quality is baseline (no major bugs)", "Speed for 'Minimum Viable Product' (MVP)", "Prioritize quality for critical systems (e.g., payments)"]
+    }
+  },
+  {
+    id: "hr-hard-024",
+    text: "What is your biggest regret from your college life, and what did you learn?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Self-Reflection", "Growth Mindset", "Honesty"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Be honest but professional (e.g., 'not joining a club', 'not learning a specific skill')", "Focus heavily on the *learning* part", "Show how you've changed because of it"]
+    }
+  },
+  {
+    id: "hr-hard-025",
+    text: "Describe a situation where you had to handle a toxic or negative person in your group.",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Interpersonal Skills", "Conflict Resolution", "Emotional Intelligence"],
+    metadata: {
+      expectedAnswerLength: 150,
+      keyPoints: ["Not getting drawn into the negativity", "Focusing on facts and project goals", "Setting boundaries", "Addressing the behavior privately if possible"]
+    }
+  },
+  {
+    id: "hr-hard-026",
+    text: "What if a client demands a feature that you know will break the system?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Professionalism", "Integrity", "Communication", "Negotiation"],
+    metadata: {
+      expectedAnswerLength: 150,
+      keyPoints: ["Do not build it blindly", "Communicate the risks clearly to the client (in writing)", "Propose safer alternatives that meet their *goal*", "Escalate to the manager for alignment"]
+    }
+  },
+  {
+    id: "hr-hard-027",
+    text: "Give an example of a time when you had to admit you were wrong.",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Humility", "Learning", "Accountability", "Integrity"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["STAR method", "Admitting the mistake clearly and quickly", "Focusing on the lesson learned", "Showing it's a strength (learning), not a weakness"]
+    }
+  },
+  {
+    id: "hr-hard-028",
+    text: "How do you ensure you understand the requirements of a task fully before starting?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Requirement Gathering", "Attention to Detail", "Communication"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Read all documentation", "Ask clarifying questions ('why', 'what if')", "Paraphrase the requirements back to the stakeholder", "Identify edge cases"]
+    }
+  },
+  {
+    id: "hr-hard-029",
+    text: "What would be your immediate steps if a colleague or subordinate came to you with a personal problem affecting their work?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Empathy", "Support", "Professionalism", "Discretion"],
+    metadata: {
+      expectedAnswerLength: 130,
+      keyPoints: ["Listen actively and empathetically", "Maintain confidentiality", "Point them to official resources (HR, EAP)", "Be supportive, but maintain professional boundaries"]
+    }
+  },
+  {
+    id: "hr-hard-030",
+    text: "Describe a time you had to work with minimal supervision and how you stayed on track.",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Autonomy", "Self-Discipline", "Time Management", "Initiative"],
+    metadata: {
+      expectedAnswerLength: 130,
+      keyPoints: ["Setting your own mini-deadlines", "Creating a task list", "Providing proactive updates to the manager", "Taking initiative to solve problems independently"]
+    }
+  },
+  {
+    id: "hr-hard-031",
+    text: "What is your personal definition of professionalism in a corporate environment?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Professionalism", "Self-Awareness", "Communication"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Reliability and accountability", "Respect for others", "Clear communication", "Maintaining composure", "Integrity"]
+    }
+  },
+  {
+    id: "hr-hard-032",
+    text: "How do you manage a team member who is underperforming?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Performance Management", "Leadership", "Difficult Communication"],
+    metadata: {
+      expectedAnswerLength: 150,
+      keyPoints: ["Address the issue privately and promptly", "Use specific, factual examples", "Listen to understand the root cause (skill vs. will)", "Create an improvement plan together"]
+    }
+  },
+  {
+    id: "hr-hard-033",
+    text: "What will you do if your best friend is cheating in an exam or project?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Ethics", "Moral Dilemma", "Integrity"],
+    metadata: {
+      expectedAnswerLength: 120,
+      keyPoints: ["Tough ethical choice", "Option 1: Speak to the friend privately first", "Option 2: Report it (Upholding integrity over personal ties)", "Shows strong moral compass"]
+    }
+  },
+  {
+    id: "hr-hard-034",
+    text: "How do you determine if a risk is worth taking in a project?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Risk Assessment", "Analytical Skills", "Decision Making"],
+    metadata: {
+      expectedAnswerLength: 130,
+      keyPoints: ["Analyze probability (likelihood) vs. impact (severity)", "Compare potential reward vs. potential cost of failure", "Identify mitigation plans"]
+    }
+  },
+  {
+    id: "hr-hard-035",
+    text: "Describe a time when you had to negotiate with someone to get what you needed.",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Negotiation", "Persuasion", "Communication"],
+    metadata: {
+      expectedAnswerLength: 140,
+      keyPoints: ["STAR method", "Understanding the other person's needs", "Finding a win-win compromise", "Using logic and facts to support your position"]
+    }
+  },
+  {
+    id: "hr-hard-036",
+    text: "What do you do when you are stuck on a technical problem for a long time?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Problem Solving Process", "Resourcefulness", "Humility"],
+    metadata: {
+      expectedAnswerLength: 140,
+      keyPoints: ["Time-box the initial effort", "Try to debug systematically", "Take a short break ('rubber ducking')", "Search online (Stack Overflow)", "Ask a colleague or senior for help"]
+    }
+  },
+  {
+    id: "hr-hard-037",
+    text: "What qualities define a good leader? Which of these do you possess?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Leadership Traits", "Self-Awareness", "Communication"],
+    metadata: {
+      expectedAnswerLength: 130,
+      keyPoints: ["Qualities: Vision, empathy, accountability, good communicator", "Possess: Pick 1-2 and give a brief example (e.g., 'Empathy, I always listen to my team...')"]
+    }
+  },
+  {
+    id: "hr-hard-038",
+    text: "What kind of manager do you prefer to work for?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Work Style Fit", "Self-Awareness", "Teamwork"],
     metadata: {
       expectedAnswerLength: 100,
-      keyPoints: ["Stack: automatic allocation, LIFO", "Heap: manual allocation, slower access", "Stack for local variables, heap for dynamic allocation"]
+      keyPoints: ["Focus on positive traits", "e.g., 'Supportive', 'Provides clear feedback', 'Gives autonomy', 'Sets clear goals'"]
     }
   },
   {
-    id: "tech-easy-004",
-    text: "Explain the concept of recursion with an example.",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Programming Logic", "Problem Solving"],
+    id: "hr-hard-039",
+    text: "What are your thoughts on Diversity and Inclusion in the workplace?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Corporate Values", "Teamwork", "Empathy"],
     metadata: {
-      expectedAnswerLength: 100,
-      keyPoints: ["Function calling itself", "Base condition to stop", "Example: factorial, fibonacci"]
+      expectedAnswerLength: 120,
+      keyPoints: ["It's essential for innovation", "Different perspectives lead to better solutions", "Inclusion means making everyone feel valued", "Shows positive and modern mindset"]
     }
   },
   {
-    id: "tech-easy-005",
-    text: "What is the difference between HTTP and HTTPS?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Web Technologies", "Security"],
+    id: "hr-hard-040",
+    text: "How important is work-life balance to you, and how do you achieve it?",
+    type: "HR",
+    difficulty: "Hard",
+    skillsEvaluated: ["Personal Values", "Time Management", "Self-Awareness"],
     metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["HTTP: plain text transmission", "HTTPS: encrypted with SSL/TLS", "HTTPS more secure for sensitive data"]
+      expectedAnswerLength: 110,
+      keyPoints: ["It's important for long-term sustainability", "Achieve it by being focused and efficient at work", "Setting boundaries", "Having hobbies to disconnect and recharge"]
     }
   },
-  {
-    id: "tech-easy-006",
-    text: "What is an algorithm? Give an example.",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Algorithm Design", "Problem Solving"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Step-by-step procedure to solve problem", "Example: sorting, searching", "Should be finite and well-defined"]
-    }
-  },
-  {
-    id: "tech-easy-007",
-    text: "Explain what is Object-Oriented Programming (OOP).",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["OOP Concepts", "Programming Paradigms"],
-    metadata: {
-      expectedAnswerLength: 100,
-      keyPoints: ["Programming paradigm based on objects", "Encapsulation, Inheritance, Polymorphism", "Real-world modeling approach"]
-    }
-  },
-  {
-    id: "tech-easy-008",
-    text: "What is a database? What are different types?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Database Concepts", "Data Management"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Organized collection of data", "Relational, NoSQL, Graph databases", "Used for data storage and retrieval"]
-    }
-  },
-  {
-    id: "tech-easy-009",
-    text: "What is the difference between SQL and NoSQL?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Database Technologies", "Data Management"],
-    metadata: {
-      expectedAnswerLength: 100,
-      keyPoints: ["SQL: structured, ACID properties", "NoSQL: flexible schema, horizontal scaling", "Use cases differ based on requirements"]
-    }
-  },
-  {
-    id: "tech-easy-010",
-    text: "What is a compiler? How is it different from an interpreter?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["System Software", "Programming Languages"],
-    metadata: {
-      expectedAnswerLength: 100,
-      keyPoints: ["Compiler: translates entire code to machine code", "Interpreter: executes code line by line", "Compiler faster execution, interpreter easier debugging"]
-    }
-  },
-  {
-    id: "tech-easy-011",
-    text: "What is a variable? What are different data types?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Programming Fundamentals", "Data Types"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Named storage location for data", "int, float, char, boolean", "Different types for different kinds of data"]
-    }
-  },
-  {
-    id: "tech-easy-012",
-    text: "Explain the concept of loops with examples.",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Programming Logic", "Control Structures"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Repeat code block multiple times", "for, while, do-while loops", "Used for iteration and repetitive tasks"]
-    }
-  },
-  {
-    id: "tech-easy-013",
-    text: "What is an operating system? What are its functions?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Operating Systems", "System Software"],
-    metadata: {
-      expectedAnswerLength: 100,
-      keyPoints: ["Interface between hardware and software", "Memory management, process scheduling", "File system management, device drivers"]
-    }
-  },
-  {
-    id: "tech-easy-014",
-    text: "What is the difference between linear and binary search?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Algorithms", "Search Techniques"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Linear: sequential search O(n)", "Binary: divide and conquer O(log n)", "Binary requires sorted array"]
-    }
-  },
-  {
-    id: "tech-easy-015",
-    text: "What is a function? Why do we use functions?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Programming Concepts", "Code Organization"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Reusable block of code", "Modularity and code reuse", "Parameters and return values"]
-    }
-  },
-  {
-    id: "tech-easy-016",
-    text: "Explain what is a network? What are its types?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Networking Concepts", "Communication"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Connected devices for communication", "LAN, WAN, MAN types", "Enables resource sharing and communication"]
-    }
-  },
-  {
-    id: "tech-easy-017",
-    text: "What is software testing? Why is it important?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Software Quality", "Testing Concepts"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Process of evaluating software", "Find bugs and ensure quality", "Prevents defects in production"]
-    }
-  },
-  {
-    id: "tech-easy-018",
-    text: "What is the difference between hardware and software?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Computer Fundamentals", "System Components"],
-    metadata: {
-      expectedAnswerLength: 70,
-      keyPoints: ["Hardware: physical components", "Software: programs and instructions", "Both work together for computing"]
-    }
-  },
-  {
-    id: "tech-easy-019",
-    text: "What is a class and object in programming?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["OOP Concepts", "Programming Fundamentals"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Class: blueprint for objects", "Object: instance of a class", "Class defines properties and methods"]
-    }
-  },
-  {
-    id: "tech-easy-020",
-    text: "Explain what is encapsulation in OOP.",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["OOP Principles", "Data Security"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Bundling data and methods together", "Data hiding and access control", "Private, public, protected access modifiers"]
-    }
-  },
-  {
-    id: "tech-easy-021",
-    text: "What is inheritance in Object-Oriented Programming?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["OOP Concepts", "Code Reusability"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Child class inherits from parent", "Code reusability and hierarchy", "IS-A relationship between classes"]
-    }
-  },
-  {
-    id: "tech-easy-022",
-    text: "What is polymorphism? Give an example.",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["OOP Concepts", "Programming Flexibility"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["One interface, multiple implementations", "Method overloading and overriding", "Runtime and compile-time polymorphism"]
-    }
-  },
-  {
-    id: "tech-easy-023",
-    text: "What is abstraction in programming?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["OOP Principles", "Design Concepts"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Hiding implementation details", "Focus on what object does, not how", "Abstract classes and interfaces"]
-    }
-  },
-  {
-    id: "tech-easy-024",
-    text: "What is a constructor? What are its types?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["OOP Concepts", "Object Initialization"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Special method to initialize objects", "Default, parameterized, copy constructors", "Called automatically when object created"]
-    }
-  },
-  {
-    id: "tech-easy-025",
-    text: "What is the difference between method overloading and overriding?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["OOP Concepts", "Polymorphism"],
-    metadata: {
-      expectedAnswerLength: 100,
-      keyPoints: ["Overloading: same name, different parameters", "Overriding: same signature in child class", "Overloading compile-time, overriding runtime"]
-    }
-  },
-  {
-    id: "tech-easy-026",
-    text: "What is a data structure? Name some common ones.",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Data Structures", "Problem Solving"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Way to organize and store data", "Array, stack, queue, tree, graph", "Choose based on operation requirements"]
-    }
-  },
-  {
-    id: "tech-easy-027",
-    text: "Explain what is a stack data structure.",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Data Structures", "LIFO Operations"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Last In First Out (LIFO)", "Push and pop operations", "Used in function calls, expression evaluation"]
-    }
-  },
-  {
-    id: "tech-easy-028",
-    text: "What is a queue data structure?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Data Structures", "FIFO Operations"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["First In First Out (FIFO)", "Enqueue and dequeue operations", "Used in scheduling, breadth-first search"]
-    }
-  },
-  {
-    id: "tech-easy-029",
-    text: "What is the difference between linear and non-linear data structures?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Data Structures", "Organization Concepts"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Linear: sequential arrangement", "Non-linear: hierarchical arrangement", "Examples: array vs tree"]
-    }
-  },
-  {
-    id: "tech-easy-030",
-    text: "What is a binary tree?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Tree Structures", "Hierarchical Data"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Tree with at most 2 children per node", "Left and right child nodes", "Used for searching and sorting"]
-    }
-  },
-  {
-    id: "tech-easy-031",
-    text: "What is the difference between primary key and foreign key?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Database Concepts", "Data Integrity"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Primary key: unique identifier", "Foreign key: reference to another table", "Primary key cannot be null"]
-    }
-  },
-  {
-    id: "tech-easy-032",
-    text: "What is normalization in databases?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Database Design", "Data Organization"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Process to reduce data redundancy", "Organize data into tables", "1NF, 2NF, 3NF normal forms"]
-    }
-  },
-  {
-    id: "tech-easy-033",
-    text: "What is HTML? What does it stand for?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Web Development", "Markup Languages"],
-    metadata: {
-      expectedAnswerLength: 70,
-      keyPoints: ["HyperText Markup Language", "Structure and content of web pages", "Uses tags to define elements"]
-    }
-  },
-  {
-    id: "tech-easy-034",
-    text: "What is CSS? What is its purpose?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Web Development", "Styling"],
-    metadata: {
-      expectedAnswerLength: 70,
-      keyPoints: ["Cascading Style Sheets", "Controls appearance and layout", "Separates content from presentation"]
-    }
-  },
-  {
-    id: "tech-easy-035",
-    text: "What is JavaScript? What can you do with it?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Web Development", "Programming Languages"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Client-side scripting language", "Interactive web pages", "Now used for server-side too (Node.js)"]
-    }
-  },
-  {
-    id: "tech-easy-036",
-    text: "What is the difference between GET and POST methods?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Web Development", "HTTP Methods"],
-    metadata: {
-      expectedAnswerLength: 100,
-      keyPoints: ["GET: retrieve data, visible in URL", "POST: send data, hidden in body", "GET idempotent, POST not idempotent"]
-    }
-  },
-  {
-    id: "tech-easy-037",
-    text: "What is an IP address?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Networking", "Internet Protocols"],
-    metadata: {
-      expectedAnswerLength: 70,
-      keyPoints: ["Unique identifier for devices", "IPv4 and IPv6 versions", "Used for network communication"]
-    }
-  },
-  {
-    id: "tech-easy-038",
-    text: "What is cloud computing?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Cloud Technologies", "Modern Computing"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["On-demand computing resources", "IaaS, PaaS, SaaS models", "Scalability and cost-effectiveness"]
-    }
-  },
-  {
-    id: "tech-easy-039",
-    text: "What is machine learning?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["AI/ML Concepts", "Data Analysis"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Algorithms learn from data", "Supervised, unsupervised learning", "Pattern recognition and prediction"]
-    }
-  },
-  {
-    id: "tech-easy-040",
-    text: "What is artificial intelligence?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["AI Concepts", "Technology Trends"],
-    metadata: {
-      expectedAnswerLength: 80,
-      keyPoints: ["Machines performing intelligent tasks", "Problem solving and decision making", "ML, NLP, computer vision applications"]
-    }
-  },
-  {
-    id: "tech-easy-041",
-    text: "What is version control? Why is it important?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Software Development", "Code Management"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Track changes in code", "Collaboration and backup", "Git, SVN are popular tools"]
-    }
-  },
-  {
-    id: "tech-easy-042",
-    text: "What is an API? How is it used?",
-    type: "Technical",
-    difficulty: "Easy",
-    skillsEvaluated: ["Software Integration", "Communication Protocols"],
-    metadata: {
-      expectedAnswerLength: 90,
-      keyPoints: ["Application Programming Interface", "Allows software communication", "REST, GraphQL are common types"]
-    }
-  },
+
+  // ================================
+  // TECHNICAL QUESTIONS (Subject-Based: DBMS, C, OOPs, DS - 80 total)
+  // ================================
+  ...technicalQuestionsSubjectBased,
 
   // ===================================
 // APTITUDE QUESTIONS (100 total)

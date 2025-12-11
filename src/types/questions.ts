@@ -2,7 +2,8 @@ export interface Question {
   id: string
   text: string
   type: 'Aptitude' | 'Technical' | 'HR'
-  difficulty: 'Easy' | 'Medium' | 'Hard'
+  difficulty: 'Easy' | 'Medium' | 'Hard' | 'Advanced'
+  subject?: 'DBMS' | 'C' | 'OOPs' | 'DS' // For Technical questions only
   skillsEvaluated: string[]
   metadata: {
     expectedAnswerLength: number
@@ -34,7 +35,8 @@ export interface QuestionBank {
 
 export interface QuestionFilters {
   type?: 'Aptitude' | 'Technical' | 'HR'
-  difficulty?: 'Easy' | 'Medium' | 'Hard'
+  difficulty?: 'Easy' | 'Medium' | 'Hard' | 'Advanced'
+  subject?: 'DBMS' | 'C' | 'OOPs' | 'DS'
   category?: string
   shuffle?: boolean
 }

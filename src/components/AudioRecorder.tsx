@@ -33,6 +33,7 @@ interface AudioRecorderProps {
   maxDuration?: number // in seconds, default 300 (5 minutes)
   autoStop?: boolean // auto-stop when max duration reached
   className?: string
+  showTranscription?: boolean // whether to display the transcription text (default: true)
 }
 
 type RecordingState = 'idle' | 'recording' | 'paused' | 'stopped' | 'processing' | 'completed'
@@ -43,7 +44,8 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
   onTranscriptionComplete,
   maxDuration = 300,
   autoStop = true,
-  className = ''
+  className = '',
+  showTranscription = true
 }) => {
   // Recording state management
   const [recordingState, setRecordingState] = useState<RecordingState>('idle')
@@ -502,8 +504,8 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
         </div>
       )}
 
-      {/* Transcription Display - Non-editable */}
-      {transcriptionResult && (
+      {/* Transcription Display - Non-editable (only shown if showTranscription is true) */}
+      {showTranscription && transcriptionResult && (
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
@@ -559,7 +561,7 @@ export const AudioRecorder: React.FC<AudioRecorderProps> = ({
       <div className="text-xs text-gray-500 text-center">
         Maximum recording duration: {formatDuration(maxDuration)} • 
         Question type: {question.type} • 
-        Expected duration: {formatDuration(question.expectedDuration)}
+        Expected duration: {formatDuration(Math.min(question.expectedDuration, maxDuration))}
       </div>
     </div>
   )

@@ -58,7 +58,7 @@ export const ProfileCompletionWizard: React.FC = () => {
   const [resumeFile, setResumeFile] = useState<File | null>(null)
   const [parsedData, setParsedData] = useState<ParsedResumeData | null>(null)
   const [parseError, setParseError] = useState<string | null>(null)
-  const { user, completeProfile } = useAuthStore()
+  const { user } = useAuthStore()
   const navigate = useNavigate()
 
   const {
@@ -152,9 +152,6 @@ export const ProfileCompletionWizard: React.FC = () => {
 
     setIsSubmitting(true)
     try {
-      // Check if profile exists first
-      const existingProfile = await userProfileService.getUserProfile(user.id)
-      
       const profileData = {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -184,35 +181,38 @@ export const ProfileCompletionWizard: React.FC = () => {
         updatedAt: new Date(),
       }
 
-      // Create or update profile in Firestore
-      if (!existingProfile) {
-        // Profile doesn't exist - create it
+      try {
+        // Check if profile exists
+        const existingProfile = await userProfileService.getUserProfile(user.id)
+        
+        if (!existingProfile) {
+          // Profile doesn't exist - create it
+          await userProfileService.createUserProfile(user.id, user.email, profileData)
+        } else {
+          // Profile exists - update it
+          await userProfileService.updateUserProfile(user.id, profileData)
+        }
+      } catch (error) {
+        // If error is "profile not found", create new profile
+        console.log('Creating new profile...')
         await userProfileService.createUserProfile(user.id, user.email, profileData)
-      } else {
-        // Profile exists - update it
-        await userProfileService.updateUserProfile(user.id, profileData)
       }
 
-      // Update local auth state
-      completeProfile(user.id, {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phone: data.phone,
-        location: data.location,
-        occupation: data.occupation,
-      })
+      // Mark profile as completed in auth store (without calling updateUserProfile again)
+      useAuthStore.getState().markProfileCompleted()
       
-      // Redirect based on user role
+      // Small delay to ensure state updates
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // Redirect based on user role with replace to prevent back navigation
       if (user.admin) {
-        // Admin users go to admin dashboard
         navigate('/admin/dashboard', { replace: true })
       } else {
-        // Regular users go to normal dashboard
         navigate('/dashboard', { replace: true })
       }
     } catch (error) {
       console.error('Error completing profile:', error)
-      // Handle error (show toast, etc.)
+      alert('Failed to complete profile. Please try again.')
     } finally {
       setIsSubmitting(false)
     }

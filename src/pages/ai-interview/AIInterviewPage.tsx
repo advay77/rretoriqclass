@@ -7,6 +7,7 @@ import { AIInterviewErrorBoundary } from '../../components/ErrorBoundary';
 import type { Question } from '../../types/questions';
 import { Loader2, ArrowLeft, AlertCircle, Sparkles, Brain, Target, User, Settings } from 'lucide-react';
 import { gsap } from 'gsap';
+import { sessionLimitService } from '../../services/sessionLimitService';
 
 interface SessionResults {
   totalQuestions: number;
@@ -36,6 +37,7 @@ export default function AIInterviewPage() {
   const [sessionConfig, setSessionConfig] = useState({
     questionCount: 5,
     difficulty: 'Mixed',
+    subject: '', // For technical interviews: 'DBMS', 'C', 'OOPs', 'DS'
     includeAIEvaluation: true,
     enableRealTimeTranscription: true
   });
@@ -63,26 +65,25 @@ export default function AIInterviewPage() {
       const tl = gsap.timeline();
       
       tl.fromTo(pageRef.current, 
-        { opacity: 0, y: 30 }, 
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+        { opacity: 0 }, 
+        { opacity: 1, duration: 0.6, ease: "power3.out" }
       )
       .fromTo(headerRef.current, 
-        { opacity: 0, y: 50, scale: 0.95 }, 
-        { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power2.out" }, 
-        "-=0.4"
+        { opacity: 0, y: -30 }, 
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 
+        "-=0.3"
       )
       .fromTo(cardsRef.current, 
-        { opacity: 0, y: 60, rotateX: 15 }, 
+        { opacity: 0, y: 40, scale: 0.95 }, 
         { 
           opacity: 1, 
           y: 0, 
-          rotateX: 0, 
-          duration: 0.8, 
-          stagger: 0.15,
-          ease: "power2.out",
-          transformPerspective: 1000
+          scale: 1,
+          duration: 0.7, 
+          stagger: 0.12,
+          ease: "back.out(1.2)"
         }, 
-        "-=0.5"
+        "-=0.4"
       );
     }
   }, [type]);
@@ -98,10 +99,15 @@ export default function AIInterviewPage() {
       await QuestionBankService.initializeQuestionBank();
       
       const questionType = type.charAt(0).toUpperCase() + type.slice(1) as 'HR' | 'Technical' | 'Aptitude';
-      const filters = { 
+      const filters: any = { 
         type: questionType,
         shuffle: true 
       };
+
+      // Add subject filter for Technical interviews
+      if (questionType === 'Technical' && sessionConfig.subject) {
+        filters.subject = sessionConfig.subject;
+      }
 
       let fetchedQuestions: Question[];
       
@@ -149,9 +155,28 @@ export default function AIInterviewPage() {
     }
   };
 
-  const startSession = () => {
-    // All AI services now run through server-side proxies, no client-side key check needed
-    setSessionActive(true);
+  const startSession = async () => {
+    if (!user) return
+    
+    // Check session limits before starting
+    const difficulty = type?.toLowerCase() as 'technical' | 'hr' | 'aptitude'
+    const limitCheck = await sessionLimitService.canStartSession(user.id, 'interview', undefined, difficulty)
+    
+    if (!limitCheck.allowed) {
+      alert(limitCheck.reason || 'You have reached your monthly limit for this session type.')
+      return
+    }
+    
+    // Reload questions with current session configuration before starting
+    console.log('🎯 Starting session with config:', sessionConfig);
+    await loadQuestions();
+    // Start session after questions are loaded (if no error occurred)
+    if (!error) {
+      console.log('✅ Session started with', questions.length, 'questions');
+      setSessionActive(true);
+    } else {
+      console.error('❌ Failed to start session due to error:', error);
+    }
   };
 
   const getTypeDisplayName = (type: string) => {
@@ -213,7 +238,7 @@ export default function AIInterviewPage() {
             {/* HR Interview */}
             <div 
               ref={el => { if (el) cardsRef.current[0] = el }}
-              className="group relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden"
+              className="group relative bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:scale-[1.03] transition-all duration-500 ease-out cursor-pointer overflow-hidden"
               onClick={() => navigate('/ai-interview/hr')}
             >
               <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
@@ -229,6 +254,10 @@ export default function AIInterviewPage() {
                 <div className="space-y-2 mb-5">
                   <div className="flex items-center text-sm text-white/90">
                     <div className="w-1.5 h-1.5 bg-white rounded-full mr-2"></div>
+                    <span>4 sessions per month</span>
+                  </div>
+                  <div className="flex items-center text-sm text-white/90">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full mr-2"></div>
                     <span>Behavioral question analysis</span>
                   </div>
                   <div className="flex items-center text-sm text-white/90">
@@ -237,11 +266,11 @@ export default function AIInterviewPage() {
                   </div>
                   <div className="flex items-center text-sm text-white/90">
                     <div className="w-1.5 h-1.5 bg-white rounded-full mr-2"></div>
-                    <span>Professional presence coaching</span>
+                    <span>AI-powered feedback</span>
                   </div>
                 </div>
                 
-                <button className="w-full bg-white text-blue-600 py-3.5 px-4 rounded-xl font-bold transition-all duration-200 hover:bg-blue-50 shadow-lg">
+                <button className="w-full bg-white text-blue-600 py-3.5 px-4 rounded-xl font-bold transition-all duration-300 ease-out hover:bg-blue-50 hover:shadow-xl hover:scale-[1.02] shadow-lg">
                   Start HR Practice
                 </button>
               </div>
@@ -250,7 +279,7 @@ export default function AIInterviewPage() {
             {/* Technical Interview */}
             <div 
               ref={el => { if (el) cardsRef.current[1] = el }}
-              className="group relative bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden"
+              className="group relative bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:scale-[1.03] transition-all duration-500 ease-out cursor-pointer overflow-hidden"
               onClick={() => navigate('/ai-interview/technical')}
             >
               <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
@@ -266,6 +295,10 @@ export default function AIInterviewPage() {
                 <div className="space-y-2 mb-5">
                   <div className="flex items-center text-sm text-white/90">
                     <div className="w-1.5 h-1.5 bg-white rounded-full mr-2"></div>
+                    <span>4 sessions per month</span>
+                  </div>
+                  <div className="flex items-center text-sm text-white/90">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full mr-2"></div>
                     <span>Programming fundamentals</span>
                   </div>
                   <div className="flex items-center text-sm text-white/90">
@@ -274,11 +307,11 @@ export default function AIInterviewPage() {
                   </div>
                   <div className="flex items-center text-sm text-white/90">
                     <div className="w-1.5 h-1.5 bg-white rounded-full mr-2"></div>
-                    <span>Technical problem solving</span>
+                    <span>Real-time code analysis</span>
                   </div>
                 </div>
                 
-                <button className="w-full bg-white text-emerald-600 py-3.5 px-4 rounded-xl font-bold transition-all duration-200 hover:bg-emerald-50 shadow-lg">
+                <button className="w-full bg-white text-emerald-600 py-3.5 px-4 rounded-xl font-bold transition-all duration-300 ease-out hover:bg-emerald-50 hover:shadow-xl hover:scale-[1.02] shadow-lg">
                   Start Technical Practice
                 </button>
               </div>
@@ -287,7 +320,7 @@ export default function AIInterviewPage() {
             {/* Aptitude Interview */}
             <div 
               ref={el => { if (el) cardsRef.current[2] = el }}
-              className="group relative bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden"
+              className="group relative bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl p-6 shadow-xl hover:shadow-2xl hover:scale-[1.03] transition-all duration-500 ease-out cursor-pointer overflow-hidden"
               onClick={() => navigate('/ai-interview/aptitude')}
             >
               <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
@@ -303,6 +336,10 @@ export default function AIInterviewPage() {
                 <div className="space-y-2 mb-5">
                   <div className="flex items-center text-sm text-white/90">
                     <div className="w-1.5 h-1.5 bg-white rounded-full mr-2"></div>
+                    <span>4 sessions per month</span>
+                  </div>
+                  <div className="flex items-center text-sm text-white/90">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full mr-2"></div>
                     <span>Logical reasoning patterns</span>
                   </div>
                   <div className="flex items-center text-sm text-white/90">
@@ -315,7 +352,7 @@ export default function AIInterviewPage() {
                   </div>
                 </div>
                 
-                <button className="w-full bg-white text-orange-600 py-3.5 px-4 rounded-xl font-bold transition-all duration-200 hover:bg-orange-50 shadow-lg">
+                <button className="w-full bg-white text-orange-600 py-3.5 px-4 rounded-xl font-bold transition-all duration-300 ease-out hover:bg-orange-50 hover:shadow-xl hover:scale-[1.02] shadow-lg">
                   Start Aptitude Test
                 </button>
               </div>
@@ -444,82 +481,165 @@ export default function AIInterviewPage() {
           {/* Main Content */}
           <div className="lg:col-span-2">
 
-
             {/* Session Configuration */}
-            <div className="bg-white rounded-xl p-6 border border-gray-200 mb-6">
-              <h3 className="text-lg font-medium text-black mb-4">Session Configuration</h3>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Number of Questions
-                  </label>
-                  <select
-                    value={sessionConfig.questionCount}
-                    onChange={(e) => setSessionConfig(prev => ({ ...prev, questionCount: parseInt(e.target.value) }))}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black"
-                  >
-                    <option value={3}>3 Questions (Quick)</option>
-                    <option value={5}>5 Questions (Standard)</option>
-                    <option value={7}>7 Questions (Extended)</option>
-                    <option value={10}>10 Questions (Comprehensive)</option>
-                  </select>
+            <div className="bg-white rounded-2xl shadow-2xl p-8 mb-6">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <Settings className="w-6 h-6 text-white" />
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Difficulty Level
-                  </label>
-                  <select
-                    value={sessionConfig.difficulty}
-                    onChange={(e) => setSessionConfig(prev => ({ ...prev, difficulty: e.target.value }))}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black"
-                  >
-                    <option value="Mixed">Mixed Difficulty</option>
-                    <option value="Easy">Easy</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Hard">Hard</option>
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={sessionConfig.includeAIEvaluation}
-                      onChange={(e) => setSessionConfig(prev => ({ ...prev, includeAIEvaluation: e.target.checked }))}
-                      className="rounded border-gray-300 text-black focus:ring-black"
-                    />
-                    <span className="text-sm text-gray-700">Enable AI Evaluation (Gemini)</span>
-                  </label>
-                  
-                  <label className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={sessionConfig.enableRealTimeTranscription}
-                      onChange={(e) => setSessionConfig(prev => ({ ...prev, enableRealTimeTranscription: e.target.checked }))}
-                      className="rounded border-gray-300 text-black focus:ring-black"
-                    />
-                    <span className="text-sm text-gray-700">Real-time Transcription</span>
-                  </label>
+                  <h2 className="text-2xl font-bold text-gray-900">Session Preferences</h2>
+                  <p className="text-gray-600 text-sm">Customize your practice session</p>
                 </div>
               </div>
-            </div>
-
-            {/* Start Session */}
-            <div className="bg-white rounded-xl p-6 border border-gray-200">
-              <h3 className="text-lg font-medium text-black mb-4">Ready to Begin?</h3>
-              <p className="text-gray-600 mb-6">
-                You're about to start a {sessionConfig.questionCount}-question {getTypeDisplayName(type || '').toLowerCase()} 
-                session with {sessionConfig.difficulty.toLowerCase()} difficulty questions.
-              </p>
               
+              {/* Subject Selection (Technical Only) */}
+              {type?.toLowerCase() === 'technical' && (
+                <div className="mb-8">
+                  <label className="block text-sm font-semibold text-gray-900 mb-3">
+                    Technical Subject
+                  </label>
+                  <div className="grid grid-cols-4 gap-4">
+                    {(['DBMS', 'C', 'OOPs', 'DS'] as const).map((subject) => (
+                      <button
+                        key={subject}
+                        onClick={() => setSessionConfig(prev => ({ ...prev, subject }))}
+                        className={`p-4 rounded-xl border-2 transition-all duration-300 ${
+                          sessionConfig.subject === subject
+                            ? 'border-blue-500 bg-blue-50 shadow-lg scale-105'
+                            : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50/50'
+                        }`}
+                      >
+                        <div className="text-center">
+                          <div className={`text-lg font-bold mb-1 ${
+                            sessionConfig.subject === subject ? 'text-blue-600' : 'text-gray-700'
+                          }`}>
+                            {subject}
+                          </div>
+                          <div className="text-xs text-gray-600">
+                            {subject === 'DBMS' && 'Database'}
+                            {subject === 'C' && 'C Language'}
+                            {subject === 'OOPs' && 'Object-Oriented'}
+                            {subject === 'DS' && 'Data Structures'}
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Difficulty Selection */}
+              <div className="mb-8">
+                <label className="block text-sm font-semibold text-gray-900 mb-3">
+                  Difficulty Level {type?.toLowerCase() === 'technical' && '(2 levels per subject)'}
+                </label>
+                <div className={`grid ${type?.toLowerCase() === 'technical' ? 'grid-cols-3' : 'grid-cols-4'} gap-4`}>
+                  {(type?.toLowerCase() === 'technical' 
+                    ? ['Mixed', 'Easy', 'Advanced'] 
+                    : ['Mixed', 'Easy', 'Medium', 'Hard']
+                  ).map((level) => (
+                    <button
+                      key={level}
+                      onClick={() => setSessionConfig(prev => ({ ...prev, difficulty: level }))}
+                      className={`p-4 rounded-xl border-2 transition-all duration-300 ${
+                        sessionConfig.difficulty === level
+                          ? 'border-blue-500 bg-blue-50 shadow-lg scale-105'
+                          : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50/50'
+                      }`}
+                    >
+                      <div className="text-center">
+                        <div className={`text-lg font-bold mb-1 ${
+                          sessionConfig.difficulty === level ? 'text-blue-600' : 'text-gray-700'
+                        }`}>
+                          {level}
+                        </div>
+                        <div className="text-xs text-gray-600">
+                          {level === 'Mixed' && 'All levels'}
+                          {level === 'Easy' && 'Beginner'}
+                          {level === 'Medium' && 'Intermediate'}
+                          {level === 'Hard' && 'Advanced'}
+                          {level === 'Advanced' && 'Expert'}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Number of Questions */}
+              <div className="mb-8">
+                <label className="block text-sm font-semibold text-gray-900 mb-3">
+                  Number of Questions
+                </label>
+                <div className="grid grid-cols-4 gap-4">
+                  {[3, 5, 7, 10].map((count) => (
+                    <button
+                      key={count}
+                      onClick={() => setSessionConfig(prev => ({ ...prev, questionCount: count }))}
+                      className={`p-4 rounded-xl border-2 transition-all duration-300 ${
+                        sessionConfig.questionCount === count
+                          ? 'border-blue-500 bg-blue-50 shadow-lg scale-105'
+                          : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50/50'
+                      }`}
+                    >
+                      <div className="text-center">
+                        <div className={`text-2xl font-bold mb-1 ${
+                          sessionConfig.questionCount === count ? 'text-blue-600' : 'text-gray-700'
+                        }`}>
+                          {count}
+                        </div>
+                        <div className="text-xs text-gray-600">
+                          {count === 3 && 'Quick'}
+                          {count === 5 && 'Standard'}
+                          {count === 7 && 'Extended'}
+                          {count === 10 && 'Comprehensive'}
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Session Summary */}
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 mb-6 border border-blue-200">
+                <h3 className="font-semibold text-gray-900 mb-3 flex items-center">
+                  <Target className="w-5 h-5 mr-2 text-blue-600" />
+                  Session Summary
+                </h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-gray-600">Questions:</span>
+                    <span className="font-semibold text-gray-900 ml-2">{sessionConfig.questionCount}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Difficulty:</span>
+                    <span className="font-semibold text-gray-900 ml-2">{sessionConfig.difficulty}</span>
+                  </div>
+                  {type?.toLowerCase() === 'technical' && sessionConfig.subject && (
+                    <div>
+                      <span className="text-gray-600">Subject:</span>
+                      <span className="font-semibold text-gray-900 ml-2">{sessionConfig.subject}</span>
+                    </div>
+                  )}
+                  <div>
+                    <span className="text-gray-600">Duration:</span>
+                    <span className="font-semibold text-gray-900 ml-2">{sessionConfig.questionCount * 3}-{sessionConfig.questionCount * 5} min</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Type:</span>
+                    <span className="font-semibold text-gray-900 ml-2">{getTypeDisplayName(type || '')}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Start Button */}
               <button
                 onClick={startSession}
-                className="w-full bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-xl font-medium transition-colors flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 font-bold text-lg shadow-lg hover:shadow-xl hover:scale-105 flex items-center justify-center space-x-2"
               >
+                <Sparkles className="w-5 h-5" />
                 <span>Start Interview Session</span>
-                <ArrowLeft className="w-5 h-5 rotate-180" />
               </button>
             </div>
           </div>

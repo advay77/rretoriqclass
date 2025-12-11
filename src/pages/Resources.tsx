@@ -13,107 +13,121 @@ interface Resource {
 const resources: Resource[] = [
   {
     id: 1,
-    title: "Interview Overview",
-    filename: "erview_20251011_111910_0000.pdf",
-    description: "Comprehensive guide to interview preparation and strategies",
+    title: "How to Handle Impromptu Speaking in an Interview",
+    filename: "How to Handle Impromptu Speaking in an Interview_.pdf",
+    description: "Master the art of thinking on your feet during interviews with practical strategies",
     category: "Interview Skills"
   },
   {
     id: 2,
-    title: "Handling Impromptu Speaking",
-    filename: "Handling Impromptu Speaking in Interviews_20251011_113003_0000.pdf",
-    description: "Master the art of thinking on your feet during interviews",
-    category: "Speaking Skills"
+    title: "How Can You Think on Your Feet and Answer Unexpected Questions?",
+    filename: "How Can You Think on Your Feet and Answer Unexpected Questions_.pdf",
+    description: "Learn powerful techniques to handle surprise questions with confidence",
+    category: "Interview Skills"
   },
   {
     id: 3,
-    title: "House Of Orators - Part 1",
-    filename: "House Of Orators_20251011_112235_0000.pdf",
-    description: "Develop powerful oratory and public speaking skills",
-    category: "Public Speaking"
+    title: "How Do I Turn 'Tell Me About Yourself' into a Compelling Story?",
+    filename: "How Do I Turn _Tell Me About Yourself_ into a Compelling Story_.pdf",
+    description: "Transform the most common interview question into your strongest answer",
+    category: "Interview Skills"
   },
   {
     id: 4,
-    title: "House Of Orators - Part 2",
-    filename: "House Of Orators_20251011_112408_0000.pdf",
-    description: "Advanced techniques for effective public speaking",
-    category: "Public Speaking"
+    title: "What Is the STAR Method for Storytelling?",
+    filename: "What Is the STAR Method for Storytelling_.pdf",
+    description: "Structure your responses using the proven STAR framework for maximum impact",
+    category: "Interview Skills"
   },
   {
     id: 5,
-    title: "House Of Orators - Part 3",
-    filename: "House Of Orators_20251011_112657_0000.pdf",
-    description: "Mastering audience engagement and delivery",
-    category: "Public Speaking"
+    title: "How Can I Stop Sounding Scripted and Speak More Naturally?",
+    filename: "How Can I Stop Sounding Scripted and Speak More Naturally_.pdf",
+    description: "Develop authentic communication that resonates with your audience",
+    category: "Speaking Skills"
   },
   {
     id: 6,
-    title: "Mock Parliament - Debate & Communication",
-    filename: "Mock Parliament  Sharpening Debate & Communication_20251011_113346_0000.pdf",
-    description: "Sharpen your debate and communication skills",
-    category: "Debate Skills"
+    title: "How to Handle Stage Fear Like a Pro",
+    filename: "How to Handle Stage Fear Like a Pro_.pdf",
+    description: "Overcome nervousness and present with confidence in any situation",
+    category: "Speaking Skills"
   },
   {
     id: 7,
-    title: "Entrepreneur Tips",
-    filename: "Purple and Yellow Illustrated Entrepreneur Tips LinkedIn Carousel_20251011_112108_0000.pdf",
-    description: "Essential communication tips for entrepreneurs",
-    category: "Professional Skills"
+    title: "What is the Simple 3-Step Formula for Speaking Clarity?",
+    filename: "What is the Simple 3-Step Formula for Speaking Clarity_.pdf",
+    description: "Master clear and impactful communication with this proven approach",
+    category: "Speaking Skills"
   },
   {
     id: 8,
-    title: "Communication Excellence - Part 1",
-    filename: "Take a look at my Canva design!.pdf",
-    description: "Foundation of effective communication",
-    category: "Communication Skills"
+    title: "How to End a Speech People Remember",
+    filename: "How to End a Speech People Remember_.pdf",
+    description: "Create memorable conclusions that leave lasting impressions on your audience",
+    category: "Public Speaking"
   },
   {
     id: 9,
-    title: "Communication Excellence - Part 2",
-    filename: "Take a look at my Canva design!(1).pdf",
-    description: "Advanced communication strategies",
-    category: "Communication Skills"
+    title: "How Does Mock Parliament Sharpen Debate and Communication Skills?",
+    filename: "How Does Mock Parliament Sharpen Debate and Communication Skills_.pdf",
+    description: "Enhance your argumentation and persuasion abilities through structured debate",
+    category: "Debate Skills"
   },
   {
     id: 10,
-    title: "Communication Excellence - Part 3",
-    filename: "Take a look at my Canva design!(2).pdf",
-    description: "Practical communication techniques",
+    title: "How to Master Communication in a GD",
+    filename: "How to Master Communication in a GD_.pdf",
+    description: "Excel in group discussions with effective communication strategies",
     category: "Communication Skills"
   },
   {
     id: 11,
-    title: "Communication Excellence - Part 4",
-    filename: "Take a look at my Canva design!(3).pdf",
-    description: "Professional communication mastery",
+    title: "How Can I Build Instant Rapport with Someone in 3 Minutes?",
+    filename: "How Can I Build Instant Rapport with Someone in 3 Minutes_.pdf",
+    description: "Quick techniques to establish genuine connections in any conversation",
     category: "Communication Skills"
   },
   {
     id: 12,
-    title: "Communication Excellence - Part 5",
-    filename: "Take a look at my Canva design!(4).pdf",
-    description: "Complete communication toolkit",
+    title: "What Communication Mistakes Ruin First Impressions?",
+    filename: "What Communication Mistakes Ruin First Impressions_.pdf",
+    description: "Avoid common pitfalls and make strong first impressions every time",
     category: "Communication Skills"
   },
   {
     id: 13,
-    title: "The Power of Pausing",
-    filename: "The Power of Pausing — Speaking with Control_20251012_010327_0000.pdf",
-    description: "Learn to speak with control using strategic pauses",
-    category: "Speaking Skills"
+    title: "What Are 5 Quick Fixes to Sound Confident Instantly?",
+    filename: "What Are 5 Quick Fixes to Sound Confident Instantly_.pdf",
+    description: "Simple adjustments that immediately boost your communication confidence",
+    category: "Communication Skills"
   },
   {
     id: 14,
-    title: "Think on Your Feet",
-    filename: "Think on Your Feet — Answering Unexpected Questions_20251011_220430_0000.pdf",
-    description: "Master the art of answering unexpected questions",
-    category: "Interview Skills"
+    title: "What Are the Smartest Ways to Say 'I Don't Know' Professionally?",
+    filename: "What Are the Smartest Ways to Say _I Don_t Know_ Professionally_.pdf",
+    description: "Turn uncertainty into opportunity with professional communication tactics",
+    category: "Professional Skills"
   },
   {
     id: 15,
-    title: "Social Media Marketing",
-    filename: "Yellow Illustrative Social Media Marketing Carousel Instagram Post (LinkedI_20251011_171320_0000.pdf",
-    description: "Effective communication for social media marketing",
+    title: "What Are the Quickest Icebreakers for Any Occasion?",
+    filename: "What Are the Quickest Icebreakers for Any Occasion_.pdf",
+    description: "Break the ice effortlessly in professional and social settings",
+    category: "Professional Skills"
+  },
+  {
+    id: 16,
+    title: "How to Lead a Team Meeting as a Student",
+    filename: "How to Lead a Team Meeting as a Student_.pdf",
+    description: "Develop leadership communication skills for effective team management",
+    category: "Professional Skills"
+  },
+  {
+    id: 17,
+    title: "What Makes Indian Startup Founders Great Communicators?",
+    filename: "What Makes Indian Startup Founders Great Communicators_.pdf",
+    description: "Learn from successful entrepreneurs and their communication strategies",
     category: "Professional Skills"
   }
 ]

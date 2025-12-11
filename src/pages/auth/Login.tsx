@@ -79,7 +79,7 @@ export default function Login() {
                 type="email"
                 id="email"
                 placeholder="you@company.com"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all font-light"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all font-light"
               />
               {errors.email && (
                 <p className="mt-2 text-sm text-red-500 font-light">{errors.email.message}</p>
@@ -96,7 +96,7 @@ export default function Login() {
                   type={showPassword ? 'text' : 'password'}
                   id="password"
                   placeholder="Enter your password"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent pr-12 transition-all font-light"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent pr-12 transition-all font-light"
                 />
                 <button
                   type="button"

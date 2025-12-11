@@ -83,7 +83,7 @@ export default function Home() {
               
               <div className="inline-flex items-center space-x-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium mb-8 border border-indigo-100 animate-fade-in">
                 <Sparkles className="w-4 h-4" />
-                <span>AI-Powered Communication Training</span>
+                <span>Bridging communication with Intelligence</span>
               </div>
               
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-gray-900 mb-8 leading-tight tracking-tight">
@@ -244,7 +244,7 @@ export default function Home() {
             </h2>
             
             <p className="text-lg text-indigo-100 mb-12 max-w-2xl mx-auto font-light">
-              Join thousands of professionals who have accelerated their careers with AI-powered communication training. Start your journey today.
+              Join thousands of professionals who have accelerated their careers with Bridging communication with Intelligence. Start your journey today.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

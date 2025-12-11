@@ -45,6 +45,14 @@ export default function Schools() {
       content: "Rretoriq's training modules prepare our medical students for professional interactions with patients, colleagues, and during residency interviews. The improvement in communication confidence and clinical presentation skills is remarkable.",
       rating: 5,
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80"
+    },
+    {
+      name: "Ms. Nikita Tondon",
+      role: "CRT Head",
+      company: "Engineering College",
+      content: "As the CRT Head, I've seen countless tools claim to improve student communication, but Rretoriq truly delivers. The AI-powered feedback helps students identify and correct their mistakes in real-time. My students' confidence in public speaking and professional communication has increased remarkably. It's an invaluable resource for campus recruitment training.",
+      rating: 5,
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80"
     }
   ]
 

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 import type { Institution } from '../../types/institution';
 import { 
   Building2, 
@@ -28,6 +30,9 @@ export default function InstitutionAdminDashboard() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  // Seats from user document (backend-controlled)
+  const [userSeats, setUserSeats] = useState<{ total: number; allocated: number; available: number } | null>(null);
+
   // Form states
   const [institutionName, setInstitutionName] = useState('');
   const [seatsPurchased, setSeatsPurchased] = useState<number>(0);
@@ -54,6 +59,17 @@ export default function InstitutionAdminDashboard() {
     try {
       setLoading(true);
       setError('');
+
+      // Fetch user seats from Firestore (backend-controlled)
+      const userDocRef = doc(db, 'users', user.id);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        if (userData.seats) {
+          setUserSeats(userData.seats);
+        }
+      }
 
       const response = await fetch(
         `${API_BASE}/admin/get-institution?adminUserId=${user.id}`
@@ -198,9 +214,9 @@ export default function InstitutionAdminDashboard() {
     );
   }
 
-  const seatsUsed = institutionData?.seatsUsed || 0;
-  const seatsRemaining = institutionData?.seatsRemaining || 0;
-  const seatsTotal = institutionData?.seatsPurchased || seatsPurchased || 0;
+  const seatsUsed = userSeats?.allocated || institutionData?.seatsUsed || 0;
+  const seatsRemaining = userSeats?.available || institutionData?.seatsRemaining || 0;
+  const seatsTotal = userSeats?.total || institutionData?.seatsPurchased || seatsPurchased || 0;
   const occupancyPercentage = seatsTotal > 0 ? Math.round((seatsUsed / seatsTotal) * 100) : 0;
 
   return (
@@ -278,15 +294,24 @@ export default function InstitutionAdminDashboard() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Seats Purchased
                 </label>
-                <input
-                  type="number"
-                  value={seatsPurchased}
-                  onChange={(e) => setSeatsPurchased(Number(e.target.value))}
-                  required
-                  min="1"
-                  placeholder="e.g., 100"
-                  className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                />
+                <div className="relative">
+                  <input
+                    type="number"
+                    value={seatsTotal}
+                    readOnly
+                    disabled
+                    placeholder="Contact admin to update seats"
+                    className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed"
+                  />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    <span className="text-xs text-gray-500 bg-gray-200 px-2 py-1 rounded">
+                      Backend Controlled
+                    </span>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  💡 Seats are managed via admin script. Contact support to purchase more seats.
+                </p>
               </div>
 
               <button
