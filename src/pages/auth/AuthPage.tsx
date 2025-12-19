@@ -121,6 +121,7 @@ export default function AuthPage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-6 px-4">
             <SEO {...(activeTab === 'login' ? seoData.login : seoData.register)} />
+
             <div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100 h-[90vh] flex flex-col">
                 <div className="grid md:grid-cols-2 flex-1 overflow-hidden">
                     {/* Left side - Branding */}

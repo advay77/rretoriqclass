@@ -393,8 +393,8 @@ export default function Profile() {
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
                       className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all ${activeTab === tab.id
-                          ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                          : 'text-gray-700 hover:bg-purple-50'
+                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
+                        : 'text-gray-700 hover:bg-purple-50'
                         }`}
                     >
                       <IconComponent className="w-4 h-4" />
@@ -488,7 +488,7 @@ export default function Profile() {
                           <input
                             {...register('phone')}
                             type="tel"
-                            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
+                            className="w-full pl-10 bg-white pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-gray-700 placeholder-gray-500"
                             placeholder="+91 98765 43210"
                           />
                         </div>
@@ -519,7 +519,7 @@ export default function Profile() {
                         <input
                           {...register('dateOfBirth')}
                           type="date"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
+                          className="w-full bg-white pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-gray-700 placeholder-gray-500"
                         />
                       </div>
                     </div>
@@ -593,7 +593,7 @@ export default function Profile() {
                       <textarea
                         {...register('bio')}
                         rows={4}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 resize-none text-white placeholder-gray-500"
+                        className="w-full px-4 py-3 border border-gray-200 bg-white rounded-lg focus:border-gray-400 focus:ring-0 resize-none text-gray-700 placeholder-gray-500"
                         placeholder="Tell us about yourself, your goals, and what you hope to achieve..."
                       />
                     </div>
@@ -819,12 +819,12 @@ export default function Profile() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-600 mb-4">
+                      <label className="block text-sm font-medium bg-white text-gray-600 mb-4">
                         Reminder Time
                       </label>
                       <input
                         type="time"
-                        className="px-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
+                        className="px-4 py-3 border bg-white border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0"
                         value={notifications.reminderTime}
                         onChange={(e) => setNotifications(prev => ({ ...prev, reminderTime: e.target.value }))}
                       />

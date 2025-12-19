@@ -264,29 +264,15 @@ export const ProfileCompletionWizard: React.FC = () => {
 
   const renderPreferences = () => (
     <div className="space-y-6">
-      <div>
-        <label htmlFor="theme" className="block text-sm font-medium text-gray-700 mb-2">
-          Theme Preference
-        </label>
-        <select
-          id="theme"
-          {...register('theme')}
-          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-        >
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-          <option value="system">System</option>
-        </select>
-      </div>
 
       <div>
-        <label htmlFor="language" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="language" className="block text-sm font-medium bg-white text-gray-700 mb-2">
           Language
         </label>
         <select
           id="language"
           {...register('language')}
-          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         >
           <option value="English">English</option>
           <option value="Spanish">Spanish</option>
@@ -297,13 +283,13 @@ export const ProfileCompletionWizard: React.FC = () => {
       </div>
 
       <div>
-        <label htmlFor="timezone" className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="timezone" className="block text-sm bg-white font-medium text-gray-700 mb-2">
           Timezone
         </label>
         <select
           id="timezone"
           {...register('timezone')}
-          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         >
           <option value="UTC">UTC</option>
           <option value="America/New_York">Eastern Time</option>
