@@ -130,269 +130,297 @@ export default function AuthPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 flex items-center justify-center">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-6 px-4">
             <SEO {...(activeTab === 'login' ? seoData.login : seoData.register)} />
-            <div className="w-full max-w-5xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100 max-h-[90vh] flex flex-col">
+            <div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100 h-[90vh] flex flex-col">
                 <div className="grid md:grid-cols-2 flex-1 overflow-hidden">
                     {/* Left side - Branding */}
-                    <div className="hidden md:flex flex-col justify-center items-center bg-gradient-to-br from-blue-600 to-indigo-700 p-6 text-white">
-                        <div className="w-full max-w-xs py-4">
-                            <h2 className="text-2xl font-bold mb-3">Welcome to RRETORIQ</h2>
-                            <p className="text-blue-100 text-sm mb-4">
+                    <div className="hidden md:flex flex-col justify-center items-center bg-gradient-to-br from-blue-600 to-indigo-700 px-8 py-6 text-white">
+                        <div className="w-full max-w-sm">
+                            <h2 className="text-3xl font-bold mb-4">Welcome to RRETORIQ</h2>
+                            <p className="text-blue-100 text-base mb-6 leading-relaxed">
                                 {activeTab === 'login'
                                     ? 'Sign in to access your personalized dashboard and continue your learning journey.'
                                     : 'Join our community of learners and professionals to enhance your skills and knowledge.'}
                             </p>
-                            <div className="space-y-2">
+                            <div className="space-y-4">
                                 <div className="flex items-center space-x-3">
-                                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
-                                        <BookOpen className="w-4 h-4" />
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 backdrop-blur-sm flex items-center justify-center border border-blue-400/30">
+                                        <BookOpen className="w-5 h-5" />
                                     </div>
-                                    <span>Personalized learning paths</span>
+                                    <span className="text-base">Personalized learning paths</span>
                                 </div>
                                 <div className="flex items-center space-x-3">
-                                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
-                                        <GraduationCap className="w-4 h-4" />
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 backdrop-blur-sm flex items-center justify-center border border-blue-400/30">
+                                        <GraduationCap className="w-5 h-5" />
                                     </div>
-                                    <span>Expert-led courses</span>
+                                    <span className="text-base">Expert-led courses</span>
                                 </div>
                                 <div className="flex items-center space-x-3">
-                                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
-                                        <Languages className="w-4 h-4" />
+                                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/30 backdrop-blur-sm flex items-center justify-center border border-blue-400/30">
+                                        <Languages className="w-5 h-5" />
                                     </div>
-                                    <span>Interactive community</span>
+                                    <span className="text-base">Interactive community</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {/* Right side - Form */}
-                    <div className="p-4 sm:p-6 overflow-y-auto">
-                        <div className="text-center mb-8">
-                            <h2 className="text-2xl font-bold text-gray-900">
-                                {activeTab === 'login' ? 'Sign in to your account' : 'Create a new account'}
-                            </h2>
-                            <p className="mt-2 text-sm text-gray-600">
-                                {activeTab === 'login'
-                                    ? 'Or '
-                                    : 'Already have an account? '}
+                    <div className="flex flex-col overflow-y-auto">
+                        <div className="p-6 flex-1">
+                            <div className="text-center mb-4">
+                                <h2 className="text-2xl font-bold text-gray-900">
+                                    {activeTab === 'login' ? 'Sign in to your account' : 'Create a new account'}
+                                </h2>
+                                <p className="mt-1.5 text-sm text-gray-600">
+                                    {activeTab === 'login'
+                                        ? 'Or '
+                                        : 'Already have an account? '}
+                                    <button
+                                        onClick={() => setActiveTab(activeTab === 'login' ? 'register' : 'login')}
+                                        className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                                    >
+                                        {activeTab === 'login' ? 'create a new account' : 'sign in'}
+                                    </button>
+                                </p>
+                            </div>
+
+                            {/* Social Login */}
+                            <div className="mb-3">
                                 <button
-                                    onClick={() => setActiveTab(activeTab === 'login' ? 'register' : 'login')}
-                                    className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                                    onClick={handleGoogleAuth}
+                                    type="button"
+                                    className="w-full flex justify-center items-center px-4 py-2.5 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
                                 >
-                                    {activeTab === 'login' ? 'create a new account' : 'sign in'}
+                                    <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
+                                        <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
+                                            <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.28426 53.749 C -8.52426 55.229 -9.24426 56.479 -10.4343 57.329 L -10.4343 60.609 L -6.46426 60.609 C -4.56426 58.869 -3.264 55.919 -3.264 51.509 Z" />
+                                            <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.80426 62.159 -6.86426 60.609 L -10.4343 57.329 C -11.4043 58.049 -12.7143 58.489 -14.254 58.489 C -17.204 58.489 -19.654 56.379 -20.474 53.529 L -24.564 53.529 L -24.564 56.939 C -22.604 60.889 -19.064 63.239 -14.754 63.239 Z" />
+                                            <path fill="#FBBC05" d="M -20.474 53.529 C -20.734 52.709 -20.864 51.819 -20.864 50.889 C -20.864 49.959 -20.724 49.069 -20.474 48.249 L -20.474 44.839 L -24.564 44.839 C -25.604 46.919 -26.134 49.339 -26.134 51.889 C -26.134 54.439 -25.604 56.859 -24.564 58.939 L -20.474 53.529 Z" />
+                                            <path fill="#EA4335" d="M -14.754 45.289 C -12.984 45.289 -11.404 45.879 -10.084 47.019 L -6.56426 43.499 C -8.74426 41.399 -11.564 39.989 -14.754 39.989 C -19.064 39.989 -22.604 42.339 -24.564 46.289 L -20.474 49.699 C -19.654 46.849 -17.204 44.739 -14.754 44.739 Z" />
+                                        </g>
+                                    </svg>
+                                    {activeTab === 'login' ? 'Sign in' : 'Sign up'} with Google
                                 </button>
-                            </p>
-                        </div>
+                            </div>
 
-                        {/* Social Login */}
-                        <div className="mt-6">
-                            <button
-                                onClick={handleGoogleAuth}
-                                type="button"
-                                className="w-full flex justify-center items-center px-4 py-3 border border-gray-300 rounded-xl shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-                            >
-                                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
-                                    <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
-                                        <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.28426 53.749 C -8.52426 55.229 -9.24426 56.479 -10.4343 57.329 L -10.4343 60.609 L -6.46426 60.609 C -4.56426 58.869 -3.264 55.919 -3.264 51.509 Z" />
-                                        <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.80426 62.159 -6.86426 60.609 L -10.4343 57.329 C -11.4043 58.049 -12.7143 58.489 -14.254 58.489 C -17.204 58.489 -19.654 56.379 -20.474 53.529 L -24.564 53.529 L -24.564 56.939 C -22.604 60.889 -19.064 63.239 -14.754 63.239 Z" />
-                                        <path fill="#FBBC05" d="M -20.474 53.529 C -20.734 52.709 -20.864 51.819 -20.864 50.889 C -20.864 49.959 -20.724 49.069 -20.474 48.249 L -20.474 44.839 L -24.564 44.839 C -25.604 46.919 -26.134 49.339 -26.134 51.889 C -26.134 54.439 -25.604 56.859 -24.564 58.939 L -20.474 53.529 Z" />
-                                        <path fill="#EA4335" d="M -14.754 45.289 C -12.984 45.289 -11.404 45.879 -10.084 47.019 L -6.56426 43.499 C -8.74426 41.399 -11.564 39.989 -14.754 39.989 C -19.064 39.989 -22.604 42.339 -24.564 46.289 L -20.474 49.699 C -19.654 46.849 -17.204 44.739 -14.754 44.739 Z" />
-                                    </g>
-                                </svg>
-                                {activeTab === 'login' ? 'Sign in' : 'Sign up'} with Google
-                            </button>
-                        </div>
-
-                        <div className="mt-6">
-                            <div className="relative">
-                                <div className="absolute inset-0 flex items-center">
-                                    <div className="w-full border-t border-gray-300"></div>
-                                </div>
-                                <div className="relative flex justify-center text-sm">
-                                    <span className="px-2 bg-white text-gray-500">
-                                        Or continue with
-                                    </span>
+                            <div className="mb-3">
+                                <div className="relative">
+                                    <div className="absolute inset-0 flex items-center">
+                                        <div className="w-full border-t border-gray-300"></div>
+                                    </div>
+                                    <div className="relative flex justify-center text-xs">
+                                        <span className="px-2 bg-white text-gray-500">
+                                            Or continue with
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Tab Content */}
-                        <div className="bg-white py-3 px-4 shadow-sm rounded-2xl border border-gray-100">
+                            {/* Error Display */}
                             {error && (
-                                <div className="mt-6 p-4 bg-red-50 border border-red-100 rounded-xl flex items-start space-x-3">
-                                    <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                                    <span className="text-red-700 text-sm">{error}</span>
+                                <div className="mb-3 p-3 bg-red-50 border border-red-100 rounded-xl flex items-start space-x-2">
+                                    <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+                                    <span className="text-red-700 text-xs">{error}</span>
                                 </div>
                             )}
 
                             {/* Forms */}
-                            <div className="mt-4">
+                            <div>
                                 {activeTab === 'login' ? (
                                     // Login Form
-                                    <form onSubmit={handleLoginSubmit(onLogin)} className="space-y-6">
+                                    <form onSubmit={handleLoginSubmit(onLogin)} className="space-y-2.5">
                                         <div>
-                                            <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-2">
+                                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                                                 Email address
                                             </label>
                                             <div className="relative">
                                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                    <Mail className="h-5 w-5 text-gray-400" />
+                                                    <Mail className="h-4 w-4 text-gray-400" />
                                                 </div>
                                                 <input
                                                     {...loginRegister('email')}
                                                     type="email"
                                                     id="email"
                                                     placeholder="you@company.com"
-                                                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-light text-sm"
+                                                    className="w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
                                                 />
                                             </div>
+                                            {loginErrors.email && (
+                                                <p className="mt-1 text-xs text-red-500">{loginErrors.email.message}</p>
+                                            )}
+                                        </div>
 
-                                            <div className="mt-4">
-                                                <div className="flex items-center justify-between mb-2">
-                                                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                                                        Password
-                                                    </label>
-                                                    <Link to="/forgot-password" className="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors">
-                                                        Forgot password?
-                                                    </Link>
-                                                </div>
-                                                <div className="relative">
-                                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <Lock className="h-5 w-5 text-gray-400" />
-                                                    </div>
-                                                    <input
-                                                        {...loginRegister('password')}
-                                                        type={showPassword ? 'text' : 'password'}
-                                                        id="password"
-                                                        placeholder="Enter your password"
-                                                        className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-light text-sm"
-                                                    />
-                                                    <button
-                                                        type="button"
-                                                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                                                        onClick={() => setShowPassword(!showPassword)}
-                                                        aria-label={showPassword ? 'Hide password' : 'Show password'}
-                                                    >
-                                                        {showPassword ? (
-                                                            <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-500 transition-colors" />
-                                                        ) : (
-                                                            <Eye className="h-5 w-5 text-gray-400 hover:text-gray-500 transition-colors" />
-                                                        )}
-                                                    </button>
-                                                </div>
-                                                {loginErrors.password && (
-                                                    <p className="mt-1 text-sm text-red-500">{loginErrors.password.message}</p>
-                                                )}
+                                        <div>
+                                            <div className="flex items-center justify-between mb-1">
+                                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                                    Password
+                                                </label>
+                                                <Link to="/forgot-password" className="text-xs font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                                                    Forgot password?
+                                                </Link>
                                             </div>
-
-                                            <div className="pt-2">
-                                                <button
-                                                    type="submit"
-                                                    disabled={isLoading}
-                                                    className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-                                                >
-                                                    {isLoading ? (
-                                                        <Loader className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" />
-                                                    ) : (
-                                                        <LogIn className="-ml-1 mr-2 h-5 w-5" />
-                                                    )}
-                                                    Sign in
-                                                </button>
-                                            </div>
-
-                                            <div className="text-center text-sm text-gray-500 mt-4">
-                                                Don't have an account?{' '}
+                                            <div className="relative">
+                                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <Lock className="h-4 w-4 text-gray-400" />
+                                                </div>
+                                                <input
+                                                    {...loginRegister('password')}
+                                                    type={showPassword ? 'text' : 'password'}
+                                                    id="password"
+                                                    placeholder="Enter your password"
+                                                    className="w-full pl-9 pr-10 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+                                                />
                                                 <button
                                                     type="button"
-                                                    onClick={() => setActiveTab('register')}
-                                                    className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none"
+                                                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    aria-label={showPassword ? 'Hide password' : 'Show password'}
                                                 >
-                                                    Sign up
+                                                    {showPassword ? (
+                                                        <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-500 transition-colors" />
+                                                    ) : (
+                                                        <Eye className="h-4 w-4 text-gray-400 hover:text-gray-500 transition-colors" />
+                                                    )}
                                                 </button>
                                             </div>
+                                            {loginErrors.password && (
+                                                <p className="mt-1 text-xs text-red-500">{loginErrors.password.message}</p>
+                                            )}
+                                        </div>
+
+                                        <div className="pt-2">
+                                            <button
+                                                type="submit"
+                                                disabled={isLoading}
+                                                className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                {isLoading ? (
+                                                    <Loader className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" />
+                                                ) : (
+                                                    <LogIn className="-ml-1 mr-2 h-5 w-5" />
+                                                )}
+                                                Sign in
+                                            </button>
+                                        </div>
+
+                                        <div className="text-center text-xs text-gray-500 pt-2">
+                                            Don't have an account?{' '}
+                                            <button
+                                                type="button"
+                                                onClick={() => setActiveTab('register')}
+                                                className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none"
+                                            >
+                                                Sign up
+                                            </button>
                                         </div>
                                     </form>
                                 ) : (
                                     // Register Form
-                                    <form onSubmit={handleRegisterSubmit(onRegister)} className="space-y-6">
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <form onSubmit={handleRegisterSubmit(onRegister)} className="space-y-3">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                             <div>
-                                                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+                                                <label htmlFor="firstName" className="block text-xs font-medium text-gray-700 mb-1">
                                                     First name
                                                 </label>
                                                 <div className="relative">
                                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <User className="h-5 w-5 text-gray-400" />
+                                                        <User className="h-4 w-4 text-gray-400" />
                                                     </div>
                                                     <input
                                                         {...registerRegister('firstName')}
                                                         type="text"
                                                         id="firstName"
-                                                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-light text-sm"
+                                                        className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
                                                         placeholder="John"
                                                     />
                                                 </div>
                                                 {registerErrors.firstName && (
-                                                    <p className="mt-1 text-sm text-red-500">{registerErrors.firstName.message}</p>
+                                                    <p className="mt-0.5 text-xs text-red-500">{registerErrors.firstName.message}</p>
                                                 )}
                                             </div>
 
                                             <div>
-                                                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+                                                <label htmlFor="lastName" className="block text-xs font-medium text-gray-700 mb-1">
                                                     Last name
                                                 </label>
                                                 <div className="relative">
                                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                        <User className="h-5 w-5 text-gray-400" />
+                                                        <User className="h-4 w-4 text-gray-400" />
                                                     </div>
                                                     <input
                                                         {...registerRegister('lastName')}
                                                         type="text"
                                                         id="lastName"
-                                                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-light text-sm"
+                                                        className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
                                                         placeholder="Doe"
                                                     />
                                                 </div>
                                                 {registerErrors.lastName && (
-                                                    <p className="mt-1 text-sm text-red-500">{registerErrors.lastName.message}</p>
+                                                    <p className="mt-0.5 text-xs text-red-500">{registerErrors.lastName.message}</p>
                                                 )}
                                             </div>
                                         </div>
 
                                         <div>
-                                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                                            <label htmlFor="email" className="block text-xs font-medium text-gray-700 mb-1">
                                                 Email address
                                             </label>
                                             <div className="relative">
                                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                    <Mail className="h-5 w-5 text-gray-400" />
+                                                    <Mail className="h-4 w-4 text-gray-400" />
                                                 </div>
                                                 <input
                                                     {...registerRegister('email')}
                                                     type="email"
                                                     id="email"
-                                                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-light text-sm"
+                                                    className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
                                                     placeholder="you@company.com"
                                                 />
                                             </div>
                                             {registerErrors.email && (
-                                                <p className="mt-1 text-sm text-red-500">{registerErrors.email.message}</p>
+                                                <p className="mt-0.5 text-xs text-red-500">{registerErrors.email.message}</p>
                                             )}
                                         </div>
 
                                         <div>
-                                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                                            <label htmlFor="college" className="block text-xs font-medium text-gray-700 mb-1">
+                                                College/Institution
+                                            </label>
+                                            <div className="relative">
+                                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <School className="h-4 w-4 text-gray-400" />
+                                                </div>
+                                                <select
+                                                    {...registerRegister('college')}
+                                                    id="college"
+                                                    className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm appearance-none"
+                                                >
+                                                    {colleges.map((college) => (
+                                                        <option key={college} value={college}>
+                                                            {college}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            {registerErrors.college && (
+                                                <p className="mt-0.5 text-xs text-red-500">{registerErrors.college.message}</p>
+                                            )}
+                                        </div>
+
+                                        <div>
+                                            <label htmlFor="password" className="block text-xs font-medium text-gray-700 mb-1">
                                                 Password
                                             </label>
                                             <div className="relative">
                                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                    <Lock className="h-5 w-5 text-gray-400" />
+                                                    <Lock className="h-4 w-4 text-gray-400" />
                                                 </div>
                                                 <input
                                                     {...registerRegister('password')}
                                                     type={showPassword ? 'text' : 'password'}
                                                     id="password"
-                                                    className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-light text-sm"
+                                                    className="w-full pl-9 pr-10 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
                                                     placeholder="••••••••"
                                                 />
                                                 <button
@@ -402,30 +430,30 @@ export default function AuthPage() {
                                                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                                                 >
                                                     {showPassword ? (
-                                                        <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-500 transition-colors" />
+                                                        <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-500 transition-colors" />
                                                     ) : (
-                                                        <Eye className="h-5 w-5 text-gray-400 hover:text-gray-500 transition-colors" />
+                                                        <Eye className="h-4 w-4 text-gray-400 hover:text-gray-500 transition-colors" />
                                                     )}
                                                 </button>
                                             </div>
                                             {registerErrors.password && (
-                                                <p className="mt-1 text-sm text-red-500">{registerErrors.password.message}</p>
+                                                <p className="mt-0.5 text-xs text-red-500">{registerErrors.password.message}</p>
                                             )}
                                         </div>
 
                                         <div>
-                                            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                                            <label htmlFor="confirmPassword" className="block text-xs font-medium text-gray-700 mb-1">
                                                 Confirm Password
                                             </label>
                                             <div className="relative">
                                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                    <Lock className="h-5 w-5 text-gray-400" />
+                                                    <Lock className="h-4 w-4 text-gray-400" />
                                                 </div>
                                                 <input
                                                     {...registerRegister('confirmPassword')}
                                                     type={showConfirmPassword ? 'text' : 'password'}
                                                     id="confirmPassword"
-                                                    className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-light text-sm"
+                                                    className="w-full pl-9 pr-10 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
                                                     placeholder="••••••••"
                                                 />
                                                 <button
@@ -435,14 +463,14 @@ export default function AuthPage() {
                                                     aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                                                 >
                                                     {showConfirmPassword ? (
-                                                        <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-500 transition-colors" />
+                                                        <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-500 transition-colors" />
                                                     ) : (
-                                                        <Eye className="h-5 w-5 text-gray-400 hover:text-gray-500 transition-colors" />
+                                                        <Eye className="h-4 w-4 text-gray-400 hover:text-gray-500 transition-colors" />
                                                     )}
                                                 </button>
                                             </div>
                                             {registerErrors.confirmPassword && (
-                                                <p className="mt-1 text-sm text-red-500">{registerErrors.confirmPassword.message}</p>
+                                                <p className="mt-0.5 text-xs text-red-500">{registerErrors.confirmPassword.message}</p>
                                             )}
                                         </div>
 
@@ -450,7 +478,7 @@ export default function AuthPage() {
                                             <button
                                                 type="submit"
                                                 disabled={isLoading}
-                                                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                                                className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                             >
                                                 {isLoading ? (
                                                     <Loader className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" />
@@ -461,7 +489,7 @@ export default function AuthPage() {
                                             </button>
                                         </div>
 
-                                        <div className="text-center text-sm text-gray-500">
+                                        <div className="text-center text-xs text-gray-500 pt-1">
                                             Already have an account?{' '}
                                             <button
                                                 type="button"
