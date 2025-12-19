@@ -34,7 +34,7 @@ const profileSchema = z.object({
   location: z.string().optional(),
   dateOfBirth: z.string().optional(),
   occupation: z.string().optional(),
-  company: z.string().optional(),
+  college: z.string().optional(),
   education: z.string().optional(),
   languages: z.string().optional(),
   bio: z.string().optional()
@@ -98,7 +98,7 @@ export default function Profile() {
       location: '',
       dateOfBirth: '',
       occupation: '',
-      company: '',
+      college: '',
       education: '',
       languages: '',
       bio: ''
@@ -151,7 +151,7 @@ export default function Profile() {
             location: profile?.location || '',
             dateOfBirth: profile?.dateOfBirth || '',
             occupation: profile?.occupation || '',
-            company: profile?.company || '',
+            college: profile?.college || '',
             education: profile?.education || '',
             languages: profile?.languages || '',
             bio: profile?.bio || ''
@@ -180,7 +180,7 @@ export default function Profile() {
         location: data.location,
         dateOfBirth: data.dateOfBirth,
         occupation: data.occupation,
-        company: data.company,
+        college: data.college,
         education: data.education,
         languages: data.languages,
         bio: data.bio,
@@ -542,15 +542,15 @@ export default function Profile() {
 
                       <div>
                         <label className="block text-sm font-medium text-gray-600 mb-3">
-                          Company
+                          College Name
                         </label>
                         <div className="relative">
-                          <Briefcase className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                          <GraduationCap className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
                           <input
-                            {...register('company')}
+                            {...register('college')}
                             type="text"
                             className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-gray-400 focus:ring-0 text-white placeholder-gray-500"
-                            placeholder="Tech Corp Ltd."
+                            placeholder="IIT Delhi / Stanford University"
                           />
                         </div>
                       </div>

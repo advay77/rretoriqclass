@@ -728,25 +728,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-700 bg-black/50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="flex items-center space-x-4">
-                <div className="text-white text-sm">
-                  © 2025 Rretoriq. All rights reserved.
-                </div>
-                <div className="hidden sm:flex items-center space-x-2 text-xs text-white">
-                  <span className="flex items-center space-x-1">
-                    <span>Handcrafted in India with ❤️</span>
-                  </span>
-                </div>
+        <div className="border-t border-slate-800 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
+              <div className="flex items-center space-x-3 text-sm text-slate-200">
+                <span className="font-medium">© 2025 Rretoriq. All rights reserved.</span>
+                <span className="hidden sm:inline text-slate-500">•</span>
+                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-[12px] text-emerald-100">
+                  <span className="text-emerald-300">✦</span>
+                  Handcrafted in India
+                </span>
               </div>
 
-              <div className="flex items-center space-x-6 text-sm text-white">
-                <div className="flex items-center space-x-1">
-                  <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                  <span>Trusted by 50,000+ professionals</span>
-                </div>
+              <div className="flex items-center space-x-2 text-sm text-slate-100">
+                <Star className="w-4 h-4 text-amber-400 fill-current" />
+                <span className="font-medium">Trusted by 50,000+ professionals</span>
               </div>
             </div>
           </div>
