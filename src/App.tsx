@@ -1,5 +1,5 @@
 ﻿import { useEffect } from 'react'
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { HelmetProvider } from 'react-helmet-async'
 import Layout from './components/Layout'
@@ -10,8 +10,7 @@ import Home from './pages/Home'
 import Demo from './pages/Demo'
 import Business from './pages/Business'
 import Schools from './pages/Schools'
-import Login from './pages/auth/Login'
-import Register from './pages/auth/Register'
+import AuthPage from './pages/auth/AuthPage'
 import Dashboard from './pages/dashboard/Dashboardnew'
 import IELTSPractice from './pages/ielts/IELTSPractice'
 import Resources from './pages/Resources'
@@ -63,122 +62,120 @@ function App() {
         <Layout>
           <ScrollToTop />
           <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/demo" element={<Demo />} />
-          <Route path="/business" element={<Business />} />
-          <Route path="/schools" element={<Schools />} />
-          
-          {/* Auth Routes (redirect to dashboard if already authenticated) */}
-          <Route path="/login" element={
-            <ProtectedRoute requireAuth={false}>
-              <Login />
-            </ProtectedRoute>
-          } />
-          <Route path="/register" element={
-            <ProtectedRoute requireAuth={false}>
-              <Register />
-            </ProtectedRoute>
-          } />
-          
-          {/* Profile Completion (required for new users) */}
-          <Route path="/complete-profile" element={
-            <ProtectedRoute requireAuth={true} requireProfileCompletion={false}>
-              <ProfileCompletionWizard />
-            </ProtectedRoute>
-          } />
-          
-          {/* Protected Routes (require authentication and profile completion) */}
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } />
-          
-          {/* Admin Portal Routes (requires admin custom claim) */}
-          <Route element={<AdminRoute />}>
-            <Route path="/admin/dashboard" element={<InstitutionAdminDashboard />} />
-            <Route path="/admin/students" element={<StudentsDetails />} />
-          </Route>
-          
-          <Route path="/ielts" element={
-            <ProtectedRoute>
-              <IELTSPractice />
-            </ProtectedRoute>
-          } />
-          <Route path="/resources" element={
-            <ProtectedRoute>
-              <Resources />
-            </ProtectedRoute>
-          } />
-          <Route path="/interview" element={
-            <ProtectedRoute>
-              <AIInterviewErrorBoundary>
-                <AIInterviewPage />
-              </AIInterviewErrorBoundary>
-            </ProtectedRoute>
-          } />
-          {/* AI Interview Routes */}
-          <Route path="/ai-interview/:type" element={
-            <ProtectedRoute>
-              <AIInterviewErrorBoundary>
-                <AIInterviewPage />
-              </AIInterviewErrorBoundary>
-            </ProtectedRoute>
-          } />
-          <Route path="/session-results/:sessionId" element={
-            <ProtectedRoute>
-              <SessionResults />
-            </ProtectedRoute>
-          } />
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          } />
-          <Route path="/progress" element={
-            <ProtectedRoute>
-              <Progress />
-            </ProtectedRoute>
-          } />
-          
-          {/* Pricing (public but enhanced for authenticated users) */}
-          <Route path="/pricing" element={<Pricing />} />
-          
-          {/* Plan Upgrade (protected route) */}
-          <Route path="/plans" element={
-            <ProtectedRoute>
-              <PlanUpgrade />
-            </ProtectedRoute>
-          } />
-          
-          {/* Support Pages (publicly accessible pre-login) */}
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/help" element={<Help />} />
-          <Route path="/about" element={<AboutUs />} />
-          
-          {/* Coming Soon Pages (remaining) */}
-          <Route path="/contact" element={
-            <ComingSoonPage
-              title="Contact Us"
-              description="Get in touch with our team for support and feedback"
-              icon={<MessageCircle className="w-8 h-8 text-blue-600" />}
-            />
-          } />
-          <Route path="/privacy" element={
-            <ComingSoonPage
-              title="Privacy Policy"
-              description="Your privacy and data protection information"
-              icon={<Shield className="w-8 h-8 text-blue-600" />}
-            />
-          } />
-          <Route path="/terms" element={
-            <ComingSoonPage
-              title="Terms of Service"
-              description="Terms and conditions for using our platform"
-              icon={<FileText className="w-8 h-8 text-blue-600" />}
-            />
-          } />
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/demo" element={<Demo />} />
+            <Route path="/business" element={<Business />} />
+            <Route path="/schools" element={<Schools />} />
+
+            {/* Auth Route (redirect to dashboard if already authenticated) */}
+            <Route path="/login" element={
+              <ProtectedRoute requireAuth={false}>
+                <AuthPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/register" element={
+              <Navigate to="/login" replace />
+            } />
+
+            {/* Profile Completion (required for new users) */}
+            <Route path="/complete-profile" element={
+              <ProtectedRoute requireAuth={true} requireProfileCompletion={false}>
+                <ProfileCompletionWizard />
+              </ProtectedRoute>
+            } />
+
+            {/* Protected Routes (require authentication and profile completion) */}
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+
+            {/* Admin Portal Routes (requires admin custom claim) */}
+            <Route element={<AdminRoute />}>
+              <Route path="/admin/dashboard" element={<InstitutionAdminDashboard />} />
+              <Route path="/admin/students" element={<StudentsDetails />} />
+            </Route>
+
+            <Route path="/ielts" element={
+              <ProtectedRoute>
+                <IELTSPractice />
+              </ProtectedRoute>
+            } />
+            <Route path="/resources" element={
+              <ProtectedRoute>
+                <Resources />
+              </ProtectedRoute>
+            } />
+            <Route path="/interview" element={
+              <ProtectedRoute>
+                <AIInterviewErrorBoundary>
+                  <AIInterviewPage />
+                </AIInterviewErrorBoundary>
+              </ProtectedRoute>
+            } />
+            {/* AI Interview Routes */}
+            <Route path="/ai-interview/:type" element={
+              <ProtectedRoute>
+                <AIInterviewErrorBoundary>
+                  <AIInterviewPage />
+                </AIInterviewErrorBoundary>
+              </ProtectedRoute>
+            } />
+            <Route path="/session-results/:sessionId" element={
+              <ProtectedRoute>
+                <SessionResults />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            } />
+            <Route path="/progress" element={
+              <ProtectedRoute>
+                <Progress />
+              </ProtectedRoute>
+            } />
+
+            {/* Pricing (public but enhanced for authenticated users) */}
+            <Route path="/pricing" element={<Pricing />} />
+
+            {/* Plan Upgrade (protected route) */}
+            <Route path="/plans" element={
+              <ProtectedRoute>
+                <PlanUpgrade />
+              </ProtectedRoute>
+            } />
+
+            {/* Support Pages (publicly accessible pre-login) */}
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/about" element={<AboutUs />} />
+
+            {/* Coming Soon Pages (remaining) */}
+            <Route path="/contact" element={
+              <ComingSoonPage
+                title="Contact Us"
+                description="Get in touch with our team for support and feedback"
+                icon={<MessageCircle className="w-8 h-8 text-blue-600" />}
+              />
+            } />
+            <Route path="/privacy" element={
+              <ComingSoonPage
+                title="Privacy Policy"
+                description="Your privacy and data protection information"
+                icon={<Shield className="w-8 h-8 text-blue-600" />}
+              />
+            } />
+            <Route path="/terms" element={
+              <ComingSoonPage
+                title="Terms of Service"
+                description="Terms and conditions for using our platform"
+                icon={<FileText className="w-8 h-8 text-blue-600" />}
+              />
+            } />
           </Routes>
         </Layout>
       </QueryClientProvider>

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { 
-  signInWithEmailAndPassword, 
+import {
+  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -27,6 +27,7 @@ export interface User {
   admin?: boolean // Custom claim for institutional admins
   institutionId?: string // Institution the user belongs to (for students)
   approved?: boolean // whether admin approved this user to access the app
+  college?: string // User's college or educational institution
 }
 
 export interface LoginCredentials {
@@ -39,6 +40,14 @@ export interface RegisterCredentials {
   password: string
   firstName: string
   lastName: string
+  college: string
+  phone: string
+  location: string
+  dateOfBirth: string
+  occupation: string
+  education: string
+  languages: string
+  bio: string
 }
 
 interface AuthState {
@@ -71,11 +80,11 @@ const convertFirebaseUser = async (firebaseUser: FirebaseUser, isNewUser: boolea
   // Try to get additional user data from Firestore
   const userDocRef = doc(db, 'users', firebaseUser.uid)
   const userDoc = await getDoc(userDocRef)
-  
+
   // Check if user profile is completed
   const userProfile = await userProfileService.getUserProfile(firebaseUser.uid)
   const profileCompleted = userProfile ? checkProfileCompleteness(userProfile) : false
-  
+
   // Get custom claims (admin status) from ID token. Force a token refresh
   // so recently-set custom claims (from admin SDK) are picked up by clients.
   let idTokenResult
@@ -95,11 +104,11 @@ const convertFirebaseUser = async (firebaseUser: FirebaseUser, isNewUser: boolea
     // ignore
   }
   const isAdmin = idTokenResult.claims.admin === true || idTokenResult.claims.isAdmin === true
-  
+
   if (userDoc.exists()) {
     const userData = userDoc.data()
     // If approved is undefined (older users), default to true to avoid locking existing accounts.
-  const isApproved = userData.approved === undefined ? true : !!userData.approved
+    const isApproved = userData.approved === undefined ? true : !!userData.approved
     return {
       id: firebaseUser.uid,
       email: firebaseUser.email || '',
@@ -111,7 +120,7 @@ const convertFirebaseUser = async (firebaseUser: FirebaseUser, isNewUser: boolea
       createdAt: userData.createdAt || new Date().toISOString(),
       profileCompleted,
       isNewUser,
-  admin: isAdmin,
+      admin: isAdmin,
       institutionId: userData.institutionId,
       approved: isApproved
     }
@@ -157,7 +166,7 @@ const saveUserToFirestore = async (firebaseUser: FirebaseUser, additionalData?: 
     approved: typeof additionalData?.approved === 'boolean' ? additionalData!.approved : false,
     ...additionalData
   }
-  
+
   await setDoc(userDocRef, userData, { merge: true })
 }
 
@@ -172,7 +181,7 @@ export const useAuthStore = create<AuthStore>()(
       profileCompleted: false,
       isNewUser: false,
 
-  // Actions
+      // Actions
 
       login: async (credentials: LoginCredentials) => {
         try {
@@ -182,18 +191,18 @@ export const useAuthStore = create<AuthStore>()(
           // Previously we blocked sign-in for unapproved users. Approval flow
           // has been removed — accept the user regardless of any `approved` flag.
 
-          set({ 
-            user, 
-            isAuthenticated: true, 
+          set({
+            user,
+            isAuthenticated: true,
             isLoading: false,
             profileCompleted: user.profileCompleted || false,
             isNewUser: false
           })
         } catch (error: any) {
           const errorMessage = error.code?.replace('auth/', '').replace('-', ' ') || 'Login failed'
-          set({ 
+          set({
             error: errorMessage,
-            isLoading: false 
+            isLoading: false
           })
           throw error
         }
@@ -203,14 +212,14 @@ export const useAuthStore = create<AuthStore>()(
         try {
           set({ isLoading: true, error: null })
           const userCredential = await signInWithPopup(auth, googleProvider)
-          
+
           // Check if this is a new user
           const existingProfile = await userProfileService.getUserProfile(userCredential.user.uid)
           const isNewUser = !existingProfile
-          
+
           // Save user data to Firestore
           await saveUserToFirestore(userCredential.user)
-          
+
           // Create profile if new user
           if (isNewUser) {
             const displayNameParts = userCredential.user.displayName?.split(' ') || ['', '']
@@ -220,23 +229,23 @@ export const useAuthStore = create<AuthStore>()(
               displayName: userCredential.user.displayName || ''
             })
           }
-          
+
           const user = await convertFirebaseUser(userCredential.user, isNewUser)
 
           // Approval flow removed — proceed normally
 
-          set({ 
-            user, 
-            isAuthenticated: true, 
+          set({
+            user,
+            isAuthenticated: true,
             isLoading: false,
             profileCompleted: user.profileCompleted || false,
             isNewUser
           })
         } catch (error: any) {
           const errorMessage = error.code?.replace('auth/', '').replace('-', ' ') || 'Google login failed'
-          set({ 
+          set({
             error: errorMessage,
-            isLoading: false 
+            isLoading: false
           })
           throw error
         }
@@ -246,41 +255,88 @@ export const useAuthStore = create<AuthStore>()(
         try {
           set({ isLoading: true, error: null })
           const userCredential = await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
-          
-          // Update the user's display name
-          await updateProfile(userCredential.user, {
-            displayName: `${credentials.firstName} ${credentials.lastName}`
-          })
 
-          // Save additional user data to Firestore
-          await saveUserToFirestore(userCredential.user, {
-            firstName: credentials.firstName,
-            lastName: credentials.lastName
-          })
-
-          // Create initial user profile
-          await userProfileService.createUserProfile(userCredential.user.uid, userCredential.user.email!, {
+          // Prepare user profile data
+          const userProfileData = {
             firstName: credentials.firstName,
             lastName: credentials.lastName,
-            displayName: `${credentials.firstName} ${credentials.lastName}`
+            displayName: `${credentials.firstName} ${credentials.lastName}`,
+            email: credentials.email,
+            phone: credentials.phone,
+            location: credentials.location,
+            dateOfBirth: credentials.dateOfBirth,
+            occupation: credentials.occupation,
+            education: credentials.education,
+            languages: credentials.languages,
+            bio: credentials.bio,
+            college: credentials.college,
+            // Set default values for preferences
+            preferences: {
+              learningGoal: 'general',
+              practiceFrequency: 'weekly',
+              difficultyLevel: 'intermediate',
+              enableVoiceFeedback: true,
+              showAnalytics: true
+            },
+            // Set default notification preferences
+            notifications: {
+              email: {
+                practiceReminders: true,
+                progressReports: true,
+                newFeatures: true
+              },
+              push: {
+                dailyReminder: true,
+                achievements: true,
+                sessionCompleted: true
+              },
+              reminderTime: '09:00'
+            },
+            // Set timestamps
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          }
+
+          // Update the user's display name
+          await updateProfile(userCredential.user, {
+            displayName: userProfileData.displayName
           })
+
+          // Save user data to Firestore
+          await saveUserToFirestore(userCredential.user, {
+            ...userProfileData,
+            // Additional fields for the main users collection
+            emailVerified: false,
+            profileCompleted: true,
+            isNewUser: true
+          })
+
+          // Create user profile with all the collected information
+          await userProfileService.createUserProfile(
+            userCredential.user.uid,
+            userCredential.user.email!,
+            userProfileData
+          )
 
           const user = await convertFirebaseUser(userCredential.user, true)
 
-          // Approval flow removed — proceed normally for newly registered users
-
-          set({ 
-            user, 
-            isAuthenticated: true, 
+          // For new registrations, mark profile as not completed
+          // since we still need additional profile information
+          set({
+            user: {
+              ...user,
+              profileCompleted: false
+            },
+            isAuthenticated: true,
             isLoading: false,
             profileCompleted: false,
             isNewUser: true
           })
         } catch (error: any) {
           const errorMessage = error.code?.replace('auth/', '').replace('-', ' ') || 'Registration failed'
-          set({ 
+          set({
             error: errorMessage,
-            isLoading: false 
+            isLoading: false
           })
           throw error
         }
@@ -290,9 +346,9 @@ export const useAuthStore = create<AuthStore>()(
         try {
           set({ isLoading: true })
           await signOut(auth)
-          set({ 
-            user: null, 
-            isAuthenticated: false, 
+          set({
+            user: null,
+            isAuthenticated: false,
             isLoading: false,
             error: null,
             profileCompleted: false,
@@ -300,9 +356,9 @@ export const useAuthStore = create<AuthStore>()(
           })
         } catch (error) {
           console.error('Logout error:', error)
-          set({ 
-            user: null, 
-            isAuthenticated: false, 
+          set({
+            user: null,
+            isAuthenticated: false,
             isLoading: false,
             error: null,
             profileCompleted: false,
@@ -311,7 +367,7 @@ export const useAuthStore = create<AuthStore>()(
         }
       },
 
-  // removed clearApprovalPending and approval UI state
+      // removed clearApprovalPending and approval UI state
 
       initializeAuth: () => {
         // Start loading and attach a watchdog timeout so the UI doesn't stay
@@ -334,18 +390,18 @@ export const useAuthStore = create<AuthStore>()(
 
               // Approval flow removed — allow user to stay signed in
 
-              set({ 
-                user, 
-                isAuthenticated: true, 
+              set({
+                user,
+                isAuthenticated: true,
                 isLoading: false,
                 error: null,
                 profileCompleted: user.profileCompleted || false,
                 isNewUser: user.isNewUser || false
               })
             } else {
-              set({ 
-                user: null, 
-                isAuthenticated: false, 
+              set({
+                user: null,
+                isAuthenticated: false,
                 isLoading: false,
                 error: null,
                 profileCompleted: false,
@@ -357,9 +413,9 @@ export const useAuthStore = create<AuthStore>()(
             clearTimeout(watchdog)
           } catch (error) {
             console.error('Auth state change error:', error)
-            set({ 
-              user: null, 
-              isAuthenticated: false, 
+            set({
+              user: null,
+              isAuthenticated: false,
               isLoading: false,
               error: error instanceof Error ? error.message : 'Authentication error',
               profileCompleted: false,
@@ -379,7 +435,7 @@ export const useAuthStore = create<AuthStore>()(
         try {
           const profile = await userProfileService.getUserProfile(userId)
           if (!profile) return false
-          
+
           const isComplete = checkProfileCompleteness(profile)
           set({ profileCompleted: isComplete })
           return isComplete
@@ -439,8 +495,8 @@ export const useAuthStore = create<AuthStore>()(
     }),
     {
       name: 'auth-storage',
-      partialize: (state) => ({ 
-        user: state.user, 
+      partialize: (state) => ({
+        user: state.user,
         isAuthenticated: state.isAuthenticated,
         profileCompleted: state.profileCompleted,
         isNewUser: state.isNewUser

@@ -3,20 +3,20 @@ import { Link, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import NewsletterSubscription from './NewsletterSubscription'
 // ApprovalDialog removed — approval UI disabled
-import { 
-  Brain, 
-  Menu, 
-  X, 
-  Users, 
-  Target, 
-  BarChart3, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Twitter, 
-  Linkedin, 
-  Instagram, 
-  Facebook, 
+import {
+  Brain,
+  Menu,
+  X,
+  Users,
+  Target,
+  BarChart3,
+  Mail,
+  Phone,
+  MapPin,
+  Twitter,
+  Linkedin,
+  Instagram,
+  Facebook,
   Star,
   User,
   LogOut,
@@ -83,10 +83,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   if (user) {
     return (
       <div className="flex min-h-screen bg-gray-50">
-  {/* ApprovalDialog removed */}
+        {/* ApprovalDialog removed */}
         {/* Mobile sidebar backdrop */}
         {sidebarOpen && (
-          <div 
+          <div
             className="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 transition-opacity lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
@@ -97,9 +97,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="flex min-h-0 flex-1 flex-col bg-gradient-to-b from-indigo-50 via-purple-50 to-pink-50 border-r border-purple-100 shadow-lg">
             {/* Logo */}
             <div className="flex items-center px-6 py-6">
-              <img 
-                src="/resources/Rretoriq_main_blk.png" 
-                alt="Rretoriq Logo" 
+              <img
+                src="/resources/Rretoriq_main_blk.png"
+                alt="Rretoriq Logo"
                 className="h-10 w-auto"
               />
               <span className="ml-3 text-xl font-bold text-gray-900">Rretoriq</span>
@@ -116,15 +116,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <Link
                       key={item.name}
                       to={item.href}
-                      className={`group flex items-center px-3 py-2.5 mb-1.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
-                        isCurrentActive
-                          ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                          : 'text-gray-700 hover:text-indigo-600 hover:bg-white/60 hover:shadow-md'
-                      }`}
+                      className={`group flex items-center px-3 py-2.5 mb-1.5 text-sm font-semibold rounded-xl transition-all duration-200 ${isCurrentActive
+                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                        : 'text-gray-700 hover:text-indigo-600 hover:bg-white/60 hover:shadow-md'
+                        }`}
                     >
-                      <Icon className={`w-5 h-5 mr-3 ${
-                        isCurrentActive ? 'text-white' : 'text-indigo-500 group-hover:text-indigo-600'
-                      }`} />
+                      <Icon className={`w-5 h-5 mr-3 ${isCurrentActive ? 'text-white' : 'text-indigo-500 group-hover:text-indigo-600'
+                        }`} />
                       <span>{item.name}</span>
                     </Link>
                   )
@@ -143,15 +141,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <Link
                       key={item.name}
                       to={item.href}
-                      className={`group flex items-center px-3 py-2.5 mb-1.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
-                        isCurrentActive
-                          ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                          : 'text-gray-700 hover:text-indigo-600 hover:bg-white/60 hover:shadow-md'
-                      }`}
+                      className={`group flex items-center px-3 py-2.5 mb-1.5 text-sm font-semibold rounded-xl transition-all duration-200 ${isCurrentActive
+                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                        : 'text-gray-700 hover:text-indigo-600 hover:bg-white/60 hover:shadow-md'
+                        }`}
                     >
-                      <Icon className={`w-5 h-5 mr-3 ${
-                        isCurrentActive ? 'text-white' : 'text-indigo-500 group-hover:text-indigo-600'
-                      }`} />
+                      <Icon className={`w-5 h-5 mr-3 ${isCurrentActive ? 'text-white' : 'text-indigo-500 group-hover:text-indigo-600'
+                        }`} />
                       <span>{item.name}</span>
                     </Link>
                   )
@@ -167,8 +163,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   className="w-full flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-white/60 hover:shadow-md transition-all duration-200"
                 >
                   {user.photoURL ? (
-                    <img 
-                      src={user.photoURL} 
+                    <img
+                      src={user.photoURL}
                       alt={user.displayName || user.email || 'User'}
                       className="w-9 h-9 rounded-full object-cover shadow-lg"
                     />
@@ -211,16 +207,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
 
         {/* Mobile Sidebar */}
-        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-indigo-50 via-purple-50 to-pink-50 border-r border-purple-100 shadow-2xl transform transition-transform duration-300 ease-in-out lg:hidden ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}>
+        <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-indigo-50 via-purple-50 to-pink-50 border-r border-purple-100 shadow-2xl transform transition-transform duration-300 ease-in-out lg:hidden ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}>
           <div className="flex min-h-0 flex-1 flex-col">
             {/* Mobile Logo with Close Button */}
             <div className="flex items-center justify-between px-6 py-6">
               <div className="flex items-center">
-                <img 
-                  src="/resources/Rretoriq_main_blk.png" 
-                  alt="Rretoriq Logo" 
+                <img
+                  src="/resources/Rretoriq_main_blk.png"
+                  alt="Rretoriq Logo"
                   className="h-10 w-auto"
                 />
                 <span className="ml-3 text-xl font-bold text-gray-900">Rretoriq</span>
@@ -245,15 +240,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       key={item.name}
                       to={item.href}
                       onClick={() => setSidebarOpen(false)}
-                      className={`group flex items-center px-3 py-2.5 mb-1.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
-                        isCurrentActive
-                          ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                          : 'text-gray-700 hover:text-indigo-600 hover:bg-white/60 hover:shadow-md'
-                      }`}
+                      className={`group flex items-center px-3 py-2.5 mb-1.5 text-sm font-semibold rounded-xl transition-all duration-200 ${isCurrentActive
+                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                        : 'text-gray-700 hover:text-indigo-600 hover:bg-white/60 hover:shadow-md'
+                        }`}
                     >
-                      <Icon className={`w-5 h-5 mr-3 ${
-                        isCurrentActive ? 'text-white' : 'text-indigo-500 group-hover:text-indigo-600'
-                      }`} />
+                      <Icon className={`w-5 h-5 mr-3 ${isCurrentActive ? 'text-white' : 'text-indigo-500 group-hover:text-indigo-600'
+                        }`} />
                       <span>{item.name}</span>
                     </Link>
                   )
@@ -273,15 +266,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       key={item.name}
                       to={item.href}
                       onClick={() => setSidebarOpen(false)}
-                      className={`group flex items-center px-3 py-2.5 mb-1.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
-                        isCurrentActive
-                          ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
-                          : 'text-gray-700 hover:text-indigo-600 hover:bg-white/60 hover:shadow-md'
-                      }`}
+                      className={`group flex items-center px-3 py-2.5 mb-1.5 text-sm font-semibold rounded-xl transition-all duration-200 ${isCurrentActive
+                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg'
+                        : 'text-gray-700 hover:text-indigo-600 hover:bg-white/60 hover:shadow-md'
+                        }`}
                     >
-                      <Icon className={`w-5 h-5 mr-3 ${
-                        isCurrentActive ? 'text-white' : 'text-indigo-500 group-hover:text-indigo-600'
-                      }`} />
+                      <Icon className={`w-5 h-5 mr-3 ${isCurrentActive ? 'text-white' : 'text-indigo-500 group-hover:text-indigo-600'
+                        }`} />
                       <span>{item.name}</span>
                     </Link>
                   )
@@ -297,8 +288,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   className="w-full flex items-center px-3 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-white/60 hover:shadow-md transition-all duration-200"
                 >
                   {user.photoURL ? (
-                    <img 
-                      src={user.photoURL} 
+                    <img
+                      src={user.photoURL}
                       alt={user.displayName}
                       className="w-9 h-9 rounded-full object-cover shadow-lg"
                     />
@@ -311,7 +302,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <p className="text-sm font-bold text-gray-900">{user.displayName || user.firstName || user.email || 'User'}</p>
                   </div>
                 </button>
-                
+
                 {userMenuOpen && (
                   <div className="absolute bottom-full left-0 right-0 mb-2 bg-white/95 backdrop-blur-sm rounded-xl shadow-xl border border-purple-100 py-2">
                     <Link
@@ -355,9 +346,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   <Menu className="w-6 h-6" />
                 </button>
                 <div className="ml-3 flex items-center">
-                  <img 
-                    src="/resources/Rretoriq_main_blk.png" 
-                    alt="Rretoriq Logo" 
+                  <img
+                    src="/resources/Rretoriq_main_blk.png"
+                    alt="Rretoriq Logo"
                     className="h-8 w-auto brightness-0 invert"
                   />
                   <span className="ml-2 text-lg font-bold text-white">Rretoriq</span>
@@ -385,16 +376,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   // Public layout for non-authenticated users
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
-  {/* ApprovalDialog removed */}
+      {/* ApprovalDialog removed */}
       {/* Clean Professional Header */}
       <header className="fixed w-full top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* Professional Logo and Brand */}
             <Link to="/" className="flex items-center space-x-3 group">
-              <img 
-                src="/resources/Rretoriq_main_blk.png" 
-                alt="Rretoriq Logo" 
+              <img
+                src="/resources/Rretoriq_main_blk.png"
+                alt="Rretoriq Logo"
                 className="h-10 w-auto"
               />
               <span className="text-xl font-bold text-gray-900">Rretoriq</span>
@@ -408,18 +399,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   <Link
                     key={item.name}
                     to={item.href}
-                    className={`flex items-center space-x-2 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                      isActive(item.href)
-                        ? 'text-blue-600 bg-blue-50'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                    }`}
+                    className={`flex items-center space-x-2 px-3 py-2 text-sm font-medium rounded-md transition-colors ${isActive(item.href)
+                      ? 'text-blue-600 bg-blue-50'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     <span>{item.name}</span>
                   </Link>
                 )
               })}
-              
+
               <div className="flex items-center space-x-4 ml-6 pl-6 border-l-2 border-violet-200/50">
                 {user ? (
                   <div className="relative">
@@ -432,7 +422,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       </div>
                       <span>Hey, {(user as any)?.displayName || (user as any)?.firstName || 'User'}! 👋</span>
                     </button>
-                    
+
                     {userMenuOpen && (
                       <div className="absolute right-0 mt-3 w-60 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl shadow-violet-500/20 border-2 border-violet-200/50 py-4 z-50">
                         <Link
@@ -481,11 +471,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`text-sm font-medium px-3 py-2 rounded-lg transition-all ${
-                    isActive(item.href)
-                      ? 'text-emerald-400 bg-emerald-500/10'
-                      : 'text-gray-300 hover:text-emerald-400 hover:bg-gray-800/50'
-                  }`}
+                  className={`text-sm font-medium px-3 py-2 rounded-lg transition-all ${isActive(item.href)
+                    ? 'text-emerald-400 bg-emerald-500/10'
+                    : 'text-gray-300 hover:text-emerald-400 hover:bg-gray-800/50'
+                    }`}
                 >
                   {item.name}
                 </Link>
@@ -506,7 +495,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* Mobile menu button */}
             <div className="md:hidden">
-              <button 
+              <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="relative p-2 text-gray-700 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all duration-200"
               >
@@ -520,9 +509,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
 
           {/* Enhanced Mobile Navigation Menu */}
-          <div 
+          <div
             className={`md:hidden absolute top-full left-0 right-0 backdrop-blur-xl border-t shadow-2xl transform transition-all duration-300 ${mobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'}`}
-            style={{ 
+            style={{
               backgroundColor: 'rgba(255, 255, 255, 0.98)',
               borderTopColor: 'rgb(209, 250, 229)'
             }}
@@ -535,11 +524,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     key={item.name}
                     to={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center space-x-3 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${
-                      isActive(item.href)
-                        ? 'bg-emerald-50 border border-emerald-200 shadow-md'
-                        : 'hover:bg-emerald-50'
-                    }`}
+                    className={`flex items-center space-x-3 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200 ${isActive(item.href)
+                      ? 'bg-emerald-50 border border-emerald-200 shadow-md'
+                      : 'hover:bg-emerald-50'
+                      }`}
                     style={{
                       color: isActive(item.href) ? 'rgb(5, 150, 105)' : 'rgb(55, 65, 81)'
                     }}
@@ -552,7 +540,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </Link>
                 )
               })}
-              
+
               <div className="pt-4 border-t border-gray-200 mt-4 space-y-3">
                 {user ? (
                   <>
@@ -583,7 +571,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       to="/login"
                       onClick={() => setMobileMenuOpen(false)}
                       className="flex items-center justify-center w-full border-2 hover:bg-emerald-50 px-4 py-3 text-sm font-semibold rounded-xl transition-all duration-200"
-                      style={{ 
+                      style={{
                         borderColor: 'rgb(16, 185, 129)',
                         color: 'rgb(5, 150, 105)'
                       }}
@@ -615,13 +603,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* Main Footer Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-            
+
             {/* Brand Section */}
             <div className="lg:col-span-2 space-y-6">
               <div className="flex items-center space-x-3">
-                <img 
-                  src="/resources/Rretoriq_main_blk.png" 
-                  alt="Rretoriq Logo" 
+                <img
+                  src="/resources/Rretoriq_main_blk.png"
+                  alt="Rretoriq Logo"
                   className="h-12 w-auto"
                 />
                 <div>
@@ -629,11 +617,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   <p className="text-gray-600 text-sm">AI Communication Platform</p>
                 </div>
               </div>
-              
+
               <p className="text-gray-700 text-sm leading-relaxed max-w-md">
                 Providing enterprise-grade AI communication training to institutions and professionals. Comprehensive mock interview preparation, professional communication skills, grammar excellence, and vocabulary enhancement for career success.
               </p>
-              
+
               {/* Stats */}
               <div className="flex flex-wrap gap-6">
                 <div className="text-center">
@@ -652,16 +640,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
               {/* Social Links */}
               <div className="flex space-x-4">
-                <a href="https://twitter.com/rretoriq" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-emerald-500 hover:to-teal-500 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-emerald-500/25">
+                <a href="https://twitter.com/rretoriq" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white hover:bg-gradient-to-r hover:from-emerald-500 hover:to-teal-500 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-emerald-500/25">
                   <Twitter className="w-5 h-5" />
                 </a>
-                <a href="https://linkedin.com/company/rretoriq" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-teal-500 hover:to-cyan-500 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-teal-500/25">
+                <a href="https://linkedin.com/company/rretoriq" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white hover:bg-gradient-to-r hover:from-teal-500 hover:to-cyan-500 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-teal-500/25">
                   <Linkedin className="w-5 h-5" />
                 </a>
-                <a href="https://instagram.com/rretoriq" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-orange-500 hover:to-pink-500 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/25">
+                <a href="https://instagram.com/rretoriq" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-pink-500 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/25">
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="https://facebook.com/rretoriq" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-purple-500 hover:to-indigo-500 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/25">
+                <a href="https://facebook.com/rretoriq" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white hover:bg-gradient-to-r hover:from-purple-500 hover:to-indigo-500 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/25">
                   <Facebook className="w-5 h-5" />
                 </a>
               </div>
@@ -730,7 +718,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </div>
                 </li>
               </ul>
-              
+
               {/* Newsletter */}
               <div className="mt-6">
                 <NewsletterSubscription />
@@ -753,7 +741,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </span>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-6 text-sm text-white">
                 <div className="flex items-center space-x-1">
                   <Star className="w-4 h-4 text-yellow-500 fill-current" />
