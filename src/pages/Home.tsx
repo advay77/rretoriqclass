@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import SEO from '../components/SEO'
 import WordPhraseCard from '../components/WordPhraseCard'
+import TrustStrip from '../components/TrustStrip'
 import {
   ArrowRight,
   Target,
@@ -121,6 +122,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Trust Strip */}
+        <TrustStrip variant="light" />
 
         {/* Features Grid */}
         <section className="py-28 bg-gray-50/50">
