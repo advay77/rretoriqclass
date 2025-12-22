@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import {
   ChevronDown,
-  ChevronUp,
   Search,
-  MessageCircle,
   Mail,
   Phone,
-  HelpCircle,
-  Plus,
-  Minus
+  HelpCircle
 } from 'lucide-react';
 
 const FAQ: React.FC = () => {
