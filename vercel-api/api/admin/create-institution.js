@@ -37,8 +37,8 @@ module.exports = async (req, res) => {
 
     // Validation
     if (!institutionName || !seatsPurchased || !adminUserId) {
-      return res.status(400).json({ 
-        error: 'Missing required fields: institutionName, seatsPurchased, adminUserId' 
+      return res.status(400).json({
+        error: 'Missing required fields: institutionName, seatsPurchased, adminUserId'
       });
     }
 
@@ -98,8 +98,8 @@ module.exports = async (req, res) => {
 
   } catch (error) {
     console.error('❌ Error creating/updating institution:', error);
-    return res.status(500).json({ 
-      error: error.message || 'Failed to create/update institution' 
+    return res.status(500).json({
+      error: error.message || 'Failed to create/update institution'
     });
   }
 };

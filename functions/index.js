@@ -50,7 +50,7 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS || functions.config().app?.a
   .filter(Boolean)
 
 app.use(cors({
-  origin: function(origin, callback) {
+  origin: function (origin, callback) {
     // allow requests with no origin (like curl or server-to-server)
     if (!origin) return callback(null, true)
     if (allowedOrigins.length === 0) return callback(null, true) // permissive if not configured
@@ -98,14 +98,26 @@ app.post('/gemini-proxy', async (req, res) => {
   try {
     if (!GEMINI_KEY) return res.status(500).json({ error: 'Gemini key not configured on server.' })
 
-    // Expect body: { model: 'models/text-bison-001', input: 'Hello' }
-    const { model = 'models/text-bison-001', input } = req.body || {}
-    if (!input) return res.status(400).json({ error: 'Missing input in request body' })
+    // Expect body: { model: 'gemini-2.5-flash', input: '<prompt>' }
+    // Frontend sends: { model, input }
+    const { model = 'gemini-2.5-flash', input, prompt } = req.body || {}
+    const actualInput = input || prompt
 
-    // Example endpoint for text generation (may vary depending on Google Cloud setup)
-    const url = `https://generativeai.googleapis.com/v1beta2/${model}:generate?key=${GEMINI_KEY}`
+    if (!actualInput) return res.status(400).json({ error: 'Missing input/prompt in request body' })
 
-    const response = await axios.post(url, { prompt: input }, {
+    // Modern Gemini API endpoint (generateContent)
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`
+
+    const payload = {
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: actualInput }]
+        }
+      ]
+    }
+
+    const response = await axios.post(url, payload, {
       headers: { 'Content-Type': 'application/json' },
       timeout: 60000
     })
@@ -205,11 +217,11 @@ exports.setAdminWithSeats = functions.https.onCall(async (data, context) => {
     }
   } catch (error) {
     console.error('Error in setAdminWithSeats:', error)
-    
+
     if (error.code === 'auth/user-not-found') {
       throw new functions.https.HttpsError('not-found', `No user found with email: ${data.email}`)
     }
-    
+
     throw new functions.https.HttpsError('internal', error.message)
   }
 })
@@ -260,11 +272,11 @@ exports.updateSeats = functions.https.onCall(async (data, context) => {
     }
   } catch (error) {
     console.error('Error in updateSeats:', error)
-    
+
     if (error.code === 'auth/user-not-found') {
       throw new functions.https.HttpsError('not-found', `No user found with email: ${data.email}`)
     }
-    
+
     throw new functions.https.HttpsError('internal', error.message)
   }
 })

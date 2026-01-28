@@ -14,7 +14,7 @@ const API_PROXY_BASE = import.meta.env.VITE_API_PROXY_BASE || (typeof window !==
 const GEMINI_PROXY_URL = `${API_PROXY_BASE}/gemini-proxy`
 
 // Gemini model (still configurable client-side, but key lives on server)
-const GEMINI_MODEL = import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.0-flash-exp'
+const GEMINI_MODEL = import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.5-flash'
 
 export interface InterviewQuestion {
   id: string
